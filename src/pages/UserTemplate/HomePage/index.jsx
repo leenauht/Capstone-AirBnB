@@ -1,3 +1,9 @@
+import RoomList from "../RoomList";
+
 export default function HomePage() {
-  return <div>HomePage</div>;
+  return (
+    <div className="mt-[400px]">
+      <RoomList />
+    </div>
+  );
 }
