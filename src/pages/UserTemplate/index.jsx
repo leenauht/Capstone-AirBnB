@@ -5,9 +5,9 @@ import Footer from "./_component/Footer";
 export default function UserTemplate() {
   return (
     <div>
-      {/* <Header /> */}
+      <Header />
       <Outlet />
-      {/* <Footer /> */}
+      <Footer />
     </div>
   );
 }
