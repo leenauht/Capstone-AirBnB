@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
+import Logo from "../../../../Icons/Logo";
 
 export default function Header() {
   //   const state = useSelector((state) => state.signInReducer);
@@ -28,9 +29,7 @@ export default function Header() {
           to="/"
           className="flex items-center space-x-3 rtl:space-x-reverse"
         >
-          <span className="self-center text-2xl text-red-600 font-bold whitespace-nowrap">
-            Cyber Movie
-          </span>
+          <Logo color="red" width={102} height={32} />
         </NavLink>
         <button
           data-collapse-toggle="navbar-default"
