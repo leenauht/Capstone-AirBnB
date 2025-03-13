@@ -23,7 +23,7 @@ export default function Header() {
   };
 
   return (
-    <nav className="bg-bg-opacity-1 fixed w-full z-50">
+    <nav className="fixed w-full z-50">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-5">
         <NavLink
           to="/"
