@@ -1,6 +1,7 @@
 import { Route } from "react-router-dom";
 import UserTemplate from "../pages/UserTemplate";
 import HomePage from "../pages/UserTemplate/HomePage";
+import RoomDetail from "../pages/UserTemplate/RoomDetails";
 
 const routes = [
   {
@@ -10,6 +11,10 @@ const routes = [
       {
         path: "",
         element: HomePage,
+      },
+      {
+        path: "detail/:id",
+        element: RoomDetail,
       },
     ],
   },

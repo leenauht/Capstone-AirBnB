@@ -2,7 +2,8 @@ import { Button, Modal } from "antd";
 import { useState } from "react";
 
 export default function ModalDefault(props) {
-  const { children, title, befoIcon } = props;
+  const { children, title, befoIcon, className, footer = null } = props;
+
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const showModal = () => {
@@ -19,24 +20,19 @@ export default function ModalDefault(props) {
 
   return (
     <>
-      <span
-        onClick={showModal}
-        className="flex justify-center items-center gap-1.5"
-      >
+      <span onClick={showModal} className={className}>
         {befoIcon}
         {title}
       </span>
       <Modal
-        title={title}
+        isModalOpen={isModalOpen}
+        title={
+          <div style={{ textAlign: "center", width: "100%" }}>{title}</div>
+        }
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
-        footer={[
-          <Button key="back" onClick={handleCancel}>
-            Return
-          </Button>,
-          <Button onClick={handleOk}>Search on Google</Button>,
-        ]}
+        footer={footer}
       >
         {children}
       </Modal>
