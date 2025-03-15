@@ -6,7 +6,7 @@ export const fetchRoomList = createAsyncThunk(
   async (__dirname, { rejectWithValue }) => {
     try {
       const result = await api.get("/phong-thue");
-      return result;
+      return result.data.content;
     } catch (error) {
       return rejectWithValue(error);
     }

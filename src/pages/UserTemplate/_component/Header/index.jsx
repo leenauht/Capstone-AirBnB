@@ -1,6 +1,8 @@
 import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import Logo from "../../../../Icons/Logo";
+import Profile from "../../UserProfile";
+// import Profile from "./Profile";
 
 export default function Header() {
   //   const state = useSelector((state) => state.signInReducer);
@@ -58,14 +60,9 @@ export default function Header() {
         <div className="hidden w-full md:block md:w-auto" id="navbar-default">
           <ul className="font-medium text-white text-lg flex flex-col items-center p-4 md:p-0 mt-4 rounded-lg md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0">
             {renderNavList()}
-            {/* {!state.data && (
-              <Button to={"/sign-in"} name={"Sign In"} color={"bg-red-700"} />
-            )}
-            {!state.data && (
-              <Button to={"/sign-up"} name={"Sign Up"} color={"bg-blue-700"} />
-            )} */}
           </ul>
         </div>
+        <Profile />
       </div>
     </nav>
   );

@@ -6,7 +6,7 @@ export const fetchLocation = createAsyncThunk(
   async (__dirname, { rejectWithValue }) => {
     try {
       const result = await api.get("/vi-tri");
-      return result;
+      return result.data.content;
     } catch (error) {
       return rejectWithValue(error);
     }

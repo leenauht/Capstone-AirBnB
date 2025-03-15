@@ -1,10 +1,10 @@
-import { Carousel } from "antd";
+import { Button, Carousel } from "antd";
 import { listTopic } from "./ListTopic";
 import { useEffect, useState } from "react";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import Filter from "../../../Icons/Filter";
 import { NavLink } from "react-router-dom";
-import ModalDefault from "../../../components/Modal";
+import ModalDefault from "../../../components/ModalDefault";
 
 export default function Topic() {
   const [itemsPerSlide, setItemsPerSlide] = useState(6);
@@ -13,6 +13,8 @@ export default function Topic() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isActive, setIsActive] = useState(false);
 
+  const classModal =
+    "flex justify-center items-center gap-1.5 whitespace-nowrap cursor-pointer px-5 py-2 border border-gray-300 rounded-2xl";
   const classTW =
     "w-auto flex flex-col justify-center items-center opacity-80 hover:text-black transition duration-300";
 
@@ -96,9 +98,16 @@ export default function Topic() {
             </button>
           )}
         </div>
-        <div className="whitespace-nowrap cursor-pointer px-5 py-2 border border-gray-300 rounded-2xl">
-          <ModalDefault title="Bộ lọc" befoIcon={<Filter />} />
-        </div>
+
+        <ModalDefault
+          title="Bộ lọc"
+          befoIcon={<Filter />}
+          className={classModal}
+          footer={[
+            <Button key="back">Return</Button>,
+            <Button>Search on Google</Button>,
+          ]}
+        />
       </div>
     </div>
   );
