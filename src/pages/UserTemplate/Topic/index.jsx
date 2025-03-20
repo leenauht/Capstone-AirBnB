@@ -1,4 +1,4 @@
-import { Button, Carousel } from "antd";
+import { Button, Carousel, Modal } from "antd";
 import { listTopic } from "./ListTopic";
 import { useEffect, useState } from "react";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
@@ -12,6 +12,7 @@ export default function Topic() {
   const [carouselRef, setCarouselRef] = useState(null);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isActive, setIsActive] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const classModal =
     "flex justify-center items-center gap-1.5 whitespace-nowrap cursor-pointer px-5 py-2 border border-gray-300 rounded-2xl";
@@ -34,6 +35,16 @@ export default function Topic() {
       carouselRef.next();
       setCurrentSlide(currentSlide + 1);
     }
+  };
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+  const handleCancel = () => {
+    setIsModalOpen(false);
   };
 
   useEffect(() => {
@@ -99,15 +110,23 @@ export default function Topic() {
           )}
         </div>
 
-        <ModalDefault
-          title="Bộ lọc"
-          befoIcon={<Filter />}
-          className={classModal}
-          footer={[
-            <Button key="back">Return</Button>,
-            <Button>Search on Google</Button>,
-          ]}
-        />
+        <span
+          className="flex justify-center items-center gap-1.5 whitespace-nowrap cursor-pointer px-5 py-2 border border-gray-300 rounded-2xl"
+          onClick={showModal}
+        >
+          <Filter />
+          Bộ lọc
+        </span>
+        <Modal
+          title="Basic Modal"
+          open={isModalOpen}
+          onOk={handleOk}
+          onCancel={handleCancel}
+        >
+          <p>Some contents...</p>
+          <p>Some contents...</p>
+          <p>Some contents...</p>
+        </Modal>
       </div>
     </div>
   );

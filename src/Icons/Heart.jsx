@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { cacheLocalService } from "../services/cacheLocalService";
 
-export default function Heart() {
-  const [isLike, setIsLike] = useState(false);
-  const handleOnClick = () => {
-    setIsLike(!isLike);
+export default function Heart(props) {
+  const { onLike, isLike } = props;
+  const handleOnClick = (e) => {
+    e.stopPropagation();
+    onLike(!isLike);
   };
+  cacheLocalService;
 
   return (
     <svg

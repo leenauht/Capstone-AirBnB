@@ -3,7 +3,7 @@ import Topic from "../Topic";
 
 export default function HomePage() {
   return (
-    <div className="pt-[400px] overflow-x-hidden">
+    <div className="pt-[160px] overflow-x-hidden">
       <Topic />
       <RoomList />
     </div>

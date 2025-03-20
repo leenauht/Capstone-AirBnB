@@ -1,14 +1,10 @@
-export default function RentalAmenities({ data }) {
-  const result = [];
-  const length = Object.keys(data).length;
-
-  Object.entries(data).forEach(([key, value], index) => {
-    result.push(
-      <span key={index}>
-        {value}
-        {index < length - 1 ? ", " : ""}
-      </span>
-    );
+export default function RentalAmenities({ name, support }) {
+  Object.entries(support).forEach(([key, value]) => {
+    if (support[value] === name) {
+      return (result += <s>{name}</s>);
+    } else {
+      return (result += <span>{name}</span>);
+    }
   });
   return result;
 }
