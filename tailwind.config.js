@@ -8,7 +8,7 @@ export default {
         "bg-opacity-1": "rgb(0 0 0 / var(--tw-bg-opacity, 0.6))",
         "bg-opacity-3": "rgb(0 0 0 / var(--tw-bg-opacity, 1))",
         "bg-opacity-2": "rgb(10 10 10 / var(--tw-bg-opacity, 1))",
-        "bg-opacity-4": "rgb(36 54 66  / var(--tw-bg-opacity, 0.6))",
+        "bg-opacity-4": "rgb(255 255 255  / var(--tw-bg-opacity, 1))",
       },
       boxShadow: {
         "box-shadow-1":

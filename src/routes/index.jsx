@@ -2,6 +2,7 @@ import { Route } from "react-router-dom";
 import UserTemplate from "../pages/UserTemplate";
 import HomePage from "../pages/UserTemplate/HomePage";
 import RoomDetail from "../pages/UserTemplate/RoomDetails";
+import Account from "../pages/UserTemplate/UserProfile/Account";
 
 const routes = [
   {
@@ -15,6 +16,10 @@ const routes = [
       {
         path: "detail/:id",
         element: RoomDetail,
+      },
+      {
+        path: "user-profile",
+        element: Account,
       },
     ],
   },

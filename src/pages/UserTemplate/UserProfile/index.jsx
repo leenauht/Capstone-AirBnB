@@ -72,9 +72,16 @@ export default function Profile() {
         {/* Dropdown menu */}
         {showMenu && (
           <div className="z-10 absolute right-0 mt-1 bg-slate-300 divide-y divide-gray-200 rounded-lg shadow-sm w-44">
-            <div className="px-4 py-3 text-sm text-gray-900">
-              <div className="font-medium truncate">Thuận</div>
-            </div>
+            {localStorage.getItem("userInfo") && (
+              <NavLink
+                onClick={() => setShowMenu(false)}
+                to="/user-profile"
+                className="flex py-2 px-4 gap-2 items-center text-sm text-gray-900 cursor-pointer"
+              >
+                <div className="font-medium truncate">Tài khoản</div>
+              </NavLink>
+            )}
+
             {!localStorage.getItem("userInfo") && (
               <ul
                 className="py-2 text-sm text-gray-700 dark:text-gray-200"
@@ -107,14 +114,6 @@ export default function Profile() {
                 >
                   CMS Admin
                 </NavLink>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                >
-                  Quản lý hồ sơ
-                </a>
               </li>
               <li>
                 <a
