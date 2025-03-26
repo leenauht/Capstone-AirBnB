@@ -1,7 +1,7 @@
 import { DatePicker, Form, Input, Radio, Modal, Button } from "antd";
 import { useState } from "react";
 import api from "../../../services/api";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 
 export default function SignUpForm(props) {
   const [form] = Form.useForm();
@@ -35,9 +35,9 @@ export default function SignUpForm(props) {
       });
   };
 
-  const handleReset = () => {
-    form.resetFields(); // Reset toàn bộ form về giá trị ban đầu
-  };
+  // const handleReset = () => {
+  //   form.resetFields(); // Reset toàn bộ form về giá trị ban đầu
+  // };
 
   return (
     <>

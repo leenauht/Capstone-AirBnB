@@ -1,27 +1,40 @@
-import { Card, List } from "antd";
+import { List } from "antd";
 import { useState } from "react";
 import { data } from "./data";
+import { NavLink } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function Account() {
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [itemSlected, setItemSelected] = useState(data[0]);
+
+  const handleLogOut = () => {
+    localStorage.removeItem("userInfo", "");
+    toast.success("Bạn đã đăng xuất!", {
+      autoClose: 2000,
+    });
+    window.scrollTo(0, 0);
+  };
+
   return (
-    <div className="pt-[160px] container mx-auto">
-      <h2 className="text-3xl font-bold pb-10">Tài khoản</h2>
+    <div className="pt-[150px] pb-10 container mx-auto">
+      <h2 className="text-[40px] font-bold pb-10 text-center text-gray-700">
+        {itemSlected.title}
+      </h2>
       <div className="flex gap-10">
-        <div className="w-1/3">
+        <div className="w-[30%]">
           <List
             itemLayout="horizontal"
             dataSource={data}
-            renderItem={(item, index) => (
+            renderItem={(item) => (
               <List.Item>
                 <List.Item.Meta
-                  onClick={() => setActiveIndex(index)}
+                  onClick={() => setItemSelected(item)}
                   className="cursor-pointer"
                   title={
                     <p
                       className={`${
-                        activeIndex === index ? "black" : "text-gray-500"
-                      } text-lg font-medium`}
+                        itemSlected.id === item.id ? "black" : "text-gray-500"
+                      } text-xl font-bold`}
                     >
                       {item.title}
                     </p>
@@ -31,11 +44,16 @@ export default function Account() {
               </List.Item>
             )}
           />
+          <NavLink
+            className="text-xl font-bold text-blue-500 hover:text-blue-700 transition duration-300"
+            onClick={handleLogOut}
+            to="/"
+          >
+            Đăng xuất tài khoản
+          </NavLink>
         </div>
 
-        <div className="flex-1">
-          <p>{data[activeIndex].content}</p>
-        </div>
+        <div className="flex-1">{itemSlected.content}</div>
       </div>
     </div>
   );

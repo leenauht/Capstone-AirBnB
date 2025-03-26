@@ -1,23 +1,20 @@
-import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import Logo from "../../../../Icons/Logo";
 import Profile from "../../UserProfile";
-// import Profile from "./Profile";
+import Home from "../../../../Icons/Home";
 
 export default function Header() {
-  //   const state = useSelector((state) => state.signInReducer);
-
   const navList = [{ to: "/", name: "Trang Chủ" }];
 
   const renderNavList = () => {
     return navList.map((item) => {
       return (
         <li key={item.to}>
-          <NavLink
-            to={item.to}
-            className={({ isActive }) => (isActive ? "text-blue-600" : "")}
-          >
-            {item.name}
+          <NavLink to={item.to} className="text-blue-600">
+            <div className="flex items-end gap-1">
+              <Home />
+              <span>{item.name}</span>
+            </div>
           </NavLink>
         </li>
       );
