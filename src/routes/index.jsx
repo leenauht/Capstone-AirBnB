@@ -3,6 +3,7 @@ import UserTemplate from "../pages/UserTemplate";
 import HomePage from "../pages/UserTemplate/HomePage";
 import RoomDetail from "../pages/UserTemplate/RoomDetails";
 import Account from "../pages/UserTemplate/UserProfile/Account";
+import Payment from "../pages/UserTemplate/RoomDetails/Booking/Payment";
 
 const routes = [
   {
@@ -20,6 +21,10 @@ const routes = [
       {
         path: "user-profile",
         element: Account,
+      },
+      {
+        path: "detail/:id/payment",
+        element: Payment,
       },
     ],
   },

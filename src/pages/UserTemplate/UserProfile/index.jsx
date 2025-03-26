@@ -5,9 +5,10 @@ import Menu from "../../../Icons/Menu";
 import SignInForm from "../SignInForm";
 import SignUpForm from "../SignUpForm";
 import { toast } from "react-toastify";
+import { Avatar } from "antd";
+import { UserOutlined } from "@ant-design/icons";
 
 export default function Profile() {
-  const [isOpen, setIsOpen] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
   const [showFormLogin, setShowFormLogin] = useState(false);
   const [showSignupLogin, setShowSignupLogin] = useState(false);
@@ -25,7 +26,7 @@ export default function Profile() {
       autoClose: 2000,
     });
     setShowMenu((pre) => !pre);
-    return <Navigate to="/" />;
+    window.scrollTo(0, 0);
   };
 
   const toggleMenu = () => {
@@ -43,7 +44,6 @@ export default function Profile() {
   };
 
   const data = localStorage.getItem("userInfo");
-  console.log(data);
 
   return (
     <>
@@ -53,20 +53,7 @@ export default function Profile() {
           className="flex justify-center items-center gap-2 py-1 px-5 border rounded-full cursor-pointer"
         >
           <Menu />
-          <div className="relative w-10 h-10 overflow-hidden bg-gray-300 rounded-full">
-            <svg
-              className="absolute w-12 h-12 text-gray-600 -left-1"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fillRule="evenodd"
-                d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                clipRule="evenodd"
-              />
-            </svg>
-          </div>
+          <Avatar size={40} icon={<UserOutlined />} />
         </div>
 
         {/* Dropdown menu */}
@@ -128,7 +115,7 @@ export default function Profile() {
               <div className="py-1">
                 <NavLink
                   onClick={handleLogOut}
-                  href=""
+                  to="/"
                   className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
                 >
                   Đăng xuất
