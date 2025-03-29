@@ -10,7 +10,7 @@ export default function Header() {
     return navList.map((item) => {
       return (
         <li key={item.to}>
-          <NavLink to={item.to} className="text-blue-600">
+          <NavLink to={item.to} className="text-black hover:text-blue-500">
             <div className="flex items-end gap-1">
               <Home />
               <span>{item.name}</span>

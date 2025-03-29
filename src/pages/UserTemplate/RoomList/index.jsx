@@ -1,32 +1,63 @@
 import { useDispatch, useSelector } from "react-redux";
 import Room from "./Room";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { fetchRoomList } from "./sliceRoomList";
 import { fetchLocation } from "./sliceLocation";
+import Pagination from "../_component/Pagination";
+import { timeDelay } from "../../../utils";
 
 export default function RoomList() {
-  const dispath = useDispatch();
-  const stateRoom = useSelector((state) => state.roomListReducer);
-  const stateLocation = useSelector((state) => state.locationReducer);
-  const { data: dataRoom } = stateRoom;
-  const { data: dataLocation } = stateLocation;
+  const dispatch = useDispatch();
+  const { data: dataRoom } = useSelector((state) => state.roomListReducer);
+  const { data: dataLocation } = useSelector((state) => state.locationReducer);
 
-  console.log("stateRoom", dataRoom);
-  console.log(dataLocation);
+  console.log("dataLocation", dataLocation);
+  console.log("dataRoom", dataRoom);
+
+  const [listRoom, setListRoom] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+  const commentsPerPage = 12;
+
+  const handleChangePage = async (currentPage) => {
+    setCurrentPage(currentPage);
+    setIsLoading(true);
+    await timeDelay(1000);
+    setIsLoading(false);
+  };
 
   useEffect(() => {
-    dispath(fetchRoomList());
-    dispath(fetchLocation());
+    dispatch(fetchRoomList());
+    dispatch(fetchLocation());
   }, []);
 
-  return (
-    <div className="max-w-[90%] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-10 gap-5">
-      {dataLocation?.map((item) => {
-        const roomId = dataRoom?.find((room) => room.maViTri === item.id);
-        console.log(roomId);
+  useEffect(() => {
+    if (!dataLocation || dataLocation.length === 0) return;
 
-        return <Room key={item.id} location={item} roomId={roomId} />;
-      })}
-    </div>
+    setTotalPages(Math.ceil(dataLocation.length / commentsPerPage));
+    const startIndex = (currentPage - 1) * commentsPerPage;
+    setListRoom(dataLocation.slice(startIndex, startIndex + commentsPerPage));
+  }, [currentPage, dataLocation]);
+
+  return (
+    <>
+      <div className="max-w-[90%] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-10 gap-5">
+        {isLoading ? (
+          <p>Loading...</p>
+        ) : (
+          listRoom?.map((item) => {
+            const room = dataRoom?.find((room) => room.maViTri === item.id);
+            if (!room) return null;
+            return <Room key={item.id} location={item} room={room} />;
+          })
+        )}
+      </div>
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        handleChangePage={handleChangePage}
+      />
+    </>
   );
 }

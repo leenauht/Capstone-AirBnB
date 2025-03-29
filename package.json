@@ -15,6 +15,7 @@
     "antd": "^5.24.3",
     "axios": "^1.8.2",
     "flowbite-react": "^0.10.2",
+    "js-cookie": "^3.0.5",
     "path": "^0.12.7",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

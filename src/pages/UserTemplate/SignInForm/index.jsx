@@ -2,6 +2,7 @@ import { Button, Form, Input, Modal } from "antd";
 import { useState } from "react";
 import api from "../../../services/api";
 import { toast } from "react-toastify";
+import Cookies from "js-cookie";
 
 export default function SignInForm(props) {
   const [form] = Form.useForm();
@@ -19,9 +20,9 @@ export default function SignInForm(props) {
         const userInfo = result.content.user;
         if (userInfo) {
           toast.success("Đăng nhập thành công!", { autoClose: 2000 });
-        }
-        if (userInfo)
           localStorage.setItem("userInfo", JSON.stringify(userInfo));
+          Cookies.set("token", result.content.token);
+        }
         props.setOpen(false);
         form.resetFields();
       })

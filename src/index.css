@@ -2,6 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-.no-hover:hover {
-  background-color: transparent !important; /* Loại bỏ hiệu ứng hover */
+.text-ellipsis {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  overflow: hidden;
 }

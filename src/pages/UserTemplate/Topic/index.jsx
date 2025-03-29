@@ -3,8 +3,6 @@ import { listTopic } from "./ListTopic";
 import { useEffect, useState } from "react";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import Filter from "../../../Icons/Filter";
-import { NavLink } from "react-router-dom";
-import ModalDefault from "../../../components/ModalDefault";
 
 export default function Topic() {
   const [itemsPerSlide, setItemsPerSlide] = useState(6);

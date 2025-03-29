@@ -10,7 +10,7 @@ import React from "react";
 import Booking from "./Booking";
 
 export default function RoomDetail() {
-  const dispath = useDispatch();
+  const dispatch = useDispatch();
   const { loading, data: room } = useSelector(
     (state) => state.roomDetailReducer
   );
@@ -20,12 +20,12 @@ export default function RoomDetail() {
   const location = state?.data?.find((item) => item.id === Number(id));
 
   useEffect(() => {
-    dispath(fetchLocation());
+    dispatch(fetchLocation());
   }, []);
 
   useEffect(() => {
     if (id) {
-      dispath(fetchRoomDetail(id));
+      dispatch(fetchRoomDetail(id));
     }
   }, [id]);
 

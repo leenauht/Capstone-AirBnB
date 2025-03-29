@@ -1,4 +1,4 @@
-export default function ChevronRight(props) {
+export default function ChevronLeft(props) {
   const { width, height, type } = props;
   return (
     <>
@@ -15,7 +15,7 @@ export default function ChevronRight(props) {
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeWidth={2}
-            d="M16 12l-7 -7M16 12l-7 7"
+            d="M8 12l7 -7M8 12l7 7"
           >
             <animate
               fill="freeze"
@@ -41,7 +41,7 @@ export default function ChevronRight(props) {
             strokeLinejoin="round"
             strokeWidth={2}
           >
-            <path d="M12 12l-5 -5M12 12l-5 5">
+            <path d="M12 12l5 -5M12 12l5 5">
               <animate
                 fill="freeze"
                 attributeName="stroke-dashoffset"
@@ -49,7 +49,7 @@ export default function ChevronRight(props) {
                 values="10;0"
               />
             </path>
-            <path d="M18 12l-5 -5M18 12l-5 5">
+            <path d="M6 12l5 -5M6 12l5 5">
               <animate
                 fill="freeze"
                 attributeName="stroke-dashoffset"
