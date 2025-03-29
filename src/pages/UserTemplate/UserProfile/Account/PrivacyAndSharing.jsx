@@ -60,10 +60,10 @@ export default function PrivacyAndSharing() {
               Quản lý dữ liệu tài khoản của bạn
             </h4>
             <div>
-              <p className="flex gap-5 items-center text-lg">
+              <p className="flex gap-2 items-center text-lg">
                 Yêu cầu dữ liệu cá nhân của bạn
                 <span>
-                  <ChevronRight />
+                  <ChevronRight width={22} heigth={22} />
                 </span>
               </p>
               <p className="text-gray-600">
@@ -71,10 +71,10 @@ export default function PrivacyAndSharing() {
               </p>
             </div>
             <div>
-              <p className="flex gap-5 items-center text-lg">
+              <p className="flex gap-2 items-center text-lg">
                 Xóa tài khoản của bạn
                 <span>
-                  <ChevronRight />
+                  <ChevronRight width={22} heigth={22} />
                 </span>
               </p>
               <p className="text-gray-600">

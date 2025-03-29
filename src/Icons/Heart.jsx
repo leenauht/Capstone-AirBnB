@@ -1,12 +1,12 @@
-import { cacheLocalService } from "../services/cacheLocalService";
-
 export default function Heart(props) {
   const { onLike, isLike } = props;
+
   const handleOnClick = (e) => {
+    console.log("abcd");
+
     e.stopPropagation();
     onLike(!isLike);
   };
-  cacheLocalService;
 
   return (
     <svg
@@ -19,7 +19,7 @@ export default function Heart(props) {
       style={{
         display: "block",
         fill: `${
-          isLike === true ? "rgba(255, 0, 0, 0.7)" : "rgba(0, 0, 0, 0.7)"
+          isLike === true ? "rgba(255, 0, 0, 0.9)" : "rgba(0, 0, 0, 0.7)"
         }`,
         height: 24,
         width: 24,

@@ -1,6 +1,7 @@
-export default function Send() {
+export default function Send(props) {
   return (
     <svg
+      onClick={props.onClick}
       className="cursor-pointer"
       xmlns="http://www.w3.org/2000/svg"
       width={32}
