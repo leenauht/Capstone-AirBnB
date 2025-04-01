@@ -76,12 +76,12 @@ export default function ListComment(props) {
   }, [currentPage, totalPages]);
 
   return (
-    <div className="w-full">
+    <div className="w-full pt-10">
       <CommentInput onSubmit={onSubmit} imgAvatar={userInfo?.avatar} />
       {isLoading ? (
         <p className="text-center">Loading...</p>
       ) : comments ? (
-        <div className="grid grid-cols-2 gap-5">
+        <div className="md:grid xl:grid-cols-2 gap-5">
           {comments.map((item, index) => (
             <div key={index} className="p-5">
               <CommentMessage comment={item} />

@@ -64,8 +64,8 @@ export default function RoomDetail() {
       <div>
         <h2 className="text-xl font-semibold">{room?.tenPhong}</h2>
         <img src={room?.hinhAnh} alt="Logo" className="my-5 rounded-xl" />
-        <div className="flex justify-between">
-          <div className="w-3/5">
+        <div className="lg:flex lg:justify-between">
+          <div className="md:w-3/5">
             <div className="py-5">
               {location && (
                 <h3 className="text-2xl font-medium">
@@ -82,7 +82,7 @@ export default function RoomDetail() {
             {renderRating()}
             <div className="space-y-3 py-5">
               <p className="text-lg font-medium">Nơi này có những gì cho bạn</p>
-              <div className="grid grid-cols-3 gap-5">
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-5">
                 {dataUtil.map(({ name, field, svg: Icon }) => {
                   return (
                     <div key={name} className="flex items-center gap-5">

@@ -21,7 +21,7 @@ export default function Booking({ id }) {
   };
 
   return (
-    <div className="shadow-box-shadow-1 w-[34%] p-5 rounded-xl h-fit">
+    <div className="shadow-box-shadow-2 w-4/5 sm:w-3/5 lg:w-[34%] p-5 rounded-xl h-fit">
       <div>
         <p>
           <span className="font-bold text-2xl">₫2.123.586</span> / đêm
