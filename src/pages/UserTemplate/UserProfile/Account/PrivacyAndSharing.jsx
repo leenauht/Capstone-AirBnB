@@ -29,7 +29,7 @@ export default function PrivacyAndSharing() {
         <div>
           <List
             className="relative"
-            grid={{ gutter: 16, column: 3 }} // Hiển thị theo hàng ngang (4 cột)
+            grid={{ gutter: 16, column: 3 }}
             itemLayout="horizontal"
             dataSource={data}
             renderItem={(item) => (

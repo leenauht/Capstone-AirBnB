@@ -27,7 +27,6 @@ export default function SignInForm(props) {
         form.resetFields();
       })
       .catch((error) => {
-        console.log("error", error);
         const messageError = error.response.data.content;
         toast.error(messageError);
       });
@@ -41,7 +40,6 @@ export default function SignInForm(props) {
           Đăng nhập
         </div>
       }
-      // onOk={handleOk}
       onCancel={() => {
         props.setOpen(false);
         form.resetFields();

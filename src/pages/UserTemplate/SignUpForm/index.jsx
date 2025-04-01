@@ -35,10 +35,6 @@ export default function SignUpForm(props) {
       });
   };
 
-  // const handleReset = () => {
-  //   form.resetFields(); // Reset toàn bộ form về giá trị ban đầu
-  // };
-
   return (
     <>
       <Modal
@@ -46,7 +42,6 @@ export default function SignUpForm(props) {
         title={
           <div style={{ textAlign: "center", width: "100%" }}>Đăng ký</div>
         }
-        // onOk={handleOk}
         onCancel={() => {
           props.setOpen(false);
           form.resetFields();
@@ -58,7 +53,6 @@ export default function SignUpForm(props) {
             label="Username"
             name="name"
             labelCol={{ span: 5 }}
-            // wrapperCol={{ span: 20 }} // Độ rộng của input (1-24)
             rules={[
               {
                 required: true,
@@ -128,7 +122,7 @@ export default function SignUpForm(props) {
           </Form.Item>
 
           <Form.Item
-            label="DatePicker"
+            label="Birthday"
             name="birthday"
             labelCol={{ span: 5 }}
             rules={[{ required: true, message: "Vui lòng chọn ngày!" }]}

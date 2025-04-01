@@ -15,7 +15,7 @@ const routes = [
         element: HomePage,
       },
       {
-        path: "detail/:id",
+        path: "detail/:id/:maViTri",
         element: RoomDetail,
       },
       {

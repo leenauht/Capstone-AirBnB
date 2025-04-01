@@ -49,7 +49,7 @@ export default function DropdownBooking() {
 
   const renderContent = () => {
     return (
-      <div className="space-y-4 py-4 max-w-[330px] whitespace-normal">
+      <div className="space-y-4 py-4 max-w-[330px] whitespace-nowrap">
         {data.map((item) => {
           return (
             <div
@@ -127,7 +127,7 @@ export default function DropdownBooking() {
         open={open}
         onOpenChange={handleOpenChange}
       >
-        <div className="flex justify-between p-4">
+        <div className="flex justify-between p-4 hover:border hover:border-black hover:rounded-xl">
           <div className="leading-snug">
             <p className="font-bold text-xs leading-3 uppercase">Khách</p>
             <p className="text-sm">{count} khách</p>

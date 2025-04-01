@@ -10,7 +10,6 @@ export const data = [
     description:
       "Cung cấp thông tin cá nhân và cách chúng tôi có thể liên hệ với bạn",
     content: <PresonalInfo />,
-    // content: "1",
   },
   {
     id: 2,
@@ -36,7 +35,7 @@ export const data = [
     id: 5,
     title: "Thông báo",
     description: "Chọn tùy chọn thông báo và cách bạn muốn được liên hệ",
-    content: "",
+    content: "Tính năng đang phát triển",
   },
   {
     id: 6,
