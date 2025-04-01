@@ -63,9 +63,11 @@ export default function Profile() {
               <NavLink
                 onClick={() => setShowMenu(false)}
                 to="/user-profile"
-                className="flex py-2 px-4 gap-2 items-center text-sm text-gray-900 cursor-pointer"
+                className="flex py-1 gap-2 items-center text-sm text-gray-900 cursor-pointer "
               >
-                <div className="font-medium truncate">Tài khoản</div>
+                <div className="font-medium truncate py-2 px-4 w-full hover:bg-gray-100">
+                  Tài khoản
+                </div>
               </NavLink>
             )}
 

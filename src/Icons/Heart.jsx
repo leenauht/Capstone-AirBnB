@@ -2,7 +2,6 @@ export default function Heart(props) {
   const { onLike, isLike } = props;
 
   const handleOnClick = (e) => {
-    console.log("abcd");
 
     e.stopPropagation();
     onLike(!isLike);

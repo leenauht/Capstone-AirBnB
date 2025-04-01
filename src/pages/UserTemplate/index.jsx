@@ -1,4 +1,4 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import Header from "./_component/Header";
 import Footer from "./_component/Footer";
 import { ToastContainer } from "react-toastify";

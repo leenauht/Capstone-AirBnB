@@ -1,16 +1,21 @@
 import Avatar from "./../../_component/Avatar";
-import { Button, Form, Input } from "antd";
+import { Input } from "antd";
 import Send from "./../../../../Icons/Send";
 import { useState } from "react";
 import Rating from "../Rating";
 
+const IMG_DEFAULT =
+  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbuj8x4vZVQjh-Vow11mzwbMuzu4BT3VPy0eMXWSCxIIyoJF0_FtYW7aSwyeDtfx-1oIA&usqp=CAU";
+
 export default function CommentInput(props) {
-  const [form] = Form.useForm();
   const { imgAvatar, onSubmit } = props;
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [rating, setRating] = useState(0);
   const [errorMessage, setErrorMessage] = useState("");
+
+  const validImage =
+    imgAvatar !== "" && imgAvatar !== undefined ? imgAvatar : IMG_DEFAULT;
 
   const handleOnChange = (e) => {
     setMessage(e.target.value);
@@ -18,6 +23,12 @@ export default function CommentInput(props) {
       setErrorMessage("Vui lòng nhập bình luận!");
     } else {
       setErrorMessage("");
+    }
+  };
+
+  const handleBlur = () => {
+    if (!message) {
+      setErrorMessage("Vui lòng nhập bình luận!");
     }
   };
 
@@ -36,22 +47,23 @@ export default function CommentInput(props) {
   };
 
   return (
-    <div>
-      <h3>Bình luận</h3>
-      <Avatar imgAvatar={imgAvatar} width={56} height={56}>
+    <div className="pb-10">
+      <h3 className="text-lg font-medium pb-5">Bình luận</h3>
+      <Avatar imgAvatar={validImage} width={56} height={56}>
         <form onSubmit={handleSubmit} className="space-y-2">
           <Rating onChange={setRating} type="input" value={rating} />
 
           <Input
+            onBlur={handleBlur}
             required
-            className="relative"
             onChange={handleOnChange}
             showCount
-            maxLength={100}
+            maxLength={500}
+            placeholder="Viết đánh giá của bạn..."
             value={message}
             suffix={
               <div onClick={handleSubmit} className="hover:text-blue-600">
-                <Send htmlType="submit" />
+                <Send />
               </div>
             }
           />

@@ -1,23 +1,53 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { fetchLocation } from "../RoomList/sliceLocation";
-import Rating from "./Rating";
 import { dataUtil } from "./data";
 import ListComment from "./ListComment";
 import { fetchRoomDetail } from "./sliceRoomDetail";
 import React from "react";
 import Booking from "./Booking";
+import Star from "./../../../Icons/Star";
 
 export default function RoomDetail() {
   const dispatch = useDispatch();
   const { loading, data: room } = useSelector(
     (state) => state.roomDetailReducer
   );
-  const state = useSelector((state) => state.locationReducer);
-  const { id } = useParams();
+  const { data: dataLocation } = useSelector((state) => state.locationReducer);
+  const { id, maViTri } = useParams();
 
-  const location = state?.data?.find((item) => item.id === Number(id));
+  const [dataRating, setDataRating] = useState([]);
+
+  console.log("dataLocation", dataLocation);
+  console.log(maViTri);
+  console.log(id);
+
+  const location = dataLocation?.find((item) => item.id === Number(maViTri));
+
+  const handleRating = (listRating) => {
+    setDataRating(listRating);
+  };
+
+  const renderRating = () => {
+    if (!dataRating) return null;
+
+    const sum = dataRating?.reduce(
+      (total, item) => total + item.saoBinhLuan,
+      0
+    );
+    const average = (sum / dataRating.length).toFixed(1);
+    return (
+      <div className="py-5 flex gap-1 items-center text-lg font-medium">
+        <div className="flex items-center gap-1">
+          <Star />
+          <span>{average}</span>
+        </div>
+        {"-"}
+        <div className="underline text-base">{dataRating.length} đánh giá</div>
+      </div>
+    );
+  };
 
   useEffect(() => {
     dispatch(fetchLocation());
@@ -38,7 +68,7 @@ export default function RoomDetail() {
           <div className="w-3/5">
             <div className="py-5">
               {location && (
-                <h3 className="text-lg font-medium">
+                <h3 className="text-2xl font-medium">
                   Nhà nghỉ tại {location.tenViTri} - {location.tinhThanh} -{" "}
                   {location.quocGia}
                 </h3>
@@ -49,14 +79,9 @@ export default function RoomDetail() {
                 {room?.giuong} giường - {room?.phongTam} phòng tắm
               </p>
             </div>
-            <div className="space-y-3 py-5 border-y-[1px]">
-              <p className="text-lg font-medium">Đánh giá</p>
-              <Rating />
-            </div>
+            {renderRating()}
             <div className="space-y-3 py-5">
-              <p className="text-[17px] font-medium">
-                Nơi này có những gì cho bạn
-              </p>
+              <p className="text-lg font-medium">Nơi này có những gì cho bạn</p>
               <div className="grid grid-cols-3 gap-5">
                 {dataUtil.map(({ name, field, svg: Icon }) => {
                   return (
@@ -70,7 +95,7 @@ export default function RoomDetail() {
             </div>
 
             <div className="space-y-3 py-5">
-              <h3 className="text-[17px] font-medium">Giới thiệu về chỗ ở</h3>
+              <h3 className="text-lg font-medium">Giới thiệu về chỗ ở</h3>
               <p>{room?.moTa}</p>
             </div>
           </div>
@@ -78,7 +103,7 @@ export default function RoomDetail() {
           <Booking id={id} />
         </div>
       </div>
-      <ListComment />
+      <ListComment dataRating={handleRating} />
     </div>
   );
 }

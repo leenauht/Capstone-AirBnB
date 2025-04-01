@@ -2,15 +2,24 @@ import { NavLink } from "react-router-dom";
 import Logo from "../../../../Icons/Logo";
 import Profile from "../../UserProfile";
 import Home from "../../../../Icons/Home";
+import useValidationStore from "../useValidationStore.jsx";
 
-export default function Header() {
+export default function Header(props) {
   const navList = [{ to: "/", name: "Trang Chủ" }];
+  const triggerReset = useValidationStore((state) => state.triggerReset);
 
   const renderNavList = () => {
     return navList.map((item) => {
       return (
         <li key={item.to}>
-          <NavLink to={item.to} className="text-black hover:text-blue-500">
+          <NavLink
+            to={item.to}
+            onClick={() => {
+              window.scrollTo(0, 0);
+              triggerReset();
+            }}
+            className="text-black hover:text-blue-500"
+          >
             <div className="flex items-end gap-1">
               <Home />
               <span>{item.name}</span>
@@ -22,10 +31,14 @@ export default function Header() {
   };
 
   return (
-    <nav className="fixed w-full z-50 bg-bg-opacity-4 shadow-box-shadow-1">
+    <nav className="fixed w-full z-[1000] bg-bg-opacity-4 shadow-box-shadow-1">
       <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-5">
         <NavLink
           to="/"
+          onClick={() => {
+            window.scrollTo(0, 0);
+            triggerReset();
+          }}
           className="flex items-center space-x-3 rtl:space-x-reverse"
         >
           <Logo color="red" width={102} height={32} />

@@ -7,7 +7,7 @@ import { useParams } from "react-router-dom";
 import Pagination from "../../_component/Pagination";
 import { toast } from "react-toastify";
 
-export default function ListComment() {
+export default function ListComment(props) {
   const [comments, setComments] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -20,17 +20,15 @@ export default function ListComment() {
 
   const [userComment, setUserComment] = useState({
     maPhong: id,
-    maNguoiBinhLuan: userInfo.id,
+    maNguoiBinhLuan: userInfo?.id,
     ngayBinhLuan: "",
     noiDung: "",
     saoBinhLuan: "",
   });
 
   const onSubmit = async (message, star) => {
-    console.log("message", message);
-    console.log("star", star);
-
     const date = new Date().toISOString();
+
     if (!message) return;
     const newComment = {
       ...userComment,
@@ -39,7 +37,6 @@ export default function ListComment() {
       saoBinhLuan: star,
     };
     setUserComment(newComment);
-    console.log("userComment", newComment);
 
     try {
       const result = await api.post("/binh-luan", newComment);
@@ -64,6 +61,7 @@ export default function ListComment() {
       const data = result?.content;
       if (data.length === 0) return;
       const searchResult = data.filter((item) => item.maPhong === Number(id));
+      props.dataRating(searchResult);
       const sortedArray = searchResult?.reverse();
       setTotalPages(Math.ceil(sortedArray?.length / commentsPerPage));
       const startIndex = (currentPage - 1) * commentsPerPage;
@@ -79,21 +77,14 @@ export default function ListComment() {
 
   return (
     <div className="w-full">
-      <CommentInput
-        onSubmit={onSubmit}
-        imgAvatar="https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6ODE5NTY3ODE3ODIwMjIzMzIw/original/322d445c-efe0-437a-9cf8-9a7212da9c96.png?im_w=720"
-      />
+      <CommentInput onSubmit={onSubmit} imgAvatar={userInfo?.avatar} />
       {isLoading ? (
-        <p>Loading...</p>
+        <p className="text-center">Loading...</p>
       ) : comments ? (
         <div className="grid grid-cols-2 gap-5">
           {comments.map((item, index) => (
-            <div key={index}>
-              <CommentMessage
-                rating={item.saoBinhLuan}
-                message={item.noiDung}
-                imgAvatar="https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6ODE5NTY3ODE3ODIwMjIzMzIw/original/322d445c-efe0-437a-9cf8-9a7212da9c96.png?im_w=720"
-              />
+            <div key={index} className="p-5">
+              <CommentMessage comment={item} />
             </div>
           ))}
         </div>
