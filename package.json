@@ -10,20 +10,25 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ant-design/v5-patch-for-react-19": "^1.0.3",
     "@react-google-maps/api": "^2.20.6",
     "@reduxjs/toolkit": "^2.6.1",
     "antd": "^5.24.3",
     "axios": "^1.8.2",
     "dayjs": "^1.11.13",
     "flowbite-react": "^0.10.2",
+    "formik": "^2.4.6",
     "js-cookie": "^3.0.5",
+    "lodash": "^4.17.21",
     "path": "^0.12.7",
+    "prop-types": "^15.8.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.3.0",
     "react-toastify": "^11.0.5",
     "relative-time": "^1.0.0",
+    "yup": "^1.6.1",
     "zustand": "^5.0.3"
   },
   "devDependencies": {
