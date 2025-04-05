@@ -4,7 +4,7 @@ import Send from "./../../../../Icons/Send";
 import { useState } from "react";
 import Rating from "../Rating";
 
-const IMG_DEFAULT =
+export const IMG_DEFAULT =
   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbuj8x4vZVQjh-Vow11mzwbMuzu4BT3VPy0eMXWSCxIIyoJF0_FtYW7aSwyeDtfx-1oIA&usqp=CAU";
 
 export default function CommentInput(props) {

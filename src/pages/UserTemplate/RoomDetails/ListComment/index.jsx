@@ -14,7 +14,7 @@ export default function ListComment(props) {
   const [isLoading, setIsLoading] = useState(false);
   const commentsPerPage = 10;
 
-  const { id } = useParams();
+  const { id } = props;
 
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
 

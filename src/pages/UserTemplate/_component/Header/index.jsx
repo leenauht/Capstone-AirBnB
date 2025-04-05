@@ -18,7 +18,7 @@ export default function Header(props) {
               window.scrollTo(0, 0);
               triggerReset();
             }}
-            className="text-black hover:text-blue-500"
+            className="text-black hover:text-blue-500 transition duration-300"
           >
             <div className="flex items-end gap-1">
               <Home />

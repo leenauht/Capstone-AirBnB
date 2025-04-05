@@ -137,6 +137,9 @@ export default function Profile() {
         setOpen={setShowSignupLogin}
         open={showSignupLogin}
         setIsOpenFormSignin={setShowFormLogin}
+        title="Đăng ký"
+        textButton="Đăng ký"
+        type="signUp"
       />
     </>
   );

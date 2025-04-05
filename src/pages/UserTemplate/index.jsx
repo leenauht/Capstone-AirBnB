@@ -11,6 +11,7 @@ export default function UserTemplate() {
       <Header />
       <Outlet />
       {/* <SimpleMap></SimpleMap> */}
+
       <Footer />
     </div>
   );

@@ -81,7 +81,7 @@ export default function SignInForm(props) {
         </Form.Item>
         <p className="text-end text-sm text-blue-700">
           <span
-            className="cursor-pointer"
+            className="cursor-pointer underline"
             onClick={() => {
               props.setOpen(false);
               props.setIsOpenFormSignup(true);

@@ -8,9 +8,13 @@ export default function HomePage() {
 
   return (
     <div className="pt-20 overflow-x-hidden">
-      <Search onSearch={setDataSearch} />
+      <Search
+      //  onSearch={setDataSearch}
+      />
       <Topic />
-      <RoomList dataSearch={dataSearch} />
+      <RoomList
+      // dataSearch={dataSearch}
+      />
     </div>
   );
 }
