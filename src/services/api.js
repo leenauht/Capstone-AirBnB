@@ -1,5 +1,4 @@
 import axios from "axios";
-import { toast } from "react-toastify";
 import Cookies from "js-cookie";
 
 const api = axios.create({
@@ -7,12 +6,14 @@ const api = axios.create({
 });
 
 api.interceptors.request.use((config) => {
+  const tokenFromLocalStorage =
+    localStorage.getItem("accessToken") || Cookies.get("token");
   config.headers = {
     ...config.headers,
     tokenCybersoft:
       "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZW5Mb3AiOiJCb290Y2FtcCA3OCIsIkhldEhhblN0cmluZyI6IjI3LzA3LzIwMjUiLCJIZXRIYW5UaW1lIjoiMTc1MzU3NDQwMDAwMCIsIm5iZiI6MTcyNjA3NDAwMCwiZXhwIjoxNzUzNzIyMDAwfQ.BTmM2iB4rp2M5zBswdnAhImSAoSPeaxquN5mTgxFzaQ",
 
-    token: Cookies.get("token"),
+    token: tokenFromLocalStorage,
   };
 
   return config;
