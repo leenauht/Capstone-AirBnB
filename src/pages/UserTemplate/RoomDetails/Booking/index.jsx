@@ -23,10 +23,10 @@ export default function Booking({ id }) {
         <p>
           <span className="font-bold text-2xl">₫2.123.586</span> / đêm
         </p>
-        <div className="mt-6 mb-4 w-full border border-gray-400 rounded-xl">
+        <div className="mt-6 mb-4 w-full border border-gray-400 rounded-xl box-border max-h-[135px] group ">
           <div
             onClick={handleOpenPicker}
-            className="relative border-b flex flex-col cursor-pointer overflow-hidden border-gray-400 hover:border hover:border-black hover:rounded-xl"
+            className="relative flex flex-col border border-transparent cursor-pointer overflow-hidden border-gray-400 hover:border hover:border-black hover:rounded-xl"
           >
             <div className="absolute left-1/2 w-[1px] h-full bg-gray-400"></div>
             <div className="flex gap-4 pt-4 px-4 border-gray-400">
@@ -39,6 +39,8 @@ export default function Booking({ id }) {
             </div>
             <SelectDatePicker open={open} setOpen={setOpen} />
           </div>
+
+          <div className="h-[1px] w-full bg-gray-400 group-hover:bg-transparent"></div>
 
           <DropdownBooking />
         </div>
