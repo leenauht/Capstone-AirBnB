@@ -105,7 +105,7 @@ export default function DropdownBooking() {
           );
         })}
         <div>
-          <p className="text-[13px]">
+          <p className="text-[13px] whitespace-normal">
             Chỗ ở này cho phép tối đa <span>{maxGuest}</span> khách, không tính
             em bé. Không được phép mang theo thú cưng.
           </p>
@@ -127,7 +127,7 @@ export default function DropdownBooking() {
         open={open}
         onOpenChange={handleOpenChange}
       >
-        <div className="flex justify-between p-4 hover:border hover:border-black hover:rounded-xl">
+        <div className="flex justify-between border-transparent border p-4 hover:border hover:border-black hover:rounded-xl">
           <div className="leading-snug">
             <p className="font-bold text-xs leading-3 uppercase">Khách</p>
             <p className="text-sm">{count} khách</p>

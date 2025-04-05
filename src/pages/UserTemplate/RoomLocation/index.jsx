@@ -1,18 +1,29 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import useStore from "../../../store";
-import Room from "../RoomList/Room";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Footer from "./../_component/Footer/index";
+import { fetchRoomList } from "../RoomList/sliceRoomList";
+import { fetchLocation, setKeySearch } from "../RoomList/sliceLocation";
+import Room from "../RoomList/Room";
+import { useSearchParams } from "react-router-dom";
 
 export default function RoomLocation() {
-  const data = useStore((state) => state.data);
+  const { dataSearch } = useSelector((state) => state.locationReducer);
   const { data: dataRoom } = useSelector((state) => state.roomListReducer);
-  const [dataRender, setDataRender] = useState([
-    {
-      room: {},
-      location: {},
-    },
-  ]);
+  const dispatch = useDispatch();
+  const [searchParams] = useSearchParams();
+  const keyParam = searchParams.get("key");
+
+  const roomFilter = useMemo(() => {
+    const roomList = [];
+    dataRoom.forEach((room) => {
+      const findLocation = dataSearch.find((item) => item.id === room.maViTri);
+      if (findLocation) {
+        roomList.push({ ...room, location: findLocation });
+      }
+    });
+    return roomList;
+  }, [dataRoom, dataSearch]);
 
   const [isFixed, setIsFixed] = useState(true);
 
@@ -37,37 +48,20 @@ export default function RoomLocation() {
   }, []);
 
   useEffect(() => {
-    if (!data || !dataRoom) return;
+    dispatch(fetchRoomList());
+    dispatch(fetchLocation());
+  }, []);
 
-    // Tạo danh sách mới từ data
-    const updatedData = data.flatMap((location) => {
-      const filteredRooms = dataRoom?.filter(
-        (room) => room.maViTri === location.id
-      );
-
-      return filteredRooms.map((room) => ({
-        room,
-        location,
-      }));
-    });
-
-    setDataRender(updatedData);
-  }, [data, dataRoom]);
-
-  console.log(dataRender);
+  useEffect(() => {
+    dispatch(setKeySearch(keyParam));
+  }, [keyParam]);
 
   return (
     <div>
       <div className="flex gap-5 flex-col-reverse w-[90%] mx-auto pt-5 xl:flex-row relative pb-10">
         <div className="w-[90%] mx-auto grid grid-cols-1 md:w-full md:grid-cols-2 md:gap-5 lg:grid-cols-3">
-          {dataRender?.map((item) => {
-            return (
-              <Room
-                key={item.room.id}
-                location={item.location}
-                room={item.room}
-              />
-            );
+          {roomFilter?.map((item) => {
+            return <Room key={item.id} room={item} location={item.location} />;
           })}
         </div>
 
