@@ -1,6 +1,6 @@
 export default function Footer() {
   return (
-    <footer className="w-full py-10 bg-bg-opacity-2 shadow mb-0">
+    <footer id="footer" className="w-full py-10 bg-bg-opacity-2 shadow mb-0">
       <div className="w-full mx-auto max-w-screen-xl p-4 md:flex md:items-center md:justify-between text-white">
         <span className="text-sm sm:text-center dark:text-gray-400">
           © 2023{"{"}" "{"}"}

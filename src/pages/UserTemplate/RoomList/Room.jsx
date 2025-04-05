@@ -4,6 +4,9 @@ import { useEffect, useState } from "react";
 import Heart from "../../../Icons/Heart";
 
 export default function Room({ location, room }) {
+  console.log("location", location);
+  console.log("room", room);
+
   const imgDefault =
     "https://a0.muscache.com/im/pictures/miso/Hosting-1296043685685721430/original/4d135661-995c-4a54-a0bc-d714c3089934.jpeg?im_w=720";
   const [isLike, setIsLike] = useState(false);
@@ -39,7 +42,8 @@ export default function Room({ location, room }) {
     <Card
       hoverable
       onClick={() => {
-        navigate(`/detail/${room.id}/${room.maViTri}`);
+        // navigate(`/detail/${room.id}/${room.maViTri}`);
+        navigate(`/detail?roomId=${room.id}&locationId=${room.maViTri}`);
       }}
       cover={
         <div className="rounded-t-lg overflow-hidden relative">

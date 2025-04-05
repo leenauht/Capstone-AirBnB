@@ -4,6 +4,7 @@ import HomePage from "../pages/UserTemplate/HomePage";
 import RoomDetail from "../pages/UserTemplate/RoomDetails";
 import Account from "../pages/UserTemplate/UserProfile/Account";
 import Payment from "../pages/UserTemplate/RoomDetails/Booking/Payment";
+import RoomLocation from "../pages/UserTemplate/RoomLocation";
 
 const routes = [
   {
@@ -15,7 +16,7 @@ const routes = [
         element: HomePage,
       },
       {
-        path: "detail/:id/:maViTri",
+        path: "detail",
         element: RoomDetail,
       },
       {
@@ -27,6 +28,10 @@ const routes = [
         element: Payment,
       },
     ],
+  },
+  {
+    path: "search",
+    element: RoomLocation,
   },
 ];
 

@@ -12,3 +12,12 @@ export const store = configureStore({
     roomDetailReducer,
   },
 });
+
+import { create } from "zustand";
+
+const useStore = create((set) => ({
+  data: "Initial Data",
+  setData: (newData) => set({ data: newData }),
+}));
+
+export default useStore;

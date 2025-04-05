@@ -26,42 +26,36 @@ export default function RoomList(props) {
     // window.scrollTo(0, 0);
   };
 
-  const updateRoomList = (rooms) => {
-    setTotalPages(Math.ceil(rooms.length / commentsPerPage));
-    const startIndex = (currentPage - 1) * commentsPerPage;
-    setListRoom(rooms.slice(startIndex, startIndex + commentsPerPage));
-  };
-
-  console.log(dataLocation);
-  console.log(dataRoom);
+  // const updateRoomList = (rooms) => {
+  //   setTotalPages(Math.ceil(rooms.length / commentsPerPage));
+  //   const startIndex = (currentPage - 1) * commentsPerPage;
+  //   setListRoom(rooms.slice(startIndex, startIndex + commentsPerPage));
+  // };
 
   useEffect(() => {
     dispatch(fetchRoomList());
     dispatch(fetchLocation());
   }, []);
+  // console.log(dataRoom);
 
   useEffect(() => {
-    // if (dataContainerRef.current) {
-    //   dataContainerRef.current.scrollIntoView({
-    //     behavior: "smooth",
-    //     block: "start",
-    //   });
-    // }
-    // window.scrollTo({
-    //   top: document.getElementById("data-section").offsetTop,
-    //   behavior: "smooth",
-    // });
     if (!dataRoom || dataRoom.length === 0) return;
-    updateRoomList(dataRoom);
-
-    const keyword = props.dataSearch;
-    if (!keyword || typeof keyword !== "string") return;
-    const filteredRooms = dataRoom.filter((room) =>
-      room.tenPhong.toLowerCase().includes(keyword?.toLowerCase())
-    );
-    console.log(filteredRooms);
-    updateRoomList(filteredRooms);
-  }, [currentPage, dataRoom, props.dataSearch]);
+    // updateRoomList(dataRoom);
+    setTotalPages(Math.ceil(dataRoom.length / commentsPerPage));
+    const startIndex = (currentPage - 1) * commentsPerPage;
+    setListRoom(dataRoom.slice(startIndex, startIndex + commentsPerPage));
+    // const keyword = props.dataSearch;
+    // if (!keyword || typeof keyword !== "string") return;
+    // const filteredRooms = dataRoom.filter((room) =>
+    //   room.tenPhong.toLowerCase().includes(keyword?.toLowerCase())
+    // );
+    // console.log(filteredRooms);
+    // updateRoomList(filteredRooms);
+  }, [
+    currentPage,
+    dataRoom,
+    // props.dataSearch
+  ]);
 
   return (
     <>

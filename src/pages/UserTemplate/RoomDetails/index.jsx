@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { fetchLocation } from "../RoomList/sliceLocation";
 import { dataUtil } from "./data";
 import ListComment from "./ListComment";
@@ -11,19 +11,18 @@ import Star from "./../../../Icons/Star";
 
 export default function RoomDetail() {
   const dispatch = useDispatch();
+  const [searchParams] = useSearchParams();
+
   const { loading, data: room } = useSelector(
     (state) => state.roomDetailReducer
   );
   const { data: dataLocation } = useSelector((state) => state.locationReducer);
-  const { id, maViTri } = useParams();
 
   const [dataRating, setDataRating] = useState([]);
+  const locationId = searchParams.get("locationId");
+  const roomId = searchParams.get("roomId");
 
-  console.log("dataLocation", dataLocation);
-  console.log(maViTri);
-  console.log(id);
-
-  const location = dataLocation?.find((item) => item.id === Number(maViTri));
+  const location = dataLocation?.find((item) => item.id === Number(locationId));
 
   const handleRating = (listRating) => {
     setDataRating(listRating);
@@ -54,10 +53,10 @@ export default function RoomDetail() {
   }, []);
 
   useEffect(() => {
-    if (id) {
-      dispatch(fetchRoomDetail(id));
+    if (roomId) {
+      dispatch(fetchRoomDetail(roomId));
     }
-  }, [id]);
+  }, [roomId]);
 
   return (
     <div className="pt-[120px] max-w-[80%] mx-auto">
@@ -100,10 +99,10 @@ export default function RoomDetail() {
             </div>
           </div>
 
-          <Booking id={id} />
+          <Booking id={roomId} />
         </div>
       </div>
-      <ListComment dataRating={handleRating} />
+      <ListComment dataRating={handleRating} id={roomId} />
     </div>
   );
 }
