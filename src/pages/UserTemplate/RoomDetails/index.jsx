@@ -8,15 +8,18 @@ import { fetchRoomDetail } from "./sliceRoomDetail";
 import React from "react";
 import Booking from "./Booking";
 import Star from "./../../../Icons/Star";
+import Loading from "../_component/Loading";
 
 export default function RoomDetail() {
   const dispatch = useDispatch();
   const [searchParams] = useSearchParams();
 
-  const { loading, data: room } = useSelector(
+  const { loading: loadingRoomDetail, data: room } = useSelector(
     (state) => state.roomDetailReducer
   );
-  const { data: dataLocation } = useSelector((state) => state.locationReducer);
+  const { data: dataLocation, loading: loadingLocation } = useSelector(
+    (state) => state.locationReducer
+  );
 
   const [dataRating, setDataRating] = useState([]);
   const locationId = searchParams.get("locationId");
@@ -57,6 +60,9 @@ export default function RoomDetail() {
       dispatch(fetchRoomDetail(roomId));
     }
   }, [roomId]);
+
+  if (loadingRoomDetail && loadingLocation)
+    return <Loading open={loadingRoomDetail || loadingLocation} />;
 
   return (
     <div className="pt-[120px] max-w-[80%] mx-auto">

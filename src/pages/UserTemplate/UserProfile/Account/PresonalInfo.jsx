@@ -6,16 +6,22 @@ import { toast } from "react-toastify";
 import Camera from "./../../../../Icons/Camera";
 import { CameraOutlined } from "@ant-design/icons";
 import UpdateUserForm from "../../UpdateUserForm";
+import { useDispatch, useSelector } from "react-redux";
+import { setUserInfo } from "../../../../store/sliceUserInfo";
+import { toastError, toastSuccess } from "../../../../utils";
+
 export default function PresonalInfo() {
+  const { userInfo } = useSelector((state) => state.userInfoReducer);
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
-  const [userInfo, setUserInfo] = useState({});
+  const [user, setUser] = useState({});
   const [showEditForm, setShowEditForm] = useState(false);
 
   const formattedDate = useMemo(() => {
-    if (!userInfo?.birthday) return null;
-    const date = new Date(userInfo.birthday);
+    if (!user?.birthday) return null;
+    const date = new Date(user.birthday);
     return date.toLocaleDateString("vi-VN");
-  }, [userInfo]);
+  }, [user]);
 
   const handleUpload = async ({ file }) => {
     setLoading(true);
@@ -25,13 +31,12 @@ export default function PresonalInfo() {
     try {
       const response = await api.post("/users/upload-avatar", formData);
       if (response.content) {
-        toast.success("Thay đổi avatar thành công!");
-        const dataString = JSON.stringify(response.content);
-        localStorage.setItem("userInfo", dataString);
-        setUserInfo(response.content);
+        toastSuccess("Thay đổi avatar thành công!");
+        dispatch(setUserInfo(response.content));
+        setUser(response.content);
       }
     } catch (error) {
-      toast.error("Lỗi khi tải ảnh lên!");
+      toastError("Lỗi khi tải ảnh lên!");
     }
     setLoading(false);
   };
@@ -40,12 +45,9 @@ export default function PresonalInfo() {
     setShowEditForm(true);
   };
 
-  console.log("userInfo", userInfo);
-
   useEffect(() => {
-    const dataUser = JSON.parse(localStorage.getItem("userInfo"));
-    setUserInfo(dataUser);
-  }, []);
+    setUser(userInfo);
+  }, [userInfo]);
 
   return (
     <div className="flex flex-col gap-10">
@@ -59,7 +61,7 @@ export default function PresonalInfo() {
             beforeUpload={(file) => {
               const isImage = file.type.startsWith("image/");
               if (!isImage) {
-                toast.error("Chỉ được chọn file ảnh!");
+                toastError("Chỉ được chọn file ảnh!");
               }
               return isImage || Upload.LIST_IGNORE;
             }}
@@ -67,7 +69,7 @@ export default function PresonalInfo() {
           >
             <Avatar
               size={60}
-              icon={<img src={userInfo?.avatar || IMG_DEFAULT} alt="logo" />}
+              icon={<img src={user?.avatar || IMG_DEFAULT} alt="logo" />}
             />
             <div className="absolute top-0 opacity-0 hover:opacity-100 w-full h-full rounded-full flex justify-center items-center duration-300 transition">
               <CameraOutlined
@@ -83,32 +85,32 @@ export default function PresonalInfo() {
           </Upload>
         </div>
 
-        <span className="text-lg font-medium">{userInfo?.name}</span>
+        <span className="text-lg font-medium">{user?.name}</span>
       </div>
       <div className="bg-slate-200 p-5 rounded-xl">
         <List className="w-full" itemLayout="horizontal">
           <List.Item>
             <div className="flex gap-5">
               <span>UID:</span>
-              <strong>{userInfo?.id}</strong>
+              <strong>{user?.id}</strong>
             </div>
           </List.Item>
           <List.Item>
             <div className="flex gap-5">
               <span>Email:</span>
-              <strong>{userInfo?.email}</strong>
+              <strong>{user?.email}</strong>
             </div>
           </List.Item>
           <List.Item>
             <div className="flex gap-5">
               <span>Số điện thoại:</span>
-              <strong>{userInfo?.phone}</strong>
+              <strong>{user?.phone}</strong>
             </div>
           </List.Item>
           <List.Item>
             <div className="flex gap-5">
               <span>Giới tính:</span>
-              <strong>{userInfo?.gender ? "Nam" : "Nữ"}</strong>
+              <strong>{user?.gender ? "Nam" : "Nữ"}</strong>
             </div>
           </List.Item>
           <List.Item>
@@ -120,7 +122,7 @@ export default function PresonalInfo() {
           <List.Item>
             <div className="flex gap-5">
               <span>Tài khoản:</span>
-              <strong>{userInfo?.role}</strong>
+              <strong>{user?.role}</strong>
             </div>
           </List.Item>
           <List.Item></List.Item>
@@ -136,9 +138,9 @@ export default function PresonalInfo() {
       </div>
       <UpdateUserForm
         setOpen={setShowEditForm}
-        setUserInfo={setUserInfo}
+        setUser={setUser}
         open={showEditForm}
-        userInfo={userInfo}
+        user={user}
       />
     </div>
   );

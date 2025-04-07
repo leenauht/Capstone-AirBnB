@@ -2,16 +2,17 @@ import { List } from "antd";
 import { useState } from "react";
 import { data } from "./data";
 import { NavLink } from "react-router-dom";
-import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { resetUserInfo } from "../../../../store/sliceUserInfo";
+import { toastSuccess } from "../../../../utils";
 
 export default function Account() {
+  const dispatch = useDispatch();
   const [itemSlected, setItemSelected] = useState(data[0]);
 
   const handleLogOut = () => {
-    localStorage.removeItem("userInfo", "");
-    toast.success("Bạn đã đăng xuất!", {
-      autoClose: 2000,
-    });
+    dispatch(resetUserInfo());
+    toastSuccess("Bạn đã đăng xuất!");
     window.scrollTo(0, 0);
   };
 
@@ -21,7 +22,7 @@ export default function Account() {
         {itemSlected.title}
       </h2>
       <div className="flex flex-row gap-10">
-        <div className="w-[30%]">
+        <div className="w-[30%] sticky top-10">
           <List
             itemLayout="horizontal"
             dataSource={data}

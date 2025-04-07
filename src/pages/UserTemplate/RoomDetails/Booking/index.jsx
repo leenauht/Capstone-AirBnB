@@ -3,8 +3,11 @@ import Payment from "./Payment";
 import { useEffect, useState } from "react";
 import SelectDatePicker from "./DatePicker";
 import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { toastInfo } from "../../../../utils";
 
 export default function Booking({ room }) {
+  const { userInfo } = useSelector((state) => state.userInfoReducer);
   const [open, setOpen] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const { diffDays, serviceFee, price, total } = useSelector(
@@ -12,6 +15,10 @@ export default function Booking({ room }) {
   );
 
   const onShowModalPayment = () => {
+    if (userInfo === null || userInfo === undefined) {
+      toastInfo("Đăng nhập để đặt phòng");
+      return;
+    }
     if (diffDays > 0) {
       setShowModal(true);
     } else {
@@ -22,8 +29,6 @@ export default function Booking({ room }) {
   const handleOpenPicker = () => {
     setOpen(true);
   };
-
-  useEffect(() => {}, [room]);
 
   return (
     <div className="shadow-box-shadow-2 w-4/5 sm:w-3/5 lg:w-[34%] p-5 rounded-xl h-fit">

@@ -1,21 +1,30 @@
 import Avatar from "./../../_component/Avatar";
 import { Input } from "antd";
 import Send from "./../../../../Icons/Send";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Rating from "../Rating";
+import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
+import { toastInfo } from "../../../../utils";
 
 export const IMG_DEFAULT =
   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbuj8x4vZVQjh-Vow11mzwbMuzu4BT3VPy0eMXWSCxIIyoJF0_FtYW7aSwyeDtfx-1oIA&usqp=CAU";
 
 export default function CommentInput(props) {
-  const { imgAvatar, onSubmit } = props;
+  const { userInfo } = useSelector((state) => state.userInfoReducer);
+  const inputRef = useRef(null);
+  const { onSubmit } = props;
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [rating, setRating] = useState(0);
   const [errorMessage, setErrorMessage] = useState(false);
+  // const [userInfo, setUserInfo] = useState(null);
 
+  // const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   const validImage =
-    imgAvatar !== "" && imgAvatar !== undefined ? imgAvatar : IMG_DEFAULT;
+    userInfo?.avatar !== "" && userInfo?.avatar !== undefined
+      ? userInfo?.avatar
+      : IMG_DEFAULT;
 
   const handleOnChange = (e) => {
     setMessage(e.target.value);
@@ -36,6 +45,10 @@ export default function CommentInput(props) {
     e.preventDefault();
     if (message.trim() === "") {
       setErrorMessage(true);
+    }
+    if (userInfo === null || userInfo === undefined) {
+      toastInfo("Đăng nhập để được bình luận");
+      return;
     }
     setLoading(true);
     await onSubmit(message.trim(), rating);

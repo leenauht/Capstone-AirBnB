@@ -1,12 +1,12 @@
-import { Button, Dropdown, Menu, Popover } from "antd";
+import { Button, Popover } from "antd";
 import Subtract from "../../../../Icons/Subtract";
 import Add from "../../../../Icons/Add";
 import { dataMenuDropdown } from "./dataMenuDropdown";
 import { DownOutlined } from "@ant-design/icons";
 import { useState } from "react";
-import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { setCountUser } from "../sliceRoomDetail";
+import { toastError } from "../../../../utils";
 
 export default function DropdownBooking(props) {
   const [data, setData] = useState(dataMenuDropdown);
@@ -25,7 +25,7 @@ export default function DropdownBooking(props) {
 
   const handleOnclickAdd = (id) => {
     if (countUser >= maxGuest) {
-      toast.error(`Số khách tối đa là ${maxGuest}!`, { autoClose: 2000 });
+      toastError(`Số khách tối đa là ${maxGuest}!`);
       return;
     }
     if (id === 4) return;

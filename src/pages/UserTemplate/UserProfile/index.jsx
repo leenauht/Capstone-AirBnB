@@ -7,24 +7,27 @@ import SignUpForm from "../SignUpForm";
 import { toast } from "react-toastify";
 import { Avatar } from "antd";
 import { UserOutlined } from "@ant-design/icons";
+import { useDispatch, useSelector } from "react-redux";
+import { resetUserInfo } from "../../../store/sliceUserInfo";
+import { toastSuccess } from "../../../utils";
 
 export default function Profile() {
+  const { userInfo } = useSelector((state) => state.userInfoReducer);
+  const dispatch = useDispatch();
   const [showMenu, setShowMenu] = useState(false);
   const [showFormLogin, setShowFormLogin] = useState(false);
   const [showSignupLogin, setShowSignupLogin] = useState(false);
   const menuWapperElm = useRef(null);
 
-  const user = JSON.parse(localStorage.getItem("userInfo"));
+  console.log("đăng xuất", userInfo);
 
   useOutsideClick(menuWapperElm, () => {
     setShowMenu(false);
   });
 
   const handleLogOut = () => {
-    localStorage.removeItem("userInfo", "");
-    toast.success("Bạn đã đăng xuất!", {
-      autoClose: 2000,
-    });
+    dispatch(resetUserInfo());
+    toastSuccess("Bạn đã đăng xuất!");
     setShowMenu((pre) => !pre);
     window.scrollTo(0, 0);
   };
@@ -43,8 +46,6 @@ export default function Profile() {
     setShowMenu(false);
   };
 
-  const data = localStorage.getItem("userInfo");
-
   return (
     <>
       <div className="relative" ref={menuWapperElm}>
@@ -59,7 +60,7 @@ export default function Profile() {
         {/* Dropdown menu */}
         {showMenu && (
           <div className="z-10 absolute right-0 mt-1 bg-slate-300 divide-y divide-gray-200 rounded-lg shadow-sm w-44">
-            {localStorage.getItem("userInfo") && (
+            {userInfo && (
               <NavLink
                 onClick={() => setShowMenu(false)}
                 to="/user-profile"
@@ -71,7 +72,7 @@ export default function Profile() {
               </NavLink>
             )}
 
-            {!localStorage.getItem("userInfo") && (
+            {!userInfo && (
               <ul
                 className="py-2 text-sm text-gray-700 dark:text-gray-200"
                 aria-labelledby="avatarButton"
@@ -113,7 +114,7 @@ export default function Profile() {
                 </a>
               </li>
             </ul>
-            {localStorage.getItem("userInfo") && (
+            {userInfo && (
               <div className="py-1">
                 <NavLink
                   onClick={handleLogOut}

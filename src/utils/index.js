@@ -64,3 +64,15 @@ export const toastSuccess = (mes) => {
     autoClose: 1000,
   });
 };
+
+export const toastError = (mes) => {
+  toast.error(mes, {
+    autoClose: 1500,
+  });
+};
+
+export const toastInfo = (mes) => {
+  toast.info(mes, {
+    autoClose: 1500,
+  });
+};

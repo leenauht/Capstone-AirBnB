@@ -17,10 +17,11 @@ export const fetchRoomDetail = createAsyncThunk(
 export const bookingRoom = createAsyncThunk(
   "roomDetail/bookingRoom",
   async (_, { rejectWithValue, getState }) => {
-    const { roomDetailReducer } = getState();
+    const { roomDetailReducer, userInfoReducer } = getState();
     const { dateRange, countUser, data } = roomDetailReducer;
     const [fromDate, toDate] = dateRange;
-    const userInfo = getUserInfo();
+    const { userInfo } = userInfoReducer;
+
     const payload = {
       maPhong: data.id,
       ngayDen: new Date(fromDate).toISOString(),
