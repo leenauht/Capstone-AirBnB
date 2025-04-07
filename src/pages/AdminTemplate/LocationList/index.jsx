@@ -68,7 +68,6 @@ const LocationList = () => {
 
   const debouncedSearch = useRef(
     debounce((value) => {
-      dispatch(setPagination({ pageIndex: 1 }));
       dispatch(
         fetchLocations({
           pageIndex: 1,
@@ -90,15 +89,13 @@ const LocationList = () => {
   };
 
   const handleSubmit = async (values) => {
-    if (!values.tenViTri || !values.tinhThanh || !values.quocGia) {
-      toast.error("Vui lòng nhập đầy đủ thông tin!");
-      return;
-    }
-
     try {
       if (editData) {
         await dispatch(
-          updateLocation({ id: editData.id, updatedData: values })
+          updateLocation({
+            id: editData.id,
+            ...values,
+          })
         ).unwrap();
         toast.success("Cập nhật vị trí thành công!");
       } else {
@@ -129,11 +126,21 @@ const LocationList = () => {
       try {
         await dispatch(deleteLocation(id)).unwrap();
         toast.success(`Xóa vị trí ID ${id} thành công!`);
+
+        const currentPage = Number(pageIndex) || pagination.pageIndex;
+
+        dispatch(
+          fetchLocations({
+            search: searchTerm,
+            pageIndex: currentPage,
+            pageSize: pagination.pageSize,
+          })
+        );
       } catch {
         toast.error("❌ Lỗi khi xóa vị trí!");
       }
     },
-    [dispatch]
+    [dispatch, pageIndex, pagination.pageIndex, pagination.pageSize, searchTerm]
   );
 
   const handleUpload = useCallback(
@@ -149,7 +156,7 @@ const LocationList = () => {
 
       const formData = new FormData();
       formData.append("formFile", file);
-      formData.append("maViTri", record.id); // Đổi thành maViTri nếu API yêu cầu
+      formData.append("maViTri", record.id);
 
       try {
         await dispatch(
@@ -192,33 +199,45 @@ const LocationList = () => {
   const columns = useMemo(
     () => [
       { title: "Mã Vị Trí", dataIndex: "id", key: "id" },
-      { title: "Tên Vị Trí", dataIndex: "tenViTri", key: "tenViTri" },
-      { title: "Tỉnh Thành", dataIndex: "tinhThanh", key: "tinhThanh" },
-      { title: "Quốc Gia", dataIndex: "quocGia", key: "quocGia" },
       {
         title: "Hình ảnh",
         key: "image",
         render: (_, record) => (
-          <Image
-            width={80}
-            height={50}
-            src={record.hinhAnh || "https://via.placeholder.com/80"}
-            alt="Hình ảnh vị trí"
-          />
+          <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <Image
+              width={70}
+              height={80}
+              src={record.hinhAnh || null}
+              fallback="public\image\placeholder.png"
+              alt="Hình lỗi"
+              style={{
+                borderRadius: "5px",
+                objectFit: "cover",
+                border: "1px solid #ddd",
+                padding: "2px",
+              }}
+            />
+            <Upload
+              customRequest={({ file }) => handleUpload(file, record)}
+              showUploadList={false}
+            >
+              <Button
+                icon={<UploadOutlined />}
+                size="small"
+                style={{
+                  fontSize: "12px",
+                  padding: "4px 8px",
+                }}
+              >
+                Upload
+              </Button>
+            </Upload>
+          </div>
         ),
       },
-      {
-        title: "Upload Ảnh",
-        key: "upload",
-        render: (_, record) => (
-          <Upload
-            customRequest={({ file }) => handleUpload(file, record)}
-            showUploadList={false}
-          >
-            <Button icon={<UploadOutlined />}>Upload</Button>
-          </Upload>
-        ),
-      },
+      { title: "Tên Vị Trí", dataIndex: "tenViTri", key: "tenViTri" },
+      { title: "Tỉnh Thành", dataIndex: "tinhThanh", key: "tinhThanh" },
+      { title: "Quốc Gia", dataIndex: "quocGia", key: "quocGia" },
       {
         title: "Hành động",
         key: "actions",

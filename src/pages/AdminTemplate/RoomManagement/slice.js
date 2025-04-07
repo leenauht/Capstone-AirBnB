@@ -32,6 +32,21 @@ export const fetchRooms = createAsyncThunk(
   }
 );
 
+export const fetchAllRooms = createAsyncThunk(
+  "users/fetchAllRooms",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await api.get("/phong-thue");
+      if (!response?.content || !Array.isArray(response.content)) {
+        throw new Error("Dữ liệu API không hợp lệ");
+      }
+      return response.content;
+    } catch (error) {
+      return rejectWithValue(error.message || "Lỗi khi tải danh sách phòng");
+    }
+  }
+);
+
 export const addRoom = createAsyncThunk(
   "rooms/addLocation",
   async (newLocation, { rejectWithValue, dispatch }) => {
@@ -81,7 +96,7 @@ export const uploadRoomImage = createAsyncThunk(
       }
 
       const formData = new FormData();
-      formData.append("formFile", file); 
+      formData.append("formFile", file);
 
       const response = await api.post(
         `/phong-thue/upload-hinh-phong?maPhong=${maPhong}`,
@@ -115,7 +130,7 @@ const initialState = {
 };
 
 const roomSlice = createSlice({
-  name: "rooms",
+  name: "RoomManagementReducer",
   initialState,
   reducers: {
     setSearchTerm: (state, action) => {
@@ -144,6 +159,18 @@ const roomSlice = createSlice({
         };
       })
       .addCase(fetchRooms.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(fetchAllRooms.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchAllRooms.fulfilled, (state, action) => {
+        state.loading = false;
+        state.data = action.payload;
+      })
+      .addCase(fetchAllRooms.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
