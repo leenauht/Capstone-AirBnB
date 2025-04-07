@@ -20,7 +20,7 @@ export default function Account() {
       <h2 className="text-[40px] font-bold pb-10 text-center text-gray-700">
         {itemSlected.title}
       </h2>
-      <div className="flex gap-10">
+      <div className="flex flex-row gap-10">
         <div className="w-[30%]">
           <List
             itemLayout="horizontal"
@@ -52,8 +52,7 @@ export default function Account() {
             Đăng xuất tài khoản
           </NavLink>
         </div>
-
-        <div className="flex-1">{itemSlected.content}</div>
+        <div className="overflow-y-auto flex-1">{itemSlected.content}</div>
       </div>
     </div>
   );

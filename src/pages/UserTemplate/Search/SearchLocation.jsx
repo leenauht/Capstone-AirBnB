@@ -6,6 +6,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { setKeySearch } from "../RoomList/sliceLocation";
 
 export default function SearchLocation(props) {
+  const inputRef = useRef(null);
   const { dataSearch, keySearch } = useSelector(
     (state) => state.locationReducer
   );
@@ -38,6 +39,11 @@ export default function SearchLocation(props) {
     dispatch(setKeySearch(keyword));
   };
 
+  const handleClick = () => {
+    props.setOpen(true);
+    inputRef.current.focus();
+  };
+
   useOutsideClick(menuWapperElm, () => {
     props.setOpen(false);
   });
@@ -45,16 +51,17 @@ export default function SearchLocation(props) {
   return (
     <div
       ref={menuWapperElm}
-      onClick={() => props.setOpen(true)}
+      onClick={handleClick}
       className="px-6 flex-1 relative cursor-pointer"
     >
       <p className="text-sm font-medium">Địa điểm</p>
 
       <Input
+        ref={inputRef}
         allowClear
         value={keySearch}
         onChange={(e) => handleOnChange(e.target.value)}
-        className="border-none outline-none !shadow-none w-full"
+        className="border-none !shadow-none w-full p-0"
         type="text"
         placeholder="Tìm kiếm điểm đến"
       />

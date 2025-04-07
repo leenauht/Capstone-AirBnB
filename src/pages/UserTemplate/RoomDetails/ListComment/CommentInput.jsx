@@ -12,7 +12,7 @@ export default function CommentInput(props) {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const [rating, setRating] = useState(0);
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState(false);
 
   const validImage =
     imgAvatar !== "" && imgAvatar !== undefined ? imgAvatar : IMG_DEFAULT;
@@ -20,28 +20,27 @@ export default function CommentInput(props) {
   const handleOnChange = (e) => {
     setMessage(e.target.value);
     if (e.target.value.trim() === "") {
-      setErrorMessage("Vui lòng nhập bình luận!");
+      setErrorMessage(true);
     } else {
-      setErrorMessage("");
+      setErrorMessage(false);
     }
   };
 
   const handleBlur = () => {
     if (!message) {
-      setErrorMessage("Vui lòng nhập bình luận!");
+      setErrorMessage(true);
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (message.trim() === "") {
-      setErrorMessage("Vui lòng nhập bình luận!");
+      setErrorMessage(true);
     }
-
     setLoading(true);
     await onSubmit(message.trim(), rating);
     setLoading(false);
-
+    setErrorMessage(false);
     setMessage("");
     setRating(0);
   };
@@ -69,7 +68,7 @@ export default function CommentInput(props) {
           />
 
           {errorMessage && (
-            <p className="text-red-500 text-sm">{errorMessage}</p>
+            <p className="text-red-500 text-sm">Vui lòng nhập bình luận!</p>
           )}
         </form>
       </Avatar>

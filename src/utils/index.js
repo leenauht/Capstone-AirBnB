@@ -1,3 +1,5 @@
+import { toast } from "react-toastify";
+
 export const timeDelay = async (time) => {
   return new Promise((resolve) => {
     setTimeout(() => {
@@ -45,4 +47,20 @@ export const getKeySearch = (keySearch) => {
 export const filterIncludes = (keySearch, values) => {
   const getKeySearchTone = getKeySearch(keySearch);
   return values.some((value) => getKeySearch(value).includes(getKeySearchTone));
+};
+
+export const getDiffDays = (fromDate, toDate) => {
+  const diffTime = new Date(toDate).getTime() - new Date(fromDate).getTime();
+  return diffTime / (1000 * 3600 * 24);
+};
+
+export const getUserInfo = () => {
+  const localData = localStorage.getItem("userInfo");
+  return JSON.parse(localData);
+};
+
+export const toastSuccess = (mes) => {
+  toast.success(mes, {
+    autoClose: 1000,
+  });
 };

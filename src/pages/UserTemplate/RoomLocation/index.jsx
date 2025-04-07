@@ -25,22 +25,14 @@ export default function RoomLocation() {
     return roomList;
   }, [dataRoom, dataSearch]);
 
-  const [isFixed, setIsFixed] = useState(true);
+  const [isScrollBottom, setIsScrollBottom] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const footer = document.getElementById("footer");
-      if (!footer) return;
-
-      const footerTop = footer.getBoundingClientRect().top;
-      const windowHeight = window.innerHeight;
-
-      // Nếu footer xuất hiện trên màn hình => không fix ảnh nữa
-      if (footerTop <= windowHeight) {
-        setIsFixed(false);
-      } else {
-        setIsFixed(true);
-      }
+    const handleScroll = (e) => {
+      const isScrollToBottom =
+        window.innerHeight + window.scrollY + 132 >=
+        document.documentElement.scrollHeight;
+      setIsScrollBottom(isScrollToBottom);
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -58,7 +50,7 @@ export default function RoomLocation() {
 
   return (
     <div>
-      <div className="flex gap-5 flex-col-reverse w-[90%] mx-auto pt-5 xl:flex-row relative pb-10">
+      <div className="flex gap-5 flex-col-reverse w-[90%] mx-auto pt-5 xl:flex-row relative pb-10 min-h-screen">
         <div className="w-[90%] mx-auto grid grid-cols-1 md:w-full md:grid-cols-2 md:gap-5 lg:grid-cols-3">
           {roomFilter?.map((item) => {
             return <Room key={item.id} room={item} location={item.location} />;
@@ -71,10 +63,11 @@ export default function RoomLocation() {
             // className={`h-full w-2/5 ${
             //   isFixed ? "fixed bottom-0 right-0" : "absolute bottom-0 right-0"
             // }`}
-            className={`h-[400px] w-full rounded-lg md:h-[600px] xl:w-2/5 xl:h-full 
-              ${isFixed ? "xl:fixed bottom-0" : "xl:fixed xl:h-3/4 top-0"}
-              `}
-            style={{ border: 0 }}
+            className={`xl:fixed top-0 h-[400px] w-full rounded-lg md:h-[600px] xl:w-2/5`}
+            style={{
+              border: 0,
+              height: !isScrollBottom ? "100%" : "calc(100% - 132px)",
+            }}
             allowFullScreen
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"

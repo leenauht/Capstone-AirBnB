@@ -5,12 +5,14 @@ import { dataMenuDropdown } from "./dataMenuDropdown";
 import { DownOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { setCountUser } from "../sliceRoomDetail";
 
-export default function DropdownBooking() {
+export default function DropdownBooking(props) {
   const [data, setData] = useState(dataMenuDropdown);
   const [open, setOpen] = useState(false);
-
-  const [count, setCount] = useState(1);
+  const dispatch = useDispatch();
+  const { countUser } = useSelector((state) => state.roomDetailReducer);
   const maxGuest = 4;
 
   const hide = () => {
@@ -22,7 +24,7 @@ export default function DropdownBooking() {
   };
 
   const handleOnclickAdd = (id) => {
-    if (count >= maxGuest) {
+    if (countUser >= maxGuest) {
       toast.error(`Số khách tối đa là ${maxGuest}!`, { autoClose: 2000 });
       return;
     }
@@ -30,8 +32,7 @@ export default function DropdownBooking() {
     const newData = data.map((item) =>
       item.id === id ? { ...item, numberOfGuest: item.numberOfGuest + 1 } : item
     );
-    console.log(newData);
-    setCount(count + 1);
+    dispatch(setCountUser(countUser + 1));
     return setData(newData);
   };
 
@@ -41,9 +42,7 @@ export default function DropdownBooking() {
     const newData = data.map((item) =>
       item.id === id ? { ...item, numberOfGuest: item.numberOfGuest - 1 } : item
     );
-    console.log(newData);
-    setCount(count - 1);
-
+    dispatch(setCountUser(countUser - 1));
     return setData(newData);
   };
 
@@ -130,7 +129,7 @@ export default function DropdownBooking() {
         <div className="flex justify-between border-transparent border p-4 hover:border hover:border-black hover:rounded-xl">
           <div className="leading-snug">
             <p className="font-bold text-xs leading-3 uppercase">Khách</p>
-            <p className="text-sm">{count} khách</p>
+            <p className="text-sm">{countUser} khách</p>
           </div>
           <DownOutlined />
         </div>

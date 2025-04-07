@@ -26,6 +26,21 @@ export default function ListComment(props) {
     saoBinhLuan: "",
   });
 
+  const fetchDataCommentRoomId = async () => {
+    try {
+      const result = await api.get(`/binh-luan/lay-binh-luan-theo-phong/${id}`);
+      const data = result?.content;
+      if (data.length === 0) return;
+      props.dataRating(data);
+      const sortedArray = data.reverse();
+      setTotalPages(Math.ceil(sortedArray?.length / commentsPerPage));
+      const startIndex = (currentPage - 1) * commentsPerPage;
+      setComments(sortedArray?.slice(startIndex, startIndex + commentsPerPage));
+    } catch (error) {
+      return error;
+    }
+  };
+
   const onSubmit = async (message, star) => {
     const date = new Date().toISOString();
 
@@ -33,17 +48,22 @@ export default function ListComment(props) {
     const newComment = {
       ...userComment,
       ngayBinhLuan: date,
-      noiDung: message,
+      noiDung: `${message}`,
       saoBinhLuan: star,
     };
     setUserComment(newComment);
-
     try {
       const result = await api.post("/binh-luan", newComment);
       toast.success("Bình luận thành công!", { autoClose: 1000 });
       setComments((prev) => [newComment, ...prev]);
       return result.content;
     } catch (error) {
+      toast.error(error.response.data.content, { autoClose: 1000 });
+      setTimeout(() => {
+        toast.info("Bạn cần đăng nhập lại để làm mới token.", {
+          autoClose: 1500,
+        });
+      }, 1500);
       return error;
     }
   };
@@ -55,32 +75,15 @@ export default function ListComment(props) {
     setIsLoading(false);
   };
 
-  const fetchComment = async () => {
-    try {
-      const result = await api.get(`/binh-luan`);
-      const data = result?.content;
-      if (data.length === 0) return;
-      const searchResult = data.filter((item) => item.maPhong === Number(id));
-      props.dataRating(searchResult);
-      const sortedArray = searchResult?.reverse();
-      setTotalPages(Math.ceil(sortedArray?.length / commentsPerPage));
-      const startIndex = (currentPage - 1) * commentsPerPage;
-      setComments(sortedArray?.slice(startIndex, startIndex + commentsPerPage));
-    } catch (error) {
-      return error;
-    }
-  };
-
   useEffect(() => {
-    fetchComment();
+    fetchDataCommentRoomId();
   }, [currentPage, totalPages]);
 
   return (
-    <div className="w-full pt-10">
+    <div className="w-full pt-10 pb-10">
       <CommentInput onSubmit={onSubmit} imgAvatar={userInfo?.avatar} />
-      {isLoading ? (
-        <p className="text-center">Loading...</p>
-      ) : comments ? (
+      {isLoading && <p className="text-center">Loading...</p>}
+      {comments.length > 0 ? (
         <div className="md:grid xl:grid-cols-2 gap-5">
           {comments.map((item, index) => (
             <div key={index} className="p-5">
@@ -89,11 +92,11 @@ export default function ListComment(props) {
           ))}
         </div>
       ) : (
-        <p className="text-gray-500 text-center py-10">
+        <p className="text-gray-500 text-center py-20">
           Chưa có bình luận nào.
         </p>
       )}
-      {comments && (
+      {comments.length > 0 && (
         <Pagination
           currentPage={currentPage}
           totalPages={totalPages}
