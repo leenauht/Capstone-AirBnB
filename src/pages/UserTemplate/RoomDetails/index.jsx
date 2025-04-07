@@ -62,7 +62,11 @@ export default function RoomDetail() {
     <div className="pt-[120px] max-w-[80%] mx-auto">
       <div>
         <h2 className="text-xl font-semibold">{room?.tenPhong}</h2>
-        <img src={room?.hinhAnh} alt="Logo" className="my-5 rounded-xl" />
+        <img
+          src={room?.hinhAnh}
+          alt="Logo"
+          className="my-5 rounded-xl h-[400px] w-full"
+        />
         <div className="lg:flex lg:justify-between">
           <div className="md:w-3/5">
             <div className="py-5">
@@ -99,7 +103,7 @@ export default function RoomDetail() {
             </div>
           </div>
 
-          <Booking id={roomId} />
+          <Booking room={room} />
         </div>
       </div>
       <ListComment dataRating={handleRating} id={roomId} />

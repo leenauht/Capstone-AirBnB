@@ -46,7 +46,7 @@ export default function Search(props) {
               onClick={handleSubmit}
               className={`${
                 open === true ? "flex-1 bg-[#db0d63]" : ""
-              } bg-[#FF385C] flex items-center justify-between px-4 cursor-pointer text-white rounded-full hover:bg-[#db0d63]`}
+              } bg-[#FF385C] flex items-center justify-between p-4 cursor-pointer text-white rounded-full hover:bg-[#db0d63]`}
             >
               {open && (
                 <span className="text-white leading-[18px] font-medium">

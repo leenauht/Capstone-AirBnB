@@ -1,3 +1,4 @@
+import BookingHistory from "../BookingHistory";
 import LoginAndSecurity from "./LoginAndSecurity";
 import PaymentAndSettlement from "./PaymentAndSettlement";
 import PresonalInfo from "./PresonalInfo";
@@ -33,9 +34,9 @@ export const data = [
   },
   {
     id: 5,
-    title: "Thông báo",
-    description: "Chọn tùy chọn thông báo và cách bạn muốn được liên hệ",
-    content: "Tính năng đang phát triển",
+    title: "Lịch sử đặt phòng",
+    description: "Lịch sử đặt phòng",
+    content: <BookingHistory />,
   },
   {
     id: 6,

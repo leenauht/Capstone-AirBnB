@@ -39,7 +39,6 @@ export default function Room({ location, room }) {
     <Card
       hoverable
       onClick={() => {
-        // navigate(`/detail/${room.id}/${room.maViTri}`);
         navigate(`/detail?roomId=${room.id}&locationId=${room.maViTri}`);
       }}
       cover={
@@ -63,7 +62,10 @@ export default function Room({ location, room }) {
         <p className="line-clamp-2">{room.tenPhong}</p>
         {room && (
           <p>
-            <span className="font-bold">₫ {room.giaTien}</span> / đêm
+            <span className="font-bold">
+              ₫ {room.giaTien.toLocaleString("vi-VN")}
+            </span>{" "}
+            / đêm
           </p>
         )}
       </div>
