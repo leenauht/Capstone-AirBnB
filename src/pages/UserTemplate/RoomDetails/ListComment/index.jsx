@@ -13,6 +13,7 @@ import Pagination from "../../_component/Pagination";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { Empty } from "antd";
+import Loading from "../../_component/Loading";
 
 export default function ListComment(props) {
   const { userInfo } = useSelector((state) => state.userInfoReducer);
@@ -83,6 +84,8 @@ export default function ListComment(props) {
   useEffect(() => {
     fetchDataCommentRoomId();
   }, [currentPage, totalPages]);
+
+  if (isLoading) return <Loading open={isLoading} />;
 
   return (
     <div className="w-full pt-10 pb-10">

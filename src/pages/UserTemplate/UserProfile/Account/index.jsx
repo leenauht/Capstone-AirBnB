@@ -5,6 +5,7 @@ import { NavLink } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { resetUserInfo } from "../../../../store/sliceUserInfo";
 import { toastSuccess } from "../../../../utils";
+import Cookies from "js-cookie";
 
 export default function Account() {
   const dispatch = useDispatch();
@@ -13,6 +14,7 @@ export default function Account() {
   const handleLogOut = () => {
     dispatch(resetUserInfo());
     toastSuccess("Bạn đã đăng xuất!");
+    Cookies.remove("token");
     window.scrollTo(0, 0);
   };
 

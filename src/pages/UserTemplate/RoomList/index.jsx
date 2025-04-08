@@ -46,6 +46,7 @@ export default function RoomList(props) {
 
   if (loadingRoom && loadingLocation)
     return <Loading open={loadingRoom || loadingLocation} />;
+  if (isLoading) return <Loading open={isLoading} />;
 
   return (
     <>

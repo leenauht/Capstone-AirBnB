@@ -71,7 +71,7 @@ export default function RoomDetail() {
         <img
           src={room?.hinhAnh}
           alt="Logo"
-          className="my-5 rounded-xl h-[400px] w-full"
+          className="my-5 rounded-xl h-[400px] w-full object-cover"
         />
         <div className="lg:flex lg:justify-between">
           <div className="md:w-3/5">

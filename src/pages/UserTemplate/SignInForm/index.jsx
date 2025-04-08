@@ -20,7 +20,6 @@ export default function SignInForm(props) {
       .validateFields()
       .then(async (values) => {
         const result = await api.post("/auth/signin", values);
-        console.log("result", result.content.user);
         const userInfo = result.content.user;
         if (userInfo) {
           toastSuccess("Đăng nhập thành công!");

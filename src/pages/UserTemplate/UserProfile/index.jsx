@@ -10,6 +10,7 @@ import { UserOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { resetUserInfo } from "../../../store/sliceUserInfo";
 import { toastSuccess } from "../../../utils";
+import Cookies from "js-cookie";
 
 export default function Profile() {
   const { userInfo } = useSelector((state) => state.userInfoReducer);
@@ -19,8 +20,6 @@ export default function Profile() {
   const [showSignupLogin, setShowSignupLogin] = useState(false);
   const menuWapperElm = useRef(null);
 
-  console.log("đăng xuất", userInfo);
-
   useOutsideClick(menuWapperElm, () => {
     setShowMenu(false);
   });
@@ -29,6 +28,7 @@ export default function Profile() {
     dispatch(resetUserInfo());
     toastSuccess("Bạn đã đăng xuất!");
     setShowMenu((pre) => !pre);
+    Cookies.remove("token");
     window.scrollTo(0, 0);
   };
 

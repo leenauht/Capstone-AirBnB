@@ -1,4 +1,4 @@
-import { List, Modal, Slider } from "antd";
+import { Button, List, Modal, Slider } from "antd";
 import Filter from "../../../Icons/Filter";
 import { useState } from "react";
 import { dataRoomAndBedroom } from "./dataRoomAndBedroom";
@@ -26,13 +26,6 @@ export default function FilterRoom() {
     },
   ];
   const [itemSlected, setItemSelected] = useState(data[0]);
-
-  const onChange = (value) => {
-    console.log("onChange: ", value);
-  };
-  const onChangeComplete = (value) => {
-    console.log("onChangeComplete: ", value);
-  };
 
   const handleOnclickAdd = (id) => {
     const newData = dataRoom.map((item) =>
@@ -65,11 +58,8 @@ export default function FilterRoom() {
           maxHeight: 400,
           overflowY: "auto",
           marginRight: "-10px",
-          //   content: {
-          //     borderRadius: 32,
-          //   },
         }}
-        className="!w-2/5"
+        className="w-[90%] lg:!w-2/5"
         footer={<></>}
         title={
           <div className="text-center w-full text-2xl font-bold border-b pb-5">
@@ -79,7 +69,7 @@ export default function FilterRoom() {
         open={isModalOpen}
         onCancel={() => setIsModalOpen(false)}
       >
-        <div className="pr-5">
+        <div>
           <div className="border-b">
             <p className="py-5 text-xl font-bold">Loại nơi ở</p>
             <List
@@ -119,8 +109,6 @@ export default function FilterRoom() {
               range
               step={10}
               defaultValue={[20, 50]}
-              onChange={onChange}
-              onChangeComplete={onChangeComplete}
               className="w-[96%] mx-auto"
             />
             <div className="flex justify-between">
@@ -216,16 +204,19 @@ export default function FilterRoom() {
 
           <div className="border-b pb-5">
             <p className="py-5 text-xl font-bold">Chỗ ở nổi bật</p>
-            <div className="p-4">
-              <button>
+            <div className="p-4 border flex gap-5 rounded-xl">
+              <button className="flex">
                 <FavoriteIcon />
-                <div>
-                  <p>Được khách yêu thích</p>
-                  <p>Những ngôi nhà được yêu thích nhất trên Airbnb</p>
-                </div>
               </button>
+              <div className="">
+                <p>Được khách yêu thích</p>
+                <p>Những ngôi nhà được yêu thích nhất trên Airbnb</p>
+              </div>
             </div>
           </div>
+        </div>
+        <div className="flex justify-end pt-5">
+          <Button onClick={() => setIsModalOpen(false)}>Đóng</Button>
         </div>
       </Modal>
     </div>

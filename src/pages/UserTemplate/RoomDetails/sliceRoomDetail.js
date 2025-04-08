@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../../services/api";
-import { getDiffDays, getUserInfo } from "../../../utils";
+import { getDiffDays } from "../../../utils";
 
 export const fetchRoomDetail = createAsyncThunk(
   "roomDetail/fetchRoomDetail",
