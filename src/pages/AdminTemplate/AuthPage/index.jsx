@@ -1,41 +1,38 @@
 import { useEffect } from "react";
 import { actLogin } from "./slice";
 import { useDispatch, useSelector } from "react-redux";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { Form, Input, Button, Typography } from "antd";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
+import Logo from "../../../Icons/Logo";
 
 export default function AuthPage() {
   const state = useSelector((state) => state.authReducer);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [form] = Form.useForm();
 
-  const handleLogin = (values) => {
-    dispatch(actLogin(values));
-  };
+  const handleLogin = async (values) => {
+    try {
+      await dispatch(actLogin(values)).unwrap();
 
-  useEffect(() => {
-    if (state.data?.userInfo?.role === "USER") {
-      toast.warning("Bạn không có quyền truy cập trang này!", {
-        position: "bottom-right",
-        autoClose: 2000,
-        theme: "colored",
-      });
-      setTimeout(() => {
-        window.location.href = "/";
-      }, 1000);
-    }
-  }, [state.data]);
-
-  useEffect(() => {
-    if (state.data) {
       toast.success("Đăng nhập thành công!", {
         position: "bottom-right",
+        autoClose: 1000,
+        theme: "colored",
+      });
+
+      setTimeout(() => {
+        navigate("/admin/QuanLyNguoiDung/1", { replace: true });
+      }, 1000);
+    } catch (error) {
+      toast.error(error || "Đăng nhập thất bại!", {
+        position: "bottom-right",
         autoClose: 2000,
         theme: "colored",
       });
     }
-  }, [state.data]);
+  };
 
   useEffect(() => {
     if (state.error) {
@@ -45,42 +42,69 @@ export default function AuthPage() {
         theme: "colored",
       });
     }
-  }, [state.error]);
+  }, [state.error, state.data]);
 
+  // Nếu đã đăng nhập rồi, chuyển hướng đến trang quản lý người dùng
   if (state.data) {
-    return <Navigate to="/admin/QuanLyNguoiDung" />;
+    return <Navigate to="/admin/QuanLyNguoiDung/1" replace />;
   }
 
   return (
     <div className="min-h-screen flex">
-      {/* Cột trái - Ảnh nền */}
-      <div className="hidden md:flex w-3/5">
+      {/* Cột trái - Ảnh nền + Chữ billboard */}
+      <div className="hidden md:flex w-3/5 relative">
         <img
-          src="/images/bg-admin.png"
+          src="public/image/airbnb-background.jpg"
           alt="Background"
           className="w-full h-full object-cover"
         />
+
+        {/* Logo ở góc trên bên trái */}
+        <div className="absolute top-8 left-8">
+          <Logo width={150} height={150} color="#FF385C" />
+        </div>
+
+        {/* Khối chữ đặt chồng lên ảnh */}
+        <div className="absolute text-white left-8 bottom-8 max-w-md">
+          <Typography.Title
+            level={3}
+            style={{ color: "#fff", marginBottom: "8px" }}
+          >
+            We believe in a world where people belong, anywhere.
+          </Typography.Title>
+          <p className="text-white text-sm">Airbnb Clone - MeiCloudie</p>
+        </div>
       </div>
 
       {/* Cột phải - Form đăng nhập */}
-      <div className="w-full md:w-2/5 flex items-center justify-center p-6">
+      <div className="w-full md:w-2/5 flex items-center justify-center p-6 bg-white">
         <div
-          className="w-full max-w-md bg-white shadow-lg rounded-lg"
+          className="w-full max-w-md shadow-lg rounded-lg"
           style={{ padding: "50px", minHeight: "500px" }}
         >
-          <Typography.Title level={2} className="text-center font-bold">
-            ĐĂNG NHẬP
+          <Typography.Title
+            level={2}
+            className="text-center font-bold text-xl "
+            style={{ marginBottom: "30px" }}
+          >
+            Đăng Nhập
           </Typography.Title>
-          <Form form={form} layout="vertical" onFinish={handleLogin}>
+
+          <Form
+            form={form}
+            layout="vertical"
+            style={{ width: "100%" }}
+            onFinish={handleLogin}
+          >
             <Form.Item
               label="Email"
               name="email"
               rules={[{ required: true, message: "Vui lòng nhập Email!" }]}
-              style={{ marginBottom: "24px" }}
+              style={{ marginBottom: "24px", fontWeight: "italic" }}
             >
               <Input
                 placeholder="Nhập Email"
-                style={{ borderRadius: "8px", height: "45px" }}
+                style={{ borderRadius: "8px", height: "45px", width: "100%" }}
               />
             </Form.Item>
 
@@ -88,29 +112,44 @@ export default function AuthPage() {
               label="Mật khẩu"
               name="password"
               rules={[{ required: true, message: "Vui lòng nhập mật khẩu!" }]}
-              style={{ marginBottom: "24px" }}
+              style={{ marginBottom: "24px", fontWeight: "italic" }}
             >
               <Input.Password
                 placeholder="Nhập mật khẩu"
-                style={{ borderRadius: "8px", height: "45px" }}
+                style={{ borderRadius: "8px", height: "45px", width: "100%" }}
               />
             </Form.Item>
 
-            <Form.Item className="flex justify-center">
+            <Form.Item style={{ marginBottom: "16px" }}>
               <Button
                 type="primary"
                 htmlType="submit"
-                style={{ height: "40px" }}
+                size="large"
+                style={{
+                  width: "100%",
+                  backgroundColor: "#FF385C",
+                  borderColor: "#FF385C",
+                  fontSize: "16px",
+                }}
                 block
               >
-                Đăng nhập
+                Tiếp Tục
               </Button>
             </Form.Item>
+
+            {/* Dòng dưới nút đăng nhập */}
+            <div className="text-center mt-4">
+              <span>Bạn chưa có tài khoản? </span>
+              <a
+                href="/"
+                className="text-[#FF385C] hover:text-[#FF385C] hover:underline hover:underline-offset-2"
+              >
+                Trang chủ
+              </a>
+            </div>
           </Form>
         </div>
       </div>
-
-      <ToastContainer />
     </div>
   );
 }
