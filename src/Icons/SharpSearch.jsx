@@ -6,8 +6,8 @@ export default function SharpSearch() {
       style={{
         display: "block",
         fill: "none",
-        height: 18,
-        width: 18,
+        height: 16,
+        width: 16,
         stroke: "currentColor",
         strokeWidth: 4,
         overflow: "visible",

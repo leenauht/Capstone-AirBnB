@@ -3,8 +3,12 @@ import { useEffect, useState } from "react";
 import api from "../../../services/api";
 import { toast } from "react-toastify";
 import dayjs from "dayjs";
+import { useDispatch } from "react-redux";
+import { setUserInfo } from "../../../store/sliceUserInfo";
+import { toastError, toastSuccess } from "../../../utils";
 
 export default function UpdateUserForm(props) {
+  const dispatch = useDispatch();
   const [form] = Form.useForm();
   const [user, setUser] = useState({
     name: "",
@@ -19,22 +23,22 @@ export default function UpdateUserForm(props) {
     form
       .validateFields()
       .then(async (values) => {
-        const result = await api.put(`/users/${props.userInfo.id}`, values);
+        const result = await api.put(`/users/${props.user.id}`, values);
         if (!result) return;
         props.setOpen(false);
-        toast.success("Cập nhật thông tin thanh công!", { autoClose: 2000 });
-        const newData = { ...props.userInfo, ...result.content };
-        localStorage.setItem("userInfo", JSON.stringify(newData));
-        props.setUserInfo(newData);
+        toastSuccess("Cập nhật thông tin thanh công!");
+        const newData = { ...props.user, ...result.content };
+        dispatch(setUserInfo(newData));
+        props.setUser(newData);
       })
       .catch((error) => {
         const messageError = error.response.data.content;
-        toast.error(messageError);
+        toastError(messageError);
       });
   };
 
   useEffect(() => {
-    const { name, email, phone, birthday, gender, role } = props.userInfo;
+    const { name, email, phone, birthday, gender, role } = props.user ?? {};
     setUser({
       name: name,
       email: email,
@@ -43,7 +47,7 @@ export default function UpdateUserForm(props) {
       gender: `${gender}`,
       role: role?.toLowerCase(),
     });
-  }, [props.userInfo]);
+  }, [props.user]);
 
   return (
     <>

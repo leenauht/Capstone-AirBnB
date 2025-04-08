@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../../services/api";
-import { getDiffDays, getUserInfo } from "../../../utils";
+import { getDiffDays } from "../../../utils";
 
 export const fetchRoomDetail = createAsyncThunk(
   "roomDetail/fetchRoomDetail",
@@ -17,10 +17,11 @@ export const fetchRoomDetail = createAsyncThunk(
 export const bookingRoom = createAsyncThunk(
   "roomDetail/bookingRoom",
   async (_, { rejectWithValue, getState }) => {
-    const { roomDetailReducer } = getState();
+    const { roomDetailReducer, userInfoReducer } = getState();
     const { dateRange, countUser, data } = roomDetailReducer;
     const [fromDate, toDate] = dateRange;
-    const userInfo = getUserInfo();
+    const { userInfo } = userInfoReducer;
+
     const payload = {
       maPhong: data.id,
       ngayDen: new Date(fromDate).toISOString(),

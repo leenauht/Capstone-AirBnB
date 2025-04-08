@@ -1,7 +1,10 @@
 import {
   airConditioner,
   flatIron,
+  keys,
   kitchen,
+  lightning,
+  outlinePets,
   parking,
   pool,
   television,
@@ -54,5 +57,23 @@ export const dataUtil = [
     name: "Bàn ủi",
     svg: flatIron,
     field: "banUi",
+  },
+];
+
+export const dataOptional = [
+  {
+    name: "Đặt ngay",
+    svg: lightning,
+    field: "mayGiat",
+  },
+  {
+    name: "Tự nhận phòng",
+    svg: keys,
+    field: "banLa",
+  },
+  {
+    name: "Cho phép mang theo thú cưng",
+    svg: outlinePets,
+    field: "tivi",
   },
 ];

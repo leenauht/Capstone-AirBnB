@@ -12,7 +12,11 @@ import UserInfoPage from "../pages/AdminTemplate/UserInfoPage";
 import UserList from "../pages/AdminTemplate/UserList";
 import LocationList from "../pages/AdminTemplate/LocationList";
 import RoomManagement from "../pages/AdminTemplate/RoomManagement";
+
+import PageNotPound from "../pages/UserTemplate/PageNotPound";
+
 import BookingRoom from "../pages/AdminTemplate/BookingRoom";
+
 
 const routes = [
   {
@@ -34,6 +38,10 @@ const routes = [
       {
         path: "detail/:id/payment",
         element: Payment,
+      },
+      {
+        path: "search",
+        element: RoomLocation,
       },
     ],
   },
@@ -70,6 +78,10 @@ const routes = [
   {
     path: "auth",
     element: AuthPage,
+  },
+  {
+    path: "*",
+    element: PageNotPound,
   },
 ];
 

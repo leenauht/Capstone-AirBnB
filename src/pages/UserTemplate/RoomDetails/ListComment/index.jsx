@@ -1,13 +1,23 @@
 import CommentMessage from "./CommentMessage";
 import CommentInput from "./CommentInput";
 import { useEffect, useState } from "react";
-import { timeDelay } from "../../../../utils";
+import {
+  timeDelay,
+  toastError,
+  toastInfo,
+  toastSuccess,
+} from "../../../../utils";
 import api from "./../../../../services/api";
 import { useParams } from "react-router-dom";
 import Pagination from "../../_component/Pagination";
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
+import { Empty } from "antd";
+import Loading from "../../_component/Loading";
 
 export default function ListComment(props) {
+  const { userInfo } = useSelector((state) => state.userInfoReducer);
+
   const [comments, setComments] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -15,8 +25,6 @@ export default function ListComment(props) {
   const commentsPerPage = 10;
 
   const { id } = props;
-
-  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
 
   const [userComment, setUserComment] = useState({
     maPhong: id,
@@ -54,15 +62,13 @@ export default function ListComment(props) {
     setUserComment(newComment);
     try {
       const result = await api.post("/binh-luan", newComment);
-      toast.success("Bình luận thành công!", { autoClose: 1000 });
+      toastSuccess("Bình luận thành công!");
       setComments((prev) => [newComment, ...prev]);
       return result.content;
     } catch (error) {
-      toast.error(error.response.data.content, { autoClose: 1000 });
+      toastError(error.response.data.content);
       setTimeout(() => {
-        toast.info("Bạn cần đăng nhập lại để làm mới token.", {
-          autoClose: 1500,
-        });
+        toastInfo("Bạn cần đăng nhập lại để làm mới token.");
       }, 1500);
       return error;
     }
@@ -79,9 +85,11 @@ export default function ListComment(props) {
     fetchDataCommentRoomId();
   }, [currentPage, totalPages]);
 
+  if (isLoading) return <Loading open={isLoading} />;
+
   return (
     <div className="w-full pt-10 pb-10">
-      <CommentInput onSubmit={onSubmit} imgAvatar={userInfo?.avatar} />
+      <CommentInput onSubmit={onSubmit} />
       {isLoading && <p className="text-center">Loading...</p>}
       {comments.length > 0 ? (
         <div className="md:grid xl:grid-cols-2 gap-5">
@@ -92,9 +100,7 @@ export default function ListComment(props) {
           ))}
         </div>
       ) : (
-        <p className="text-gray-500 text-center py-20">
-          Chưa có bình luận nào.
-        </p>
+        <Empty description="Không có dữ liệu" />
       )}
       {comments.length > 0 && (
         <Pagination

@@ -19,10 +19,6 @@ export default function PrivacyAndSharing() {
   ];
   const [itemSlected, setItemSelected] = useState(data[0]);
 
-  const onChange = (checked) => {
-    console.log(`switch to ${checked}`);
-  };
-
   return (
     <div className="flex gap-10">
       <div className="w-3/5">
@@ -105,7 +101,7 @@ export default function PrivacyAndSharing() {
                   Tìm hiểu thêm
                 </a>
               </p>
-              <Switch defaultChecked onChange={onChange} />
+              <Switch defaultChecked />
             </div>
             <hr />
             <div>
@@ -129,7 +125,7 @@ export default function PrivacyAndSharing() {
                 thông tin về thời gian ở ước tính (ví dụ: vài đêm, khoảng một
                 tuần hoặc hơn một tuần).
               </p>
-              <Switch defaultChecked onChange={onChange} />
+              <Switch defaultChecked />
             </div>
           </div>
         )}

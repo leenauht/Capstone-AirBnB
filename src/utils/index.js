@@ -64,3 +64,44 @@ export const toastSuccess = (mes) => {
     autoClose: 1000,
   });
 };
+
+export const toastError = (mes) => {
+  toast.error(mes, {
+    autoClose: 1500,
+  });
+};
+
+export const toastInfo = (mes) => {
+  toast.info(mes, {
+    autoClose: 1500,
+  });
+};
+
+export function createGuid() {
+  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+    const r = (Math.random() * 16) | 0;
+    const v = c === "x" ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+  });
+}
+
+export function getDeviceId() {
+  const deviceId = localStorage.getItem("deviceID");
+  if (!deviceId) {
+    const newId = createGuid();
+    saveDeviceId(newId);
+    return newId;
+  }
+  return deviceId;
+}
+
+export function saveDeviceId(id) {
+  return localStorage.setItem("deviceID", id);
+}
+
+export function decodeJWT(token) {
+  if (!token) return undefined;
+  const payload = token.split(".")[1];
+  const decoded = atob(payload); // Giải mã base64
+  return JSON.parse(decoded); // Chuyển sang object
+}

@@ -8,15 +8,18 @@ import { fetchRoomDetail } from "./sliceRoomDetail";
 import React from "react";
 import Booking from "./Booking";
 import Star from "./../../../Icons/Star";
+import Loading from "../_component/Loading";
 
 export default function RoomDetail() {
   const dispatch = useDispatch();
   const [searchParams] = useSearchParams();
 
-  const { loading, data: room } = useSelector(
+  const { loading: loadingRoomDetail, data: room } = useSelector(
     (state) => state.roomDetailReducer
   );
-  const { data: dataLocation } = useSelector((state) => state.locationReducer);
+  const { data: dataLocation, loading: loadingLocation } = useSelector(
+    (state) => state.locationReducer
+  );
 
   const [dataRating, setDataRating] = useState([]);
   const locationId = searchParams.get("locationId");
@@ -58,6 +61,9 @@ export default function RoomDetail() {
     }
   }, [roomId]);
 
+  if (loadingRoomDetail && loadingLocation)
+    return <Loading open={loadingRoomDetail || loadingLocation} />;
+
   return (
     <div className="pt-[120px] max-w-[80%] mx-auto">
       <div>
@@ -65,7 +71,7 @@ export default function RoomDetail() {
         <img
           src={room?.hinhAnh}
           alt="Logo"
-          className="my-5 rounded-xl h-[400px] w-full"
+          className="my-5 rounded-xl h-[400px] w-full object-cover"
         />
         <div className="lg:flex lg:justify-between">
           <div className="md:w-3/5">

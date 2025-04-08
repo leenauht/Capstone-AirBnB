@@ -2,6 +2,7 @@ import { DatePicker, Form, Input, Radio, Modal, Button } from "antd";
 import { useState } from "react";
 import api from "../../../services/api";
 import { toast } from "react-toastify";
+import { toastError, toastSuccess } from "../../../utils";
 
 export default function SignUpForm(props) {
   const [form] = Form.useForm();
@@ -15,15 +16,13 @@ export default function SignUpForm(props) {
     role: "",
   });
 
-  console.log(props.userInfo);
-
   const handleSubmitSignUp = () => {
     form
       .validateFields()
       .then(async (values) => {
         const result = await api.post("/auth/signup", values);
         if (result?.content) {
-          toast.success("Đăng ký thành công!", { autoClose: 2000 });
+          toastSuccess("Đăng ký thành công!");
         }
         props.setOpen(false);
         props.setIsOpenFormSignin(true);
@@ -31,7 +30,7 @@ export default function SignUpForm(props) {
       })
       .catch((error) => {
         const messageError = error.response.data.content;
-        toast.error(messageError);
+        toastError(messageError);
       });
   };
 

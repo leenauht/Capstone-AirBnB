@@ -1,19 +1,15 @@
-import { Button, Carousel, Modal } from "antd";
+import { Carousel } from "antd";
 import { listTopic } from "./ListTopic";
 import { useEffect, useState } from "react";
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
-import Filter from "../../../Icons/Filter";
+import FilterRoom from "../FilterRoom";
 
 export default function Topic() {
   const [itemsPerSlide, setItemsPerSlide] = useState(6);
   const totalSlides = Math.ceil(listTopic.length / itemsPerSlide);
   const [carouselRef, setCarouselRef] = useState(null);
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [isActive, setIsActive] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const classModal =
-    "flex justify-center items-center gap-1.5 whitespace-nowrap cursor-pointer px-5 py-2 border border-gray-300 rounded-2xl";
   const classTW =
     "w-auto flex flex-col justify-center items-center opacity-80 hover:text-black transition duration-300";
 
@@ -33,16 +29,6 @@ export default function Topic() {
       carouselRef.next();
       setCurrentSlide(currentSlide + 1);
     }
-  };
-
-  const showModal = () => {
-    setIsModalOpen(true);
-  };
-  const handleOk = () => {
-    setIsModalOpen(false);
-  };
-  const handleCancel = () => {
-    setIsModalOpen(false);
   };
 
   useEffect(() => {
@@ -107,24 +93,7 @@ export default function Topic() {
             </button>
           )}
         </div>
-
-        <span
-          className="flex justify-center items-center gap-1.5 whitespace-nowrap cursor-pointer px-5 py-2 border border-gray-300 rounded-2xl"
-          onClick={showModal}
-        >
-          <Filter />
-          Bộ lọc
-        </span>
-        <Modal
-          title="Basic Modal"
-          open={isModalOpen}
-          onOk={handleOk}
-          onCancel={handleCancel}
-        >
-          <p>Some contents...</p>
-          <p>Some contents...</p>
-          <p>Some contents...</p>
-        </Modal>
+        <FilterRoom />
       </div>
     </div>
   );

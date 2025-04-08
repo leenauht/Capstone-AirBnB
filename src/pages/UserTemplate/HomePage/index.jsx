@@ -4,17 +4,11 @@ import Search from "../Search";
 import Topic from "../Topic";
 
 export default function HomePage() {
-  const [dataSearch, setDataSearch] = useState([]);
-
   return (
-    <div className="pt-20 overflow-x-hidden">
-      <Search
-      //  onSearch={setDataSearch}
-      />
+    <div className="pt-20 overflow-x-hidden flex flex-col min-h-screen">
+      <Search />
       <Topic />
-      <RoomList
-      // dataSearch={dataSearch}
-      />
+      <RoomList />
     </div>
   );
 }

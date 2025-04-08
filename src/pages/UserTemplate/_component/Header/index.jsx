@@ -32,7 +32,7 @@ export default function Header(props) {
 
   return (
     <nav className="fixed w-full z-[1000] bg-bg-opacity-4 shadow-box-shadow-1">
-      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-5">
+      <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-3">
         <NavLink
           to="/"
           onClick={() => {

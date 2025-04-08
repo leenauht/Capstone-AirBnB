@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { useOutsideClick } from "../../../Hooks/useClickUotSide";
-import { Input } from "antd";
+import { Button, Input } from "antd";
 import "./style.css";
 import { useSelector, useDispatch } from "react-redux";
 import { setKeySearch } from "../RoomList/sliceLocation";
@@ -52,7 +52,7 @@ export default function SearchLocation(props) {
     <div
       ref={menuWapperElm}
       onClick={handleClick}
-      className="px-6 flex-1 relative cursor-pointer"
+      className="sm:pl-6 sm:pr-2 md:pr-2 lg:pr-6 flex-1 relative cursor-pointer"
     >
       <p className="text-sm font-medium">Địa điểm</p>
 
@@ -61,16 +61,29 @@ export default function SearchLocation(props) {
         allowClear
         value={keySearch}
         onChange={(e) => handleOnChange(e.target.value)}
-        className="border-none !shadow-none w-full p-0"
+        style={{
+          whiteSpace: "nowrap",
+          overflow: "hidden",
+          textOverflow: "ellipsis",
+        }}
+        className="border-none !shadow-none p-0 truncate w-full"
         type="text"
         placeholder="Tìm kiếm điểm đến"
       />
 
       {props.open && (
-        <div className="absolute top-16 left-0 w-[150%] rounded-3xl z-10 shadow-box-shadow-3 bg-white p-5">
+        <div className="absolute top-16 -left-5 sm:left-0 w-[calc(200%+48px)] sm:w-[150%] rounded-3xl z-10 shadow-box-shadow-3 bg-white p-5">
           <div className="overflow-y-scroll -mr-4 max-h-[60vh] no-scrollbar-buttons">
             <p className="text-sm pb-3">Điểm đến được đề xuất</p>
             {renderItem()}
+          </div>
+          <div className="flex justify-end pt-1">
+            <Button
+              onClick={(e) => (props.setOpen(false), e.stopPropagation())}
+              type="primary"
+            >
+              Đóng
+            </Button>
           </div>
         </div>
       )}

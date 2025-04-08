@@ -3,8 +3,12 @@ import { useState } from "react";
 import api from "../../../services/api";
 import { toast } from "react-toastify";
 import Cookies from "js-cookie";
+import { useDispatch } from "react-redux";
+import { setUserInfo } from "../../../store/sliceUserInfo";
+import { toastError, toastSuccess } from "../../../utils";
 
 export default function SignInForm(props) {
+  const dispatch = useDispatch();
   const [form] = Form.useForm();
   const [user, setUser] = useState({
     email: "",
@@ -16,11 +20,10 @@ export default function SignInForm(props) {
       .validateFields()
       .then(async (values) => {
         const result = await api.post("/auth/signin", values);
-        console.log("result", result.content.user);
         const userInfo = result.content.user;
         if (userInfo) {
-          toast.success("Đăng nhập thành công!", { autoClose: 2000 });
-          localStorage.setItem("userInfo", JSON.stringify(userInfo));
+          toastSuccess("Đăng nhập thành công!");
+          dispatch(setUserInfo(userInfo));
           Cookies.set("token", result.content.token);
         }
         props.setOpen(false);
@@ -28,7 +31,7 @@ export default function SignInForm(props) {
       })
       .catch((error) => {
         const messageError = error.response.data.content;
-        toast.error(messageError);
+        toastError(messageError);
       });
   };
 

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { bookingRoom, resetBooking } from "../sliceRoomDetail";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
-import { toastSuccess } from "../../../../utils";
+import { toastError, toastSuccess } from "../../../../utils";
 
 export default function Payment(props) {
   const { setOpen, open } = props;
@@ -31,7 +31,7 @@ export default function Payment(props) {
       setOpen(false);
     }
     if (bookingStatus.status === "faild") {
-      toast.error("Có lỗi xảy ra");
+      toastError("Có lỗi xảy ra");
     }
     return () => {
       dispatch(resetBooking());
