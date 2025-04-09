@@ -38,6 +38,7 @@ export default function SignInForm(props) {
   return (
     <Modal
       maskClosable={true}
+      open={props.open}
       title={
         <div style={{ textAlign: "center", width: "100%", marginBottom: 20 }}>
           Đăng nhập

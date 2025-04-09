@@ -3,7 +3,6 @@ import dayjs from "dayjs";
 import { useDispatch, useSelector } from "react-redux";
 import { bookingRoom, resetBooking } from "../sliceRoomDetail";
 import { useEffect } from "react";
-import { toast } from "react-toastify";
 import { toastError, toastSuccess } from "../../../../utils";
 
 export default function Payment(props) {
@@ -25,6 +24,7 @@ export default function Payment(props) {
   const formatted = (date) => {
     return dayjs(date).format("DD/MM/YYYY");
   };
+
   useEffect(() => {
     if (bookingStatus.status === "success") {
       toastSuccess("Đặt phòng thành công");

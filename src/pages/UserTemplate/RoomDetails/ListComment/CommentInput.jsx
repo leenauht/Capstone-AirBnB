@@ -1,9 +1,8 @@
 import Avatar from "./../../_component/Avatar";
 import { Input } from "antd";
 import Send from "./../../../../Icons/Send";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Rating from "../Rating";
-import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { toastInfo } from "../../../../utils";
 
@@ -18,9 +17,7 @@ export default function CommentInput(props) {
   const [loading, setLoading] = useState(false);
   const [rating, setRating] = useState(0);
   const [errorMessage, setErrorMessage] = useState(false);
-  // const [userInfo, setUserInfo] = useState(null);
 
-  // const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   const validImage =
     userInfo?.avatar !== "" && userInfo?.avatar !== undefined
       ? userInfo?.avatar

@@ -8,12 +8,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { setCountUser } from "../sliceRoomDetail";
 import { toastError } from "../../../../utils";
 
-export default function DropdownBooking(props) {
+export default function DropdownBooking({ questNumer }) {
   const [data, setData] = useState(dataMenuDropdown);
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
   const { countUser } = useSelector((state) => state.roomDetailReducer);
-  const maxGuest = 4;
+  const maxGuest = questNumer;
 
   const hide = () => {
     setOpen(false);

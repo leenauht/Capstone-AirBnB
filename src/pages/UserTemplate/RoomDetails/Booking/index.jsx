@@ -3,7 +3,6 @@ import Payment from "./Payment";
 import { useEffect, useState } from "react";
 import SelectDatePicker from "./DatePicker";
 import { useSelector } from "react-redux";
-import { toast } from "react-toastify";
 import { toastInfo } from "../../../../utils";
 
 export default function Booking({ room }) {
@@ -31,7 +30,7 @@ export default function Booking({ room }) {
   };
 
   return (
-    <div className="shadow-box-shadow-2 w-4/5 sm:w-3/5 lg:w-[34%] p-5 rounded-xl h-fit">
+    <div className="shadow-box-shadow-2 w-full sm:w-3/5 lg:w-[34%] p-5 rounded-xl h-fit">
       <div>
         <p>
           <span className="font-bold text-2xl">
@@ -58,7 +57,7 @@ export default function Booking({ room }) {
 
           <div className="h-[1px] w-full bg-gray-400 group-hover:bg-transparent"></div>
 
-          <DropdownBooking />
+          <DropdownBooking questNumer={room?.khach} />
         </div>
         <button
           onClick={onShowModalPayment}
