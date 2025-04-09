@@ -6,19 +6,23 @@ import {
   CalendarOutlined,
   LogoutOutlined,
   HomeOutlined,
+  DoubleLeftOutlined,
 } from "@ant-design/icons";
 import { Button, Layout, Menu, Dropdown, Space, Avatar } from "antd";
 import { ToastContainer, toast } from "react-toastify";
 import { useState, useEffect, useMemo } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
+import { useDispatch } from "react-redux";
+import { logout } from "../../AuthPage/slice";
 
 export default function AdminLayout({ children }) {
   const { Header, Sider, Content } = Layout;
   const [collapsed, setCollapsed] = useState(false);
-  const [userInfo, setUserInfo] = useState(null); // Dùng state để lưu thông tin người dùng
+  const [userInfo, setUserInfo] = useState(null);
   const [name, setName] = useState("");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const location = useLocation();
 
   // Lấy thông tin người dùng từ localStorage khi component mount
@@ -27,7 +31,7 @@ export default function AdminLayout({ children }) {
     if (storedUser) {
       try {
         const parsedUser = JSON.parse(storedUser);
-        setUserInfo(parsedUser); // Lưu thông tin người dùng vào state
+        setUserInfo(parsedUser);
         if (parsedUser?.name) setName(parsedUser.name);
       } catch (error) {
         console.error("❌ Lỗi parse userInfo:", error);
@@ -36,12 +40,23 @@ export default function AdminLayout({ children }) {
   }, []);
 
   const handleLogout = () => {
-    localStorage.clear();
+    // Hiển thị thông báo đăng xuất trước
     toast.success("Đăng xuất thành công!", {
-      autoClose: 1000,
+      position: "bottom-right",
+      autoClose: 1500,
       theme: "colored",
     });
-    setTimeout(() => navigate("/auth"), 1500);
+
+    // Sau khi hiển thị toast, chờ một chút rồi xóa localStorage và thực hiện logout
+    setTimeout(() => {
+      localStorage.removeItem("userInfo");
+      localStorage.removeItem("accessToken");
+
+      dispatch(logout());
+
+      // Điều hướng sau khi xử lý logout xong
+      navigate("/auth");
+    }, 2000);
   };
 
   const menuItems = useMemo(
@@ -62,9 +77,9 @@ export default function AdminLayout({ children }) {
         label: "Quản Lý Thông Tin Phòng",
       },
       {
-        key: "/admin/QuanLyDatVe/1",
+        key: "/admin/QuanLyDatPhong",
         icon: <CalendarOutlined />,
-        label: "Quản Lý Đặt Vé",
+        label: "Quản Lý Đặt Phòng",
       },
     ],
     []
@@ -77,8 +92,8 @@ export default function AdminLayout({ children }) {
       return "/admin/QuanLyThongTinViTri/1";
     } else if (location.pathname.includes("/QuanLyThongTinPhong")) {
       return "/admin/QuanLyThongTinPhong/1";
-    } else if (location.pathname.includes("/QuanLyDatVe")) {
-      return "/admin/QuanLyDatVe/1";
+    } else if (location.pathname.includes("/QuanLyDatPhong")) {
+      return "/admin/QuanLyDatPhong";
     }
     return null;
   }, [location.pathname]);
@@ -148,6 +163,12 @@ export default function AdminLayout({ children }) {
                     onClick: () => navigate("/admin/thong-tin-ca-nhan"),
                   },
                   {
+                    key: "home",
+                    label: "Trang người dùng",
+                    icon: <DoubleLeftOutlined />,
+                    onClick: () => navigate("/"),
+                  },
+                  {
                     key: "logout",
                     label: "Đăng xuất",
                     icon: <LogoutOutlined />,
@@ -170,8 +191,8 @@ export default function AdminLayout({ children }) {
           </Header>
           <Content
             style={{
-              margin: "24px 16px",
-              padding: 15,
+              margin: "18px 14px",
+              padding: 12,
               minHeight: "calc(100vh - 64px - 48px)",
               background: "#fff",
               borderRadius: "8px",
@@ -181,7 +202,6 @@ export default function AdminLayout({ children }) {
           </Content>
         </Layout>
       </Layout>
-      <ToastContainer />
     </>
   );
 }

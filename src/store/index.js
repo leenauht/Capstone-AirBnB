@@ -9,6 +9,7 @@ import authReducer from "./../pages/AdminTemplate/AuthPage/slice";
 import userReducer from "./../pages/AdminTemplate/UserList/slice";
 import locationsReducer from "./../pages/AdminTemplate/LocationList/slice";
 import RoomManagementReducer from "./../pages/AdminTemplate/RoomManagement/slice";
+import BookingRoomReducer from "../pages/AdminTemplate/BookingRoom/slice";
 import { bookingHistoryReducer } from "../pages/UserTemplate/UserProfile/BookingHistory/sliceBookingHistory";
 import { userInfoReducer } from "./sliceUserInfo";
 
@@ -22,6 +23,7 @@ export const store = configureStore({
     userReducer,
     locationsReducer,
     RoomManagementReducer,
+    BookingRoomReducer,
     bookingHistoryReducer,
     userInfoReducer,
   },

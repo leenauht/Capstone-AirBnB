@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import api from "../../../services/api";
 
-// Async action: Lấy danh sách người dùng
+// Lấy danh sách người dùng
 export const fetchUsers = createAsyncThunk(
   "users/fetchUsers",
   async (
@@ -25,6 +25,23 @@ export const fetchUsers = createAsyncThunk(
       };
     } catch {
       return rejectWithValue("Lỗi khi lấy danh sách người dùng");
+    }
+  }
+);
+
+export const fetchAllUsers = createAsyncThunk(
+  "users/fetchAllUsers",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await api.get("/users");
+      if (!response?.content || !Array.isArray(response.content)) {
+        throw new Error("Dữ liệu API không hợp lệ");
+      }
+      return response.content;
+    } catch (error) {
+      return rejectWithValue(
+        error.message || "Lỗi khi tải danh sách người dùng"
+      );
     }
   }
 );
@@ -89,18 +106,7 @@ export const uploadAvatar = createAsyncThunk(
         headers: { "Content-Type": "multipart/form-data" },
       });
 
-      // Kiểm tra kỹ phản hồi từ API
-      if (!response || !response.data || !response.data.content) {
-        const errorMessage = "Dữ liệu trả về không hợp lệ";
-        console.error("🚨 Lỗi API:", errorMessage, response);
-        return rejectWithValue({
-          message: errorMessage,
-          response,
-        });
-      }
-
-      // Kiểm tra kỹ phần trả về dữ liệu avatar
-      if (!response.data.content.avatar) {
+      if (!response?.content?.avatar) {
         const errorMessage = "Không nhận được URL ảnh từ API";
         console.error("🚨 Lỗi API:", errorMessage);
         return rejectWithValue({
@@ -109,7 +115,7 @@ export const uploadAvatar = createAsyncThunk(
         });
       }
 
-      return response.data.content;
+      return response.content;
     } catch (error) {
       console.error("🚨 Lỗi upload ảnh:", error);
       return rejectWithValue({
@@ -122,13 +128,14 @@ export const uploadAvatar = createAsyncThunk(
 
 const initialState = {
   data: [],
+  userInfo: {},
   loading: false,
   error: null,
   pagination: { pageIndex: 1, pageSize: 10, totalRow: 0 },
 };
 
 const userSlice = createSlice({
-  name: "users",
+  name: "userReducer",
   initialState,
   reducers: {
     setSearchTerm: (state, action) => {
@@ -154,6 +161,18 @@ const userSlice = createSlice({
         };
       })
       .addCase(fetchUsers.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(fetchAllUsers.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchAllUsers.fulfilled, (state, action) => {
+        state.loading = false;
+        state.data = action.payload;
+      })
+      .addCase(fetchAllUsers.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
@@ -189,11 +208,10 @@ const userSlice = createSlice({
       })
       .addCase(uploadAvatar.fulfilled, (state, action) => {
         state.loading = false;
-        // Nếu có thông tin người dùng trong action, cập nhật avatar của người dùng
         if (action.payload?.avatar) {
           state.userInfo = {
             ...state.userInfo,
-            avatar: action.payload.avatar, // Cập nhật avatar mới
+            avatar: action.payload.avatar,
           };
         }
       })

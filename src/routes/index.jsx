@@ -12,7 +12,11 @@ import UserInfoPage from "../pages/AdminTemplate/UserInfoPage";
 import UserList from "../pages/AdminTemplate/UserList";
 import LocationList from "../pages/AdminTemplate/LocationList";
 import RoomManagement from "../pages/AdminTemplate/RoomManagement";
+
 import PageNotPound from "../pages/UserTemplate/PageNotPound";
+
+import BookingRoom from "../pages/AdminTemplate/BookingRoom";
+
 
 const routes = [
   {
@@ -41,7 +45,10 @@ const routes = [
       },
     ],
   },
-
+  {
+    path: "search",
+    element: RoomLocation,
+  },
   {
     path: "admin",
     element: AdminTemplate,
@@ -61,6 +68,10 @@ const routes = [
       {
         path: "QuanLyThongTinPhong/:pageIndex?",
         element: RoomManagement,
+      },
+      {
+        path: "QuanLyDatPhong/",
+        element: BookingRoom,
       },
     ],
   },

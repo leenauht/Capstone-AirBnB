@@ -8,13 +8,12 @@ export const actLogin = createAsyncThunk(
     try {
       const response = await api.post("/auth/signin", user);
 
-      // Lấy dữ liệu từ `content`
       const content = response?.content;
       if (!content || !content.user || !content.token) {
         throw new Error("Phản hồi từ server không hợp lệ.");
       }
 
-      const { user: userInfo, token  } = content;
+      const { user: userInfo, token } = content;
 
       // Kiểm tra quyền truy cập
       if (userInfo.role === "USER") {
@@ -28,24 +27,25 @@ export const actLogin = createAsyncThunk(
     } catch (error) {
       console.error("❌ Login Error:", error);
 
-      if (error.response?.status === 400) {
-        return rejectWithValue("Email hoặc mật khẩu không đúng!");
+      if (error.response) {
+        const message = error.response.data?.message || "Đăng nhập thất bại!";
+        return rejectWithValue(message);
       }
 
-      return rejectWithValue(
-        error.message || "Đăng nhập thất bại! Vui lòng thử lại."
-      );
+      return rejectWithValue("Lỗi kết nối. Vui lòng thử lại!");
     }
   }
 );
 
+// Lấy dữ liệu từ localStorage khi load lại trang
 const userInfo = localStorage.getItem("userInfo")
   ? JSON.parse(localStorage.getItem("userInfo"))
   : null;
+const accessToken = localStorage.getItem("accessToken") || null;
 
 const initialState = {
   loading: false,
-  data: userInfo ? { userInfo } : null,
+  data: userInfo ? { userInfo, accessToken } : null,
   error: null,
 };
 
@@ -53,9 +53,15 @@ const authSlice = createSlice({
   name: "authSlice",
   initialState,
   reducers: {
+    setUser: (state, action) => {
+      state.data = action.payload;
+    },
     logout: (state) => {
       localStorage.removeItem("userInfo");
+      localStorage.removeItem("accessToken");
       state.data = null;
+      state.loading = false;
+      state.error = null;
     },
   },
   extraReducers: (builder) => {
@@ -75,5 +81,5 @@ const authSlice = createSlice({
   },
 });
 
-export const { logout } = authSlice.actions;
+export const { setUser, logout } = authSlice.actions;
 export default authSlice.reducer;

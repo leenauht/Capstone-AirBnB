@@ -5,7 +5,7 @@ import api from "../../../services/api";
 export const fetchLocations = createAsyncThunk(
   "locations/fetchLocations",
   async (
-    { pageIndex = 1, pageSize = 10, search = "" },
+    { pageIndex = 1, pageSize = 10, search = "" } = {},
     { rejectWithValue }
   ) => {
     try {
@@ -23,6 +23,26 @@ export const fetchLocations = createAsyncThunk(
       };
     } catch {
       return rejectWithValue("Lỗi khi lấy danh sách vị trí");
+    }
+  }
+);
+
+export const fetchAllLocations = createAsyncThunk(
+  "locations/fetchAllLocations",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await api.get("/vi-tri");
+
+      if (Array.isArray(response)) {
+        return response;
+      }
+
+      if (response?.content && Array.isArray(response.content)) {
+        return response.content;
+      }
+      throw new Error("Dữ liệu API không hợp lệ");
+    } catch {
+      return rejectWithValue("Lỗi khi lấy toàn bộ danh sách vị trí");
     }
   }
 );
@@ -46,12 +66,17 @@ export const updateLocation = createAsyncThunk(
   async (updatedData, { rejectWithValue }) => {
     try {
       const { id, ...payload } = updatedData;
-      const response = await api.put(`/vi-tri/${id}`, payload);
-      if (!response?.content) {
-        throw new Error("API không trả về dữ liệu hợp lệ");
+
+      if (!payload.hinhAnh) payload.hinhAnh = "";
+
+      const response = await api.put(`/vi-tri/${id}`, { id, ...payload });
+
+      if (!response?.content || response.content.id === 0) {
+        throw new Error("API trả về dữ liệu không hợp lệ");
       }
       return response.content;
-    } catch {
+    } catch (error) {
+      console.error("Lỗi API updateLocation:", error);
       return rejectWithValue("Lỗi khi cập nhật vị trí");
     }
   }
@@ -114,7 +139,7 @@ const initialState = {
 };
 
 const locationSlice = createSlice({
-  name: "locations",
+  name: "locationsReducer",
   initialState,
   reducers: {
     setSearchTerm: (state, action) => {
@@ -143,6 +168,18 @@ const locationSlice = createSlice({
         };
       })
       .addCase(fetchLocations.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(fetchAllLocations.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(fetchAllLocations.fulfilled, (state, action) => {
+        state.loading = false;
+        state.data = action.payload;
+      })
+      .addCase(fetchAllLocations.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })

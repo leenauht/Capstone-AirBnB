@@ -21,6 +21,8 @@ import {
   Upload,
   Space,
   Popconfirm,
+  Select,
+  Switch,
 } from "antd";
 import {
   CarOutlined,
@@ -30,6 +32,7 @@ import {
   FireOutlined,
   HomeOutlined,
   InboxOutlined,
+  InfoCircleOutlined,
   PlusOutlined,
   SkinOutlined,
   ToolOutlined,
@@ -45,6 +48,7 @@ import {
   updateRoom,
   deleteRoom,
 } from "./slice";
+import { fetchAllLocations } from "../LocationList/slice";
 import { useNavigate, useParams } from "react-router-dom";
 import CustomFormModal from "../_component/CustomFormModal";
 import { debounce } from "lodash";
@@ -59,12 +63,32 @@ const RoomManagement = () => {
   const { rooms, loading, pagination, keyword } = useSelector(
     (state) => state.RoomManagementReducer
   );
+  const locationList = useSelector((state) => state.locationsReducer) || {
+    data: [],
+  };
 
   const [selectedRoom, setSelectedRoom] = useState(null);
   const [isFormModalOpen, setIsFormModalOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [formMode, setFormMode] = useState("add");
   const [searchTerm, setSearchTerm] = useState(keyword || "");
+
+  useEffect(() => {
+    dispatch(fetchAllLocations())
+      .unwrap()
+      .then(() => {
+        toast.success("Tải danh sách địa điểm thành công!", {
+          position: "bottom-right",
+          autoClose: 1500,
+        });
+      })
+      .catch((error) => {
+        toast.error(error?.message || "Lỗi khi tải danh sách địa điểm!", {
+          position: "bottom-right",
+          autoClose: 2000,
+        });
+      });
+  }, [dispatch]);
 
   useEffect(() => {
     const currentPage = Number(pageIndex) || 1;
@@ -141,11 +165,21 @@ const RoomManagement = () => {
       try {
         await dispatch(deleteRoom(id)).unwrap();
         toast.success(`Xóa phòng ID ${id} thành công!`);
+
+        const currentPage = Number(pageIndex) || pagination.pageIndex;
+
+        dispatch(
+          fetchRooms({
+            search: searchTerm,
+            pageIndex: currentPage,
+            pageSize: pagination.pageSize,
+          })
+        );
       } catch {
         toast.error("❌ Lỗi khi xóa phòng!");
       }
     },
-    [dispatch]
+    [dispatch, pageIndex, pagination.pageIndex, pagination.pageSize, searchTerm]
   );
 
   const handleUpload = useCallback(
@@ -189,87 +223,91 @@ const RoomManagement = () => {
     { name: "phongTam", label: "Phòng Tắm", type: "text" },
     { name: "moTa", label: "Mô Tả", type: "text" },
     { name: "giaTien", label: "Giá Tiền", type: "text" },
-    { name: "maViTri", label: "Mã Vị Trí", type: "text" },
+    {
+      name: "maViTri",
+      label: "Vị trí",
+      type: "select",
+      options:
+        Array.isArray(locationList?.data) && locationList.data.length > 0
+          ? locationList.data.map((loc) => ({
+              label: `${loc.tenViTri} - ${loc.tinhThanh} - ${loc.quocGia}`,
+              value: loc.id,
+            }))
+          : [],
+      required: true,
+    },
+
     {
       name: "mayGiat",
       label: "Máy Giặt",
-      type: "radio",
-      options: [
-        { value: true, label: "Có" },
-        { value: false, label: "Không" },
-      ],
+      type: "switch",
+      render: (value, onChange) => (
+        <Switch checked={value} onChange={(checked) => onChange(checked)} />
+      ),
     },
     {
       name: "banLa",
       label: "Bàn Là",
-      type: "radio",
-      options: [
-        { value: true, label: "Có" },
-        { value: false, label: "Không" },
-      ],
+      type: "switch",
+      render: (value, onChange) => (
+        <Switch checked={value} onChange={(checked) => onChange(checked)} />
+      ),
     },
     {
       name: "tivi",
       label: "Tivi",
-      type: "radio",
-      options: [
-        { value: true, label: "Có" },
-        { value: false, label: "Không" },
-      ],
+      type: "switch",
+      render: (value, onChange) => (
+        <Switch checked={value} onChange={(checked) => onChange(checked)} />
+      ),
     },
     {
       name: "dieuHoa",
       label: "Điều Hòa",
-      type: "radio",
-      options: [
-        { value: true, label: "Có" },
-        { value: false, label: "Không" },
-      ],
+      type: "switch",
+      render: (value, onChange) => (
+        <Switch checked={value} onChange={(checked) => onChange(checked)} />
+      ),
     },
     {
       name: "wifi",
       label: "Wifi",
-      type: "radio",
-      options: [
-        { value: true, label: "Có" },
-        { value: false, label: "Không" },
-      ],
+      type: "switch",
+      render: (value, onChange) => (
+        <Switch checked={value} onChange={(checked) => onChange(checked)} />
+      ),
     },
     {
       name: "bep",
       label: "Bếp",
-      type: "radio",
-      options: [
-        { value: true, label: "Có" },
-        { value: false, label: "Không" },
-      ],
+      type: "switch",
+      render: (value, onChange) => (
+        <Switch checked={value} onChange={(checked) => onChange(checked)} />
+      ),
     },
     {
       name: "doXe",
       label: "Đỗ Xe",
-      type: "radio",
-      options: [
-        { value: true, label: "Có" },
-        { value: false, label: "Không" },
-      ],
+      type: "switch",
+      render: (value, onChange) => (
+        <Switch checked={value} onChange={(checked) => onChange(checked)} />
+      ),
     },
     {
       name: "hoBoi",
       label: "Hồ Bơi",
-      type: "radio",
-      options: [
-        { value: true, label: "Có" },
-        { value: false, label: "Không" },
-      ],
+      type: "switch",
+      render: (value, onChange) => (
+        <Switch checked={value} onChange={(checked) => onChange(checked)} />
+      ),
     },
     {
       name: "banUi",
       label: "Bàn Ủi",
-      type: "radio",
-      options: [
-        { value: true, label: "Có" },
-        { value: false, label: "Không" },
-      ],
+      type: "switch",
+      render: (value, onChange) => (
+        <Switch checked={value} onChange={(checked) => onChange(checked)} />
+      ),
     },
   ];
 
@@ -324,21 +362,17 @@ const RoomManagement = () => {
         key: "id",
       },
       {
-        title: "Tên Phòng",
-        dataIndex: "tenPhong",
-        key: "tenPhong",
-      },
-      {
         title: "Hình Ảnh",
         dataIndex: "hinhAnh",
         key: "hinhAnh",
         render: (_, record) => (
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
             <Image
-              width={80}
-              height={50}
-              src={record.hinhAnh || "https://dummyimage.com/80"}
-              alt="Hình ảnh vị trí"
+              width={60}
+              height={60}
+              src={record.hinhAnh || null}
+              fallback="public\image\placeholder.png"
+              alt="Hình phòng"
               style={{
                 borderRadius: "5px",
                 objectFit: "cover",
@@ -365,20 +399,40 @@ const RoomManagement = () => {
         ),
       },
       {
+        title: "Tên Phòng",
+        dataIndex: "tenPhong",
+        key: "tenPhong",
+      },
+      {
         title: "Mô Tả",
         dataIndex: "moTa",
         key: "moTa",
         ellipsis: true,
       },
       {
+        title: "Vị trí",
+        key: "maViTri",
+        ellipsis: true,
+        render: (_, record) => {
+          const location = locationList.data.find(
+            (loc) => loc.id === record.maViTri
+          );
+          return location
+            ? `${location.tenViTri} - ${location.tinhThanh}`
+            : record.maViTri;
+        },
+      },
+
+      {
         title: "Hành Động",
         key: "action",
-        width: 220,
+        width: 240,
         render: (_, record) => (
           <Space.Compact>
             <Button
               color="purple"
               variant="solid"
+              icon={<InfoCircleOutlined />}
               size="small"
               style={{ marginRight: 5 }}
               onClick={() => showDetail(record)}
@@ -413,16 +467,17 @@ const RoomManagement = () => {
         ),
       },
     ],
-    [handleUpload, handleDeleteRoom]
+    [handleUpload, handleDeleteRoom, locationList.data]
   );
 
   const renderTags = (room) => {
     return Object.keys(amenitiesList)
-      .filter((key) => room[key]) // Lọc các tiện ích có giá trị true
+      .filter((key) => room[key])
       .map((key) => (
         <Tag
           color={amenitiesList[key].color}
           key={key}
+          size="large"
           style={{ marginBottom: 5 }}
         >
           {amenitiesList[key].icon} {amenitiesList[key].label}
@@ -474,8 +529,8 @@ const RoomManagement = () => {
           <Button
             color="cyan"
             variant="solid"
-            icon={<PlusOutlined />}
             size="large"
+            icon={<PlusOutlined />}
             onClick={() => handleOpenModal()}
           >
             Thêm phòng
@@ -513,7 +568,11 @@ const RoomManagement = () => {
       )}
 
       <Modal
-        title="Chi Tiết Phòng"
+        title={
+          <h2 style={{ fontSize: "20px", fontWeight: "bold" }}>
+            Chi Tiết Phòng (ID: {selectedRoom?.id})
+          </h2>
+        }
         open={isModalOpen}
         onCancel={handleClose}
         footer={
@@ -521,121 +580,133 @@ const RoomManagement = () => {
             Đóng
           </Button>
         }
-        width={600}
+        width={650}
       >
-        {selectedRoom && (
-          <Card
-            style={{
-              border: "none",
-            }}
-          >
-            {/* Hình Ảnh - Hiển thị trên cùng */}
-            <div style={{ textAlign: "center", marginBottom: "15px" }}>
-              <Image
-                width="100%"
-                height={250}
-                src={selectedRoom.hinhAnh}
-                alt="Hình phòng"
-                style={{
-                  borderRadius: "10px",
-                  objectFit: "cover",
-                  maxHeight: "250px",
-                  boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-                }}
-              />
-            </div>
-
-            {/* Thông Tin Phòng */}
-            <Typography.Title
-              level={4}
+        <div style={{ maxHeight: "60vh", overflowY: "auto", paddingRight: 8 }}>
+          <h3>Thông tin chi tiết của Phòng Thuê trong hệ thống</h3>
+          {selectedRoom && (
+            <Card
               style={{
-                color: "#333",
-                fontSize: "22px",
-                lineHeight: 1.5,
-                textAlign: "center",
+                border: "none",
               }}
             >
-              🏠 {selectedRoom.tenPhong}
-            </Typography.Title>
-
-            <Typography.Paragraph style={{ lineHeight: 1.6, fontSize: "16px" }}>
-              <strong>Mô Tả:</strong> {selectedRoom.moTa}
-            </Typography.Paragraph>
-
-            <Row gutter={16}>
-              <Col span={12}>
-                <div
+              {/* Hình Ảnh - Hiển thị trên cùng */}
+              <div style={{ textAlign: "center", marginBottom: "15px" }}>
+                <Image
+                  width="100%"
+                  height={230}
+                  src={selectedRoom.hinhAnh || null}
+                  fallback="public\image\placeholder.png"
+                  alt="Hình phòng"
                   style={{
-                    backgroundColor: "#f9f9f9",
-                    padding: "15px",
-                    borderRadius: "8px",
-                    marginBottom: "15px",
+                    borderRadius: "10px",
+                    objectFit: "cover",
+                    maxHeight: "250px",
+                    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
                   }}
-                >
-                  <p style={{ fontSize: "16px" }}>
-                    <strong>📌 ID:</strong> {selectedRoom.id}
-                  </p>
-                  <p style={{ fontSize: "16px" }}>
-                    <strong>👥 Khách:</strong> {selectedRoom.khach}
-                  </p>
+                />
+              </div>
 
-                  <p style={{ fontSize: "16px" }}>
-                    <strong>💰 Giá Tiền:</strong> {selectedRoom.giaTien} $
-                  </p>
-                </div>
-              </Col>
-
-              <Col span={12}>
-                <div
-                  style={{
-                    backgroundColor: "#f9f9f9",
-                    padding: "15px",
-                    borderRadius: "8px",
-                    marginBottom: "15px",
-                  }}
-                >
-                  <p style={{ fontSize: "16px" }}>
-                    <strong>🛏️ Giường:</strong> {selectedRoom.giuong}
-                  </p>
-                  <p style={{ fontSize: "16px" }}>
-                    <strong>🚿 Phòng Tắm:</strong> {selectedRoom.phongTam}
-                  </p>
-                  <p style={{ fontSize: "16px" }}>
-                    <strong>🛏️ Phòng Ngủ:</strong> {selectedRoom.phongNgu}
-                  </p>
-                  <p style={{ fontSize: "16px" }}>
-                    <strong>📍 Mã Vị Trí:</strong> {selectedRoom.maViTri}
-                  </p>
-                </div>
-              </Col>
-            </Row>
-
-            {/* Đường gạch ngang */}
-            <div
-              style={{
-                borderTop: "1px solid rgba(0, 0, 0, 0.1)",
-                margin: "15px 0",
-              }}
-            />
-
-            {/* Tiện ích */}
-            <div style={{ marginTop: "15px" }}>
-              <p style={{ fontSize: "16px", marginBottom: "5px" }}>
-                <strong>🛠️ Tiện Ích:</strong>
-              </p>
-              <div
+              {/* Thông Tin Phòng */}
+              <Typography.Title
+                level={4}
                 style={{
-                  display: "flex",
-                  flexWrap: "wrap",
-                  gap: "10px",
+                  color: "#333",
+                  fontSize: "24px",
+                  lineHeight: 1.5,
+                  textAlign: "center",
                 }}
               >
-                {renderTags(selectedRoom)}
+                🏠 {selectedRoom.tenPhong}
+              </Typography.Title>
+
+              <Typography.Paragraph
+                style={{ lineHeight: 1.6, fontSize: "16px" }}
+              >
+                <strong>Mô Tả:</strong> {selectedRoom.moTa}
+              </Typography.Paragraph>
+
+              <Row gutter={16}>
+                <Col span={12}>
+                  <div
+                    style={{
+                      backgroundColor: "#f9f9f9",
+                      padding: "15px",
+                      borderRadius: "8px",
+                      marginBottom: "15px",
+                    }}
+                  >
+                    <p style={{ fontSize: "16px", marginBottom: "8px" }}>
+                      <strong>👥 Khách:</strong> {selectedRoom.khach}
+                    </p>
+                    <p style={{ fontSize: "16px", marginBottom: "8px" }}>
+                      <strong>💰 Giá Tiền:</strong> {selectedRoom.giaTien} $
+                    </p>
+                    <p style={{ fontSize: "16px", marginBottom: 0 }}>
+                      <strong>📍 Vị Trí:</strong>
+                      {(() => {
+                        // Tìm location tương ứng
+                        const loc = locationList.data.find(
+                          (l) => l.id === selectedRoom.maViTri
+                        );
+                        return loc
+                          ? ` ${loc.tenViTri} - ${loc.tinhThanh}`
+                          : ` ${selectedRoom.maViTri}`;
+                      })()}
+                    </p>
+                  </div>
+                </Col>
+
+                <Col span={12}>
+                  <div
+                    style={{
+                      backgroundColor: "#f9f9f9",
+                      padding: "15px",
+                      borderRadius: "8px",
+                      marginBottom: "15px",
+                    }}
+                  >
+                    <p style={{ fontSize: "16px", marginBottom: "8px" }}>
+                      <strong>🛏️ Giường:</strong> {selectedRoom.giuong}
+                    </p>
+                    <p style={{ fontSize: "16px", marginBottom: "8px" }}>
+                      <strong>🚿 Phòng Tắm:</strong> {selectedRoom.phongTam}
+                    </p>
+                    <p style={{ fontSize: "16px", marginBottom: 0 }}>
+                      <strong>🛏️ Phòng Ngủ:</strong> {selectedRoom.phongNgu}
+                    </p>
+                  </div>
+                </Col>
+              </Row>
+
+              {/* Đường gạch ngang */}
+              <div
+                style={{
+                  borderTop: "1px solid rgba(0, 0, 0, 0.1)",
+                  margin: "15px 0",
+                }}
+              />
+
+              {/* Tiện ích */}
+              <div style={{ marginTop: "15px" }}>
+                <p style={{ fontSize: "16px", marginBottom: "5px" }}>
+                  <strong>🛠️ Tiện ích:</strong>
+                </p>
+                <div
+                  style={{
+                    display: "flex",
+                    flexWrap: "wrap",
+                    gap: "10px",
+                  }}
+                >
+                  {renderTags(selectedRoom)}
+                </div>
               </div>
-            </div>
-          </Card>
-        )}
+            </Card>
+          )}
+        </div>
       </Modal>
+
       <CustomFormModal
         visible={isFormModalOpen}
         onCancel={() => setIsFormModalOpen(false)}
