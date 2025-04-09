@@ -37,6 +37,7 @@ export default function SignUpForm(props) {
   return (
     <>
       <Modal
+        maskClosable={true}
         open={props.open}
         title={
           <div className="text-center text-xl font-medium w-full pb-5">
