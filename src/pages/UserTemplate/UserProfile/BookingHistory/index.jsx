@@ -18,7 +18,7 @@ const BookingHistory = () => {
   const PAGE_SIZE = 4;
 
   const totalPages = useMemo(() => {
-    return data.length / 4;
+    return Math.floor(data.length / 4);
   }, [data]);
 
   const bookingHistoryView = useMemo(() => {
