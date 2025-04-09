@@ -31,6 +31,8 @@ export const bookingRoom = createAsyncThunk(
     };
     try {
       const result = await api.post("/dat-phong", payload);
+      console.log(result);
+
       return result.content;
     } catch (error) {
       return rejectWithValue(error);

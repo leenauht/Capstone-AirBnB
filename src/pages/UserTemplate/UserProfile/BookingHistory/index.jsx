@@ -22,13 +22,15 @@ const BookingHistory = () => {
   }, [data]);
 
   const bookingHistoryView = useMemo(() => {
-    return data
-      .filter(
-        (_, index) =>
-          (currentPage - 1) * PAGE_SIZE <= index &&
-          currentPage * PAGE_SIZE > index
-      )
-      .sort((a, b) => b.id - a.id);
+    if (!data) return undefined;
+    console.log(data);
+
+    const dataSort = [...data].sort((a, b) => b.id - a.id);
+    return dataSort.filter(
+      (_, index) =>
+        (currentPage - 1) * PAGE_SIZE <= index &&
+        currentPage * PAGE_SIZE > index
+    );
   }, [data, currentPage]);
 
   const handleChangePage = async (currentPage) => {
@@ -38,6 +40,7 @@ const BookingHistory = () => {
     setIsLoading(false);
     window.scrollTo(0, 0);
   };
+  console.log(bookingHistoryView);
 
   useEffect(() => {
     if (!userInfo) return;
