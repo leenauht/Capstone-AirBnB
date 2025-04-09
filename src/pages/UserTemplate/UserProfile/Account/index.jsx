@@ -1,4 +1,4 @@
-import { List } from "antd";
+import { Card, List } from "antd";
 import { useState } from "react";
 import { data } from "./data";
 import { NavLink } from "react-router-dom";
@@ -18,13 +18,15 @@ export default function Account() {
     window.scrollTo(0, 0);
   };
 
+  const renderItem = () => {};
+
   return (
-    <div className="pt-[150px] pb-10 container mx-auto">
-      <h2 className="text-[40px] font-bold pb-10 text-center text-gray-700">
+    <div className="pt-[150px] pb-10 px-4 sm:px-6 lg:px-10 container mx-auto">
+      <h2 className="text-3xl sm:text-4xl font-bold pb-8 text-center text-gray-700">
         {itemSlected.title}
       </h2>
-      <div className="flex flex-row gap-10">
-        <div className="w-[30%] sticky top-10">
+      <div className="flex flex-col lg:flex-row gap-8">
+        <div className="lg:w-[30%] w-full lg:sticky top-10">
           <List
             itemLayout="horizontal"
             dataSource={data}
@@ -37,7 +39,7 @@ export default function Account() {
                     <p
                       className={`${
                         itemSlected.id === item.id ? "black" : "text-gray-500"
-                      } text-xl font-bold`}
+                      } text-base sm:text-lg font-bold`}
                     >
                       {item.title}
                     </p>
@@ -48,13 +50,14 @@ export default function Account() {
             )}
           />
           <NavLink
-            className="text-xl font-bold text-blue-500 hover:text-blue-700 transition duration-300"
+            className="block text-lg font-bold text-blue-500 hover:text-blue-700 transition duration-300"
             onClick={handleLogOut}
             to="/"
           >
             Đăng xuất tài khoản
           </NavLink>
         </div>
+
         <div className="overflow-y-auto flex-1">{itemSlected.content}</div>
       </div>
     </div>

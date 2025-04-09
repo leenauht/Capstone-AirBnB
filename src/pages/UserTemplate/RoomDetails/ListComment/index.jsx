@@ -8,9 +8,7 @@ import {
   toastSuccess,
 } from "../../../../utils";
 import api from "./../../../../services/api";
-import { useParams } from "react-router-dom";
 import Pagination from "../../_component/Pagination";
-import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { Empty } from "antd";
 import Loading from "../../_component/Loading";

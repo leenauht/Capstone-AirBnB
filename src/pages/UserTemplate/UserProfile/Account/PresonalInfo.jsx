@@ -32,6 +32,7 @@ export default function PresonalInfo() {
       const response = await api.post("/users/upload-avatar", formData);
       if (response.content) {
         toastSuccess("Thay đổi avatar thành công!");
+
         dispatch(setUserInfo(response.content));
         setUser(response.content);
       }

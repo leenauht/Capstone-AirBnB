@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchBookingHistory } from "./sliceBookingHistory";
 import { timeDelay } from "../../../../utils";
@@ -13,12 +13,23 @@ const BookingHistory = () => {
   const dispatch = useDispatch();
   const { historyList } = useSelector((state) => state.bookingHistoryReducer);
   const { data, loading } = historyList;
-
-  const [listBookings, setListBookings] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
-  const bookingsPerPage = 4;
+  const PAGE_SIZE = 4;
+
+  const totalPages = useMemo(() => {
+    return data.length / 4;
+  }, [data]);
+
+  const bookingHistoryView = useMemo(() => {
+    return data
+      .filter(
+        (_, index) =>
+          (currentPage - 1) * PAGE_SIZE <= index &&
+          currentPage * PAGE_SIZE > index
+      )
+      .sort((a, b) => b.id - a.id);
+  }, [data, currentPage]);
 
   const handleChangePage = async (currentPage) => {
     setCurrentPage(currentPage);
@@ -33,20 +44,13 @@ const BookingHistory = () => {
     dispatch(fetchBookingHistory(userInfo?.id));
   }, [userInfo?.id]);
 
-  useEffect(() => {
-    if (!data || data.length === 0) return;
-    setTotalPages(Math.ceil(data.length / bookingsPerPage));
-    const startIndex = (currentPage - 1) * bookingsPerPage;
-    setListBookings(data.slice(startIndex, startIndex + bookingsPerPage));
-  }, [currentPage, data]);
-
   if (loading) return <Loading open={loading} />;
   if (isLoading) return <Loading open={isLoading} />;
 
   return (
     <div className="flex flex-col gap-5 w-full">
-      {listBookings.length > 0 ? (
-        listBookings.map((item, index) => {
+      {bookingHistoryView.length > 0 ? (
+        bookingHistoryView.map((item, index) => {
           return (
             <Card
               key={item.id}
@@ -87,13 +91,11 @@ const BookingHistory = () => {
       ) : (
         <Empty description="Không có dữ liệu" />
       )}
-      {listBookings.length > 0 && (
-        <Pagination
-          currentPage={currentPage}
-          totalPages={totalPages}
-          handleChangePage={handleChangePage}
-        />
-      )}
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        handleChangePage={handleChangePage}
+      />
     </div>
   );
 };

@@ -112,6 +112,12 @@ const roomDetailSlice = createSlice({
         state.bookingStatus.loading = false;
         state.bookingStatus.status = "success";
         state.bookingStatus.data = action.payload;
+        state.dateRange = initialState.dateRange;
+        state.total = initialState.total;
+        state.price = initialState.price;
+        state.countUser = initialState.countUser;
+        state.diffDays = initialState.diffDays;
+        state.surcharge = initialState.surcharge;
       })
       .addCase(bookingRoom.rejected, (state, action) => {
         state.bookingStatus.loading = false;

@@ -58,9 +58,15 @@ export default function RoomLocation() {
     <div>
       <div className="flex gap-5 flex-col-reverse w-[90%] mx-auto pt-28 xl:flex-row relative pb-10 min-h-screen">
         <div className="w-[90%] mx-auto grid grid-cols-1 md:w-full md:grid-cols-2 md:gap-5 lg:grid-cols-3">
-          {roomFilter?.map((item) => {
-            return <Room key={item.id} room={item} location={item.location} />;
-          })}
+          {dataSearch ? (
+            roomFilter?.map((item) => {
+              return (
+                <Room key={item.id} room={item} location={item.location} />
+              );
+            })
+          ) : (
+            <div>Không tìm thấy phòng nào</div>
+          )}
         </div>
 
         <div className="w-full xl:w-2/5">

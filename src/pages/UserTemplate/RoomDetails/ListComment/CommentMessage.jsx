@@ -1,30 +1,19 @@
-import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import Rating from "../Rating";
 import Avatar from "./../../_component/Avatar";
-import api from "../../../../services/api";
 import RelativeTime from "./RelativeTime";
 
 const IMG_DEFAULT =
   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbuj8x4vZVQjh-Vow11mzwbMuzu4BT3VPy0eMXWSCxIIyoJF0_FtYW7aSwyeDtfx-1oIA&usqp=CAU";
 
 export default function CommentMessage({ comment }) {
-  const { noiDung, saoBinhLuan, ngayBinhLuan, avatar, tenNguoiBinhLuan } =
-    comment;
+  const { noiDung, saoBinhLuan, ngayBinhLuan, tenNguoiBinhLuan } = comment;
+  const { userInfo } = useSelector((state) => state.userInfoReducer);
+
   const validImage =
-    avatar !== "" && avatar !== undefined ? avatar : IMG_DEFAULT;
-
-  // const fetchUserId = async (id) => {
-  //   try {
-  //     const result = await api.get(`/users/${id}`);
-  //     setUser(result.content);
-  //   } catch (error) {
-  //     return error;
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchUserId(id);
-  // }, []);
+    userInfo?.avatar !== "" && userInfo?.avatar !== undefined
+      ? userInfo?.avatar
+      : IMG_DEFAULT;
 
   return (
     <>

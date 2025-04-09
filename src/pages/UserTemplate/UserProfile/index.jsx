@@ -1,16 +1,16 @@
 import { useRef, useState } from "react";
-import { Navigate, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useOutsideClick } from "../../../Hooks/useClickUotSide";
 import Menu from "../../../Icons/Menu";
 import SignInForm from "../SignInForm";
 import SignUpForm from "../SignUpForm";
-import { toast } from "react-toastify";
 import { Avatar } from "antd";
-import { UserOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { resetUserInfo } from "../../../store/sliceUserInfo";
 import { toastSuccess } from "../../../utils";
 import Cookies from "js-cookie";
+import { IMG_DEFAULT } from "../RoomDetails/ListComment/CommentInput";
+import { resetHistory } from "./BookingHistory/sliceBookingHistory";
 
 export default function Profile() {
   const { userInfo } = useSelector((state) => state.userInfoReducer);
@@ -19,6 +19,11 @@ export default function Profile() {
   const [showFormLogin, setShowFormLogin] = useState(false);
   const [showSignupLogin, setShowSignupLogin] = useState(false);
   const menuWapperElm = useRef(null);
+
+  const validImage =
+    userInfo?.avatar !== "" && userInfo?.avatar !== undefined
+      ? userInfo?.avatar
+      : IMG_DEFAULT;
 
   useOutsideClick(menuWapperElm, () => {
     setShowMenu(false);
@@ -54,7 +59,7 @@ export default function Profile() {
           className="flex justify-center items-center gap-2 py-1 px-5 border rounded-full cursor-pointer"
         >
           <Menu />
-          <Avatar size={40} icon={<UserOutlined />} />
+          <Avatar src={validImage} size={40} />
         </div>
 
         {/* Dropdown menu */}

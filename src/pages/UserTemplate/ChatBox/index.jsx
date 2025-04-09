@@ -1,8 +1,22 @@
-import { Avatar, Button, Card, Image, Input, Modal, Popover } from "antd";
-import { useEffect, useState, useRef } from "react";
+import {
+  Avatar,
+  Button,
+  Card,
+  Image,
+  Input,
+  Modal,
+  Popover,
+  Tooltip,
+} from "antd";
+import { useEffect, useState, useRef, useMemo } from "react";
 import { io } from "socket.io-client";
 import { useSelector } from "react-redux";
-import { MinusOutlined, SendOutlined, UserOutlined } from "@ant-design/icons";
+import {
+  AntDesignOutlined,
+  MinusOutlined,
+  SendOutlined,
+  UserOutlined,
+} from "@ant-design/icons";
 import { createGuid, getDeviceId } from "../../../utils";
 import dayjs from "dayjs";
 import cl from "classnames";
@@ -53,6 +67,18 @@ export default function ChatBox() {
       ...getInforUserMessage(),
     });
   };
+
+  const handleInPutChange = (e) => {
+    const value = e.target.value;
+    setMsgInput(value);
+    handleSendTyping(!!value);
+  };
+
+  const listTypingFiltered = useMemo(() => {
+    const inforUser = getInforUserMessage();
+    return listTyping.filter((item) => item.userId !== inforUser.userId);
+  }, [listTyping, userInfo]);
+
   useEffect(() => {
     // Khi comments thay đổi, tự động scroll xuống cuối
     if (listRef?.current && isOpen) {
@@ -65,7 +91,17 @@ export default function ChatBox() {
       setListMsg((listMsg) => [...listMsg, dataMessage]);
     });
     socket.on(EVENT_NAME.TYPING, (typing) => {
-      setListTyping((listTyping) => [...listTyping, typing]);
+      setListTyping((currentList) => {
+        if (typing.typing) {
+          const isExsit = !!currentList.find(
+            (item) => item.userId === typing.userId
+          );
+          if (isExsit) return currentList;
+          return [...currentList, typing];
+        } else {
+          return currentList.filter((item) => item.userId !== typing.userId);
+        }
+      });
     });
 
     return () => {
@@ -76,7 +112,7 @@ export default function ChatBox() {
   return (
     <>
       {isOpen && (
-        <div className="fixed flex flex-col rounded-xl z-[1000] w-[500px] h-[70%] bg-cover bg-white right-5 bottom-10 overflow-hidden shadow-box-shadow-3">
+        <div className="fixed flex flex-col rounded-xl z-[1000] w-[90%] sm:w-3/5 md:w-1/2 lg:w-2/5 xl:w-[500px] h-[70%] bg-cover bg-white right-5 bottom-10 overflow-hidden shadow-box-shadow-3">
           <div className="flex justify-between py-2 px-5 bg-bg-opacity-7">
             <div className="">{EVENT_NAME.CHAT_MESSAGE}</div>
             <MinusOutlined
@@ -148,16 +184,65 @@ export default function ChatBox() {
                   );
                 })}
             </div>
-            {!!listTyping.length && (
-              <div className="flex gap-1 items-center flex-row pl-6">
-                <Avatar
-                  src={listTyping[0].avatar}
-                  icon={!listTyping[0].isUser ? <UserOutlined /> : undefined}
+            {!!listTypingFiltered.length && (
+              <div className="flex gap-1 items-center flex-row pl-6 pb-1">
+                <Avatar.Group
+                  size="large"
+                  max={{
+                    count: 2,
+                    style: {
+                      color: "#f56a00",
+                      backgroundColor: "#fde3cf",
+                      cursor: "pointer",
+                    },
+                    popover: { trigger: "click" },
+                  }}
                 >
-                  {listTyping[0]?.name ? listTyping[0]?.name?.[0] : undefined}
-                </Avatar>
+                  <Avatar
+                    src={listTypingFiltered[0].avatar || undefined}
+                    icon={
+                      !listTypingFiltered[0].isUser ? (
+                        <UserOutlined />
+                      ) : undefined
+                    }
+                  >
+                    {listTypingFiltered[0]?.name
+                      ? listTypingFiltered[0]?.name?.[0]
+                      : undefined}
+                  </Avatar>
+                  {listTypingFiltered[1] && (
+                    <Avatar
+                      src={listTypingFiltered[1].avatar}
+                      icon={
+                        !listTypingFiltered[1].isUser ? (
+                          <UserOutlined />
+                        ) : undefined
+                      }
+                    >
+                      {listTypingFiltered[1]?.name
+                        ? listTypingFiltered[1]?.name?.[1]
+                        : undefined}
+                    </Avatar>
+                  )}
+
+                  {listTypingFiltered[2] && (
+                    <>
+                      <Tooltip title="Ant User" placement="top">
+                        <Avatar
+                          style={{ backgroundColor: "#87d068" }}
+                          icon={<UserOutlined />}
+                        />
+                      </Tooltip>
+                      <Avatar
+                        style={{ backgroundColor: "#1677ff" }}
+                        icon={<AntDesignOutlined />}
+                      />
+                    </>
+                  )}
+                </Avatar.Group>
+
                 <div className="whitespace-nowrap w-fit h-fit text-xs p-1 rounded-full">
-                  {listTyping[0].name || "Ẩn danh"} <ChatBubble />
+                  {listTypingFiltered[0].name || "Ẩn danh"} <ChatBubble />
                 </div>
               </div>
             )}
@@ -173,16 +258,9 @@ export default function ChatBox() {
                 />
               }
               value={msgInput}
-              onChange={(e) => setMsgInput(e.target.value)}
+              onChange={handleInPutChange}
               placeholder="Bạn suy nghĩ gì?"
               onPressEnter={handleSendMessage}
-              enterButton
-              onFocus={() => {
-                handleSendTyping(true);
-              }}
-              onBlur={() => {
-                handleSendTyping(false);
-              }}
             />
           </div>
         </div>
@@ -190,7 +268,7 @@ export default function ChatBox() {
 
       <img
         onClick={() => setIsOpen(true)}
-        className="w-40 h-40 fixed right-0 bottom-20 cursor-pointer"
+        className="w-40 h-40 fixed right-0 bottom-14 cursor-pointer"
         src="./chat-bot-icon.gif"
       />
 

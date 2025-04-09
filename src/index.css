@@ -26,3 +26,17 @@
   overflow-wrap: break-word;
   word-break: break-word;
 }
+
+.no-prev-btn .ant-picker-header-super-prev-btn,
+.no-prev-btn .ant-picker-header-prev-btn {
+  display: none !important;
+}
+
+.no-month-nav .ant-picker-super-prev-icon,
+.no-month-nav .ant-picker-prev-icon {
+  display: none !important;
+}
+
+.one-month-picker .ant-picker-panels > *:nth-child(2) {
+  display: none;
+}

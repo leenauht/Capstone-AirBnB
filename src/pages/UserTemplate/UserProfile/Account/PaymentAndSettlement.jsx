@@ -20,7 +20,7 @@ export default function PaymentAndSettlement() {
         <div>
           <List
             className="relative"
-            grid={{ gutter: 16, column: 3 }}
+            grid={{ gutter: 16, column: 2 }}
             itemLayout="horizontal"
             dataSource={data}
             renderItem={(item) => (

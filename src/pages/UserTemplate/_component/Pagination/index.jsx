@@ -3,6 +3,7 @@ import ChevronRight from "../../../../Icons/ChevronRight";
 
 export default function Pagination(props) {
   const { currentPage, totalPages, handleChangePage } = props;
+  if (!totalPages) return <></>;
   return (
     <div className="flex gap-2 justify-center items-center py-10">
       <button
