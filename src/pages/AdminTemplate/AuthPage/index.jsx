@@ -32,6 +32,12 @@ export default function AuthPage() {
         autoClose: 2000,
         theme: "colored",
       });
+
+      if (error === "Bạn không có quyền truy cập trang này.") {
+        setTimeout(() => {
+          navigate("/", { replace: true });
+        }, 1500);
+      }
     }
   };
 

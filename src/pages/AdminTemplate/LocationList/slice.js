@@ -67,7 +67,7 @@ export const updateLocation = createAsyncThunk(
     try {
       const { id, ...payload } = updatedData;
 
-      if (!payload.hinhAnh) payload.hinhAnh = "";
+      if (!payload.hinhAnh) payload.hinhAnh = null;
 
       const response = await api.put(`/vi-tri/${id}`, { id, ...payload });
 

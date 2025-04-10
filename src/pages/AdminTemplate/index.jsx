@@ -21,7 +21,7 @@ export default function AdminTemplate() {
 
   useEffect(() => {
     const userData = JSON.parse(localStorage.getItem("userInfo"));
-    if (userData?.role === "USER") {
+    if (userData?.role.toUpperCase() === "USER") {
       toast.warning("Bạn không có quyền truy cập trang này!", {
         position: "bottom-right",
         autoClose: 2000,
