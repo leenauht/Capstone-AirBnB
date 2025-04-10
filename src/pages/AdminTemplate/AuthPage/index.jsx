@@ -1,7 +1,7 @@
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { actLogin } from "./slice";
 import { useDispatch, useSelector } from "react-redux";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Form, Input, Button, Typography } from "antd";
 import { toast, ToastContainer } from "react-toastify";
 import Logo from "../../../Icons/Logo";
@@ -10,6 +10,7 @@ export default function AuthPage() {
   const state = useSelector((state) => state.authReducer);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const [form] = Form.useForm();
   const errorToastShown = useRef(false);
 
@@ -22,7 +23,7 @@ export default function AuthPage() {
         autoClose: 1000,
         theme: "colored",
       });
-
+      // Chuyển hướng sau khi đăng nhập thành công
       setTimeout(() => {
         navigate("/admin/QuanLyNguoiDung/1", { replace: true });
       }, 1000);
@@ -32,7 +33,6 @@ export default function AuthPage() {
         autoClose: 2000,
         theme: "colored",
       });
-
       if (error === "Bạn không có quyền truy cập trang này.") {
         setTimeout(() => {
           navigate("/", { replace: true });
@@ -41,10 +41,17 @@ export default function AuthPage() {
     }
   };
 
-  // Nếu đã đăng nhập rồi, chuyển hướng đến trang quản lý người dùng
-  if (state.data && state.data.userInfo?.role.toUpperCase() !== "USER") {
-    return <Navigate to="/admin/QuanLyNguoiDung/1" replace />;
-  }
+  useEffect(() => {
+    if (
+      state.data &&
+      state.data.userInfo &&
+      state.data.userInfo.role.toUpperCase() !== "USER"
+    ) {
+      if (location.pathname === "/auth") {
+        navigate("/admin/QuanLyNguoiDung/1", { replace: true });
+      }
+    }
+  }, [state.data, location.pathname, navigate]);
 
   return (
     <div className="min-h-screen flex">
@@ -55,12 +62,10 @@ export default function AuthPage() {
           alt="Background"
           className="w-full h-full object-cover"
         />
-
         {/* Logo ở góc trên bên trái */}
         <div className="absolute top-8 left-8">
           <Logo width={150} height={150} color="#FF385C" />
         </div>
-
         {/* Khối chữ đặt chồng lên ảnh */}
         <div className="absolute text-white left-8 bottom-8 max-w-md">
           <Typography.Title
@@ -81,12 +86,11 @@ export default function AuthPage() {
         >
           <Typography.Title
             level={2}
-            className="text-center font-bold text-xl "
+            className="text-center font-bold text-xl"
             style={{ marginBottom: "30px" }}
           >
             Đăng Nhập
           </Typography.Title>
-
           <Form
             form={form}
             layout="vertical"
@@ -104,7 +108,6 @@ export default function AuthPage() {
                 style={{ borderRadius: "8px", height: "45px", width: "100%" }}
               />
             </Form.Item>
-
             <Form.Item
               label="Mật khẩu"
               name="password"
@@ -116,7 +119,6 @@ export default function AuthPage() {
                 style={{ borderRadius: "8px", height: "45px", width: "100%" }}
               />
             </Form.Item>
-
             <Form.Item style={{ marginBottom: "16px" }}>
               <Button
                 type="primary"
@@ -133,7 +135,6 @@ export default function AuthPage() {
                 Tiếp Tục
               </Button>
             </Form.Item>
-
             {/* Dòng dưới nút đăng nhập */}
             <div className="text-center mt-4">
               <span>Bạn chưa có tài khoản? </span>
