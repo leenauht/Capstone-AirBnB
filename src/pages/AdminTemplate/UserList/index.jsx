@@ -68,6 +68,16 @@ export default function UserList() {
   const { Title, Text } = Typography;
 
   useEffect(() => {
+    if (!sessionStorage.getItem("userListReloaded")) {
+      sessionStorage.setItem("userListReloaded", "true");
+      window.location.reload();
+    } else {
+      // Khi reload xong, có thể xóa flag nếu muốn reload lại mỗi khi route được truy cập
+      sessionStorage.removeItem("userListReloaded");
+    }
+  }, []);
+
+  useEffect(() => {
     const currentPage = Number(pageIndex) || 1;
     dispatch(setPagination({ pageIndex: currentPage }));
     dispatch(

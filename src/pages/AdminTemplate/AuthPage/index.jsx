@@ -23,10 +23,6 @@ export default function AuthPage() {
         autoClose: 1000,
         theme: "colored",
       });
-      // Chuyển hướng sau khi đăng nhập thành công
-      setTimeout(() => {
-        navigate("/admin/QuanLyNguoiDung/1", { replace: true });
-      }, 1000);
     } catch (error) {
       toast.error(error || "Đăng nhập thất bại!", {
         position: "bottom-right",
@@ -58,7 +54,7 @@ export default function AuthPage() {
       {/* Cột trái - Ảnh nền + Chữ billboard */}
       <div className="hidden md:flex w-3/5 relative">
         <img
-          src="public/image/airbnb-background.jpg"
+          src="/image/airbnb-background.jpg"
           alt="Background"
           className="w-full h-full object-cover"
         />
