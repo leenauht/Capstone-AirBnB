@@ -1,9 +1,9 @@
-import { useEffect } from "react";
-import { actLogin } from "./slice";
+import { useEffect, useRef } from "react";
+import { actLogin, logout } from "./slice";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useNavigate } from "react-router-dom";
 import { Form, Input, Button, Typography } from "antd";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import Logo from "../../../Icons/Logo";
 
 export default function AuthPage() {
@@ -11,17 +11,36 @@ export default function AuthPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [form] = Form.useForm();
+  const errorToastShown = useRef(false);
 
   const handleLogin = async (values) => {
     try {
-      await dispatch(actLogin(values)).unwrap();
+      // Gọi dispatch để thực hiện đăng nhập và unwrap kết quả
+      const result = await dispatch(actLogin(values)).unwrap();
+      console.log("Kết quả đăng nhập:", result.userInfo?.role); // In ra kết quả
 
+      // Kiểm tra role của người dùng (bất kể viết hoa hay viết thường)
+      const role = result.userInfo?.role;
+      if (role && role.toUpperCase() === "USER") {
+        toast.error("Bạn không có quyền đăng nhập!", {
+          position: "bottom-right",
+          autoClose: 2000,
+          theme: "colored",
+        });
+
+        errorToastShown.current = true;
+        dispatch(logout());
+        return;
+      }
+
+      // Nếu role hợp lệ, thì hiển thị thông báo đăng nhập thành công
       toast.success("Đăng nhập thành công!", {
         position: "bottom-right",
         autoClose: 1000,
         theme: "colored",
       });
 
+      // Chuyển hướng sau 1 giây
       setTimeout(() => {
         navigate("/admin/QuanLyNguoiDung/1", { replace: true });
       }, 1000);
@@ -31,11 +50,12 @@ export default function AuthPage() {
         autoClose: 2000,
         theme: "colored",
       });
+      errorToastShown.current = true;
     }
   };
 
   useEffect(() => {
-    if (state.error) {
+    if (state.error && !errorToastShown.current) {
       toast.error(state.error, {
         position: "bottom-right",
         autoClose: 2000,
@@ -45,7 +65,7 @@ export default function AuthPage() {
   }, [state.error, state.data]);
 
   // Nếu đã đăng nhập rồi, chuyển hướng đến trang quản lý người dùng
-  if (state.data) {
+  if (state.data && state.data.userInfo?.role.toUpperCase() !== "USER") {
     return <Navigate to="/admin/QuanLyNguoiDung/1" replace />;
   }
 
@@ -150,6 +170,7 @@ export default function AuthPage() {
           </Form>
         </div>
       </div>
+      <ToastContainer />
     </div>
   );
 }
