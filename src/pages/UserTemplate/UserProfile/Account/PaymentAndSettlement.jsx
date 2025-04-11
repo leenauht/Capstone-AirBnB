@@ -15,8 +15,9 @@ export default function PaymentAndSettlement() {
   ];
   const [itemSlected, setItemSelected] = useState(data[0]);
   return (
-    <div className="flex gap-10">
-      <div className="p-5 rounded-xl w-3/5">
+    <div className="flex flex-col lg:flex-row gap-5 lg:gap-10">
+      {/* Left Panel */}
+      <div className="p-5 rounded-xl w-full lg:w-3/5">
         <div>
           <List
             className="relative"
@@ -104,6 +105,7 @@ export default function PaymentAndSettlement() {
             </div>
           </div>
         )}
+
         {itemSlected.id === 2 && (
           <div className="pt-5 space-y-10">
             <div>
@@ -121,7 +123,9 @@ export default function PaymentAndSettlement() {
           </div>
         )}
       </div>
-      <div className="w-2/5 space-y-5 border p-5 h-fit rounded-xl">
+
+      {/* Right Panel */}
+      <div className="w-full lg:w-2/5 space-y-5 border p-5 h-fit rounded-xl">
         <Payment />
 
         <h3 className="text-lg font-bold">
@@ -142,8 +146,8 @@ export default function PaymentAndSettlement() {
           {", "}
           <span>
             chính sách hủy và các biện pháp bảo vệ khác của chúng tôi.
-          </span>
-          <a className="underline font-medium" href="">
+          </span>{" "}
+          <a className="underline font-medium" href="#">
             Tìm hiểu thêm
           </a>
         </p>

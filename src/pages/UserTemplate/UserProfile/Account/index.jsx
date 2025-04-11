@@ -58,7 +58,7 @@ export default function Account() {
           </NavLink>
         </div>
 
-        <div className="overflow-y-auto flex-1">{itemSlected.content}</div>
+        <div className="flex-1">{itemSlected.content}</div>
       </div>
     </div>
   );

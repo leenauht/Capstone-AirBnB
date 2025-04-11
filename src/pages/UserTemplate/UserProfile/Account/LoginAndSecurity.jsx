@@ -3,12 +3,14 @@ import Shield from "../../../../Icons/Shield";
 export default function LoginAndSecurity() {
   return (
     <>
-      <div className="flex gap-10">
-        <div className="p-5 rounded-xl w-3/5">
+      <div className="flex flex-col lg:flex-row gap-5 lg:gap-10">
+        <div className="p-5 rounded-xl w-full lg:w-3/5">
           <div className="space-y-5">
-            <h1 className="text-3xl font-bold text-gray-700">Đăng nhập</h1>
+            <h1 className="text-2xl lg:text-3xl font-bold text-gray-700">
+              Đăng nhập
+            </h1>
             <hr />
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center flex-wrap gap-2">
               <div className="space-y-2">
                 <h4 className="text-gray-700 text-lg font-medium">Mật khẩu</h4>
                 <p className="text-gray-800">Cập nhật lần cuối</p>
@@ -21,11 +23,11 @@ export default function LoginAndSecurity() {
           </div>
 
           <div className="space-y-5 pt-5">
-            <h1 className="text-3xl font-bold text-gray-700">
+            <h1 className="text-2xl lg:text-3xl font-bold text-gray-700">
               Tài khoản mạng xã hội
             </h1>
             <hr />
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center flex-wrap gap-2">
               <div className="space-y-2">
                 <h4 className="text-gray-700 text-lg font-medium">Google</h4>
                 <p className="text-gray-800">Đã kết nối</p>
@@ -36,8 +38,20 @@ export default function LoginAndSecurity() {
             </div>
             <hr />
           </div>
+          <div className="space-y-5 pt-5">
+            <h1 className="text-2xl lg:text-3xl font-bold text-gray-700">
+              Tài khoản
+            </h1>
+            <div className="flex justify-between items-center flex-wrap gap-2">
+              <div>Vô hiệu hóa tài khoản của bạn</div>
+              <div className="text-orange-700 transition duration-300 cursor-pointer font-medium text-lg hover:text-orange-500">
+                Vô hiệu hóa
+              </div>
+            </div>
+            <hr />
+          </div>
         </div>
-        <div className="w-2/5 space-y-5 border p-5 h-fit rounded-xl">
+        <div className="w-full lg:w-2/5 space-y-5 border p-5 h-fit rounded-xl">
           <Shield />
 
           <h3 className="text-lg font-bold">Bảo mật tài khoản của bạn</h3>
@@ -47,16 +61,6 @@ export default function LoginAndSecurity() {
             nhiều hơn để tăng tính bảo mật của tài khoản của bạn.
           </p>
         </div>
-      </div>
-      <div className="pl-5">
-        <h1 className="text-3xl font-bold text-gray-700 py-5">Tài khoản</h1>
-        <div className="flex justify-between items-center py-5">
-          <div>Vô hiệu hóa tài khoản của bạn</div>
-          <div className="text-orange-700 transition duration-300 cursor-pointer font-medium text-lg hover:text-orange-500">
-            Vô hiệu hóa
-          </div>
-        </div>
-        <hr />
       </div>
     </>
   );

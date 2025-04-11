@@ -20,8 +20,8 @@ export default function PrivacyAndSharing() {
   const [itemSlected, setItemSelected] = useState(data[0]);
 
   return (
-    <div className="flex gap-10">
-      <div className="w-3/5">
+    <div className="flex flex-col lg:flex-row gap-5 lg:gap-10">
+      <div className="w-full lg:w-3/5">
         <div>
           <List
             className="relative"
@@ -49,7 +49,9 @@ export default function PrivacyAndSharing() {
             )}
           />
         </div>
+
         <hr />
+
         {itemSlected.id === 1 && (
           <div className="space-y-14 pt-5">
             <h4 className="text-2xl font-medium">
@@ -103,7 +105,9 @@ export default function PrivacyAndSharing() {
               </p>
               <Switch defaultChecked />
             </div>
+
             <hr />
+
             <div>
               <h4 className="text-2xl font-medium">Đánh giá</h4>
               <p className="text-gray-600 pb-5">
@@ -142,7 +146,8 @@ export default function PrivacyAndSharing() {
           </div>
         )}
       </div>
-      <div className="w-2/5 space-y-5 border p-5 h-fit rounded-xl">
+
+      <div className="w-full lg:w-2/5 space-y-5 border p-5 h-fit rounded-xl">
         <h3 className="text-lg font-bold">Cam kết đảm bảo quyền riêng tư</h3>
         <p>
           Airbnb cam kết bảo vệ dữ liệu của bạn. Xem chi tiết trong{" "}
