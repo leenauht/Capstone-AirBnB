@@ -62,7 +62,7 @@ export default function SignUpForm(props) {
               },
             ]}
           >
-            <Input value={user.name} />
+            <Input value={user.name} placeholder="Nhập tên tài khoản" />
           </Form.Item>
 
           <Form.Item
@@ -80,7 +80,10 @@ export default function SignUpForm(props) {
               },
             ]}
           >
-            <Input value={user.email} />
+            <Input
+              value={user.email}
+              placeholder="Nhập địa chỉ email của bạn"
+            />
           </Form.Item>
 
           <Form.Item
@@ -92,9 +95,17 @@ export default function SignUpForm(props) {
                 required: true,
                 message: "Vui lòng nhập password!",
               },
+              {
+                min: 6,
+                message: "Mật khẩu phải có ít nhất 6 ký tự!",
+              },
+              {
+                pattern: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{6,}$/,
+                message: "Mật khẩu phải chứa ít nhất 1 chữ cái và 1 số!",
+              },
             ]}
           >
-            <Input value={user.password} />
+            <Input value={user.password} placeholder="Nhập mật khẩu của bạn" />
           </Form.Item>
 
           <Form.Item
@@ -106,9 +117,16 @@ export default function SignUpForm(props) {
                 required: true,
                 message: "Vui lòng nhập phone!",
               },
+              {
+                pattern: /^(0|\+84)[1-9][0-9]{8}$/,
+                message: "Số điện thoại không hợp lệ!",
+              },
             ]}
           >
-            <Input value={user.phone} />
+            <Input
+              value={user.phone}
+              placeholder="Nhập số điện thoại của bạn"
+            />
           </Form.Item>
 
           <Form.Item
@@ -150,6 +168,7 @@ export default function SignUpForm(props) {
               onClick={() => {
                 props.setOpen(false);
                 props.setIsOpenFormSignin(true);
+                form.resetFields();
               }}
             >
               Đăng nhập ngay

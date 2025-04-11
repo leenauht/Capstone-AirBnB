@@ -63,11 +63,11 @@ export default function SignInForm(props) {
             },
             {
               type: "email",
-              message: "Khong hop le",
+              message: "Email không hợp lệ!",
             },
           ]}
         >
-          <Input value={user.email} />
+          <Input value={user.email} placeholder="Nhập địa chỉ email của bạn" />
         </Form.Item>
 
         <Form.Item
@@ -81,7 +81,10 @@ export default function SignInForm(props) {
             },
           ]}
         >
-          <Input.Password value={user.password} />
+          <Input.Password
+            value={user.password}
+            placeholder="Nhập mật khẩu của bạn của bạn"
+          />
         </Form.Item>
         <p className="text-end text-sm text-blue-700">
           <span
@@ -89,6 +92,7 @@ export default function SignInForm(props) {
             onClick={() => {
               props.setOpen(false);
               props.setIsOpenFormSignup(true);
+              form.resetFields();
             }}
           >
             Đăng ký ngay
