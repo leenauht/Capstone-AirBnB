@@ -59,6 +59,7 @@ export default function ChatBox() {
         ...getInforUserMessage(),
       });
     setMsgInput("");
+    handleSendTyping(false);
   };
 
   const handleSendTyping = (typing) => {
