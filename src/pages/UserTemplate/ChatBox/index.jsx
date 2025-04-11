@@ -22,7 +22,7 @@ import dayjs from "dayjs";
 import cl from "classnames";
 import ChatBubble from "../_component/ChatBubble";
 
-const socket = io("http://localhost:3001", {
+const socket = io("https://chatbox-production-b96f.up.railway.app", {
   reconnection: true,
   reconnectionDelay: 1000,
   reconnectionDelayMax: 5000,
