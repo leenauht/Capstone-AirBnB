@@ -16,7 +16,7 @@ export const actLogin = createAsyncThunk(
       const { user: userInfo, token } = content;
 
       // Kiểm tra quyền truy cập
-      if (userInfo.role === "USER") {
+      if (userInfo.role.toUpperCase() === "USER") {
         return rejectWithValue("Bạn không có quyền truy cập trang này.");
       }
 
@@ -26,12 +26,10 @@ export const actLogin = createAsyncThunk(
       return { userInfo, accessToken: token };
     } catch (error) {
       console.error("❌ Login Error:", error);
-
       if (error.response) {
-        const message = error.response.data?.message || "Đăng nhập thất bại!";
+        const message = error.response.data?.content || "Đăng nhập thất bại!";
         return rejectWithValue(message);
       }
-
       return rejectWithValue("Lỗi kết nối. Vui lòng thử lại!");
     }
   }

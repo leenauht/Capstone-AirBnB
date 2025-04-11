@@ -29,6 +29,8 @@ const userInfoSlice = createSlice({
     },
 
     resetUserInfo: (state) => {
+      localStorage.removeItem("userInfo");
+      localStorage.removeItem("accessToken");
       state.userInfo = null;
     },
   },
