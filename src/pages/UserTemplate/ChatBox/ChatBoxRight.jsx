@@ -21,7 +21,7 @@ export const EVENT_NAME = {
 };
 
 export default function ChatBoxRight(props) {
-  const { isOpen, setIsOpen, backToLeft, openChatBox, setOpenChatBox } = props;
+  const { isOpen, setIsOpen, backToLeft } = props;
   const { userInfo } = useSelector((state) => state.userInfoReducer);
   const [msgInput, setMsgInput] = useState("");
   const [listMsg, setListMsg] = useState([]);
@@ -101,7 +101,7 @@ export default function ChatBoxRight(props) {
       <div className="flex justify-between items-center py-1 px-2 flex-wrap gap-2">
         <LeftOutlined
           onClick={backToLeft}
-          className="hover:text-blue-600 transition duration-300 cursor-pointer sm:hidden"
+          className="sm:hidden transition duration-300"
         />
         <Input
           prefix={<SearchOutlined />}
@@ -116,13 +116,12 @@ export default function ChatBoxRight(props) {
             {userInfo?.name ? userInfo?.name?.[0] : undefined}
           </Avatar>
           <MinusOutlined
-            onClick={() => setOpenChatBox(false)}
+            onClick={() => setIsOpen(false)}
             className="text-blue-500 hover:text-blue-900 transition duration-300 cursor-pointer"
             style={{ fontSize: 20 }}
           />
         </div>
       </div>
-
       <div className="shadow-box-shadow-3 rounded-md bg-white flex flex-col flex-1 overflow-hidden">
         <div className="flex justify-between py-2 px-5 bg-bg-opacity-7">
           <div className="">{EVENT_NAME.CHAT_MESSAGE}</div>

@@ -1,5 +1,3 @@
-import ChevronLeft from "../../../Icons/ChevronLeft";
-import ChevronRight from "../../../Icons/ChevronRight";
 import {
   chevron_down_solid,
   dot,
@@ -11,20 +9,22 @@ import {
   BellOutlined,
   CommentOutlined,
   DownOutlined,
+  MinusOutlined,
   TeamOutlined,
 } from "@ant-design/icons";
 import { EVENT_NAME } from "./ChatBoxRight";
 
 export default function ChatBoxLeft(props) {
-  const { onSelectChat } = props;
+  const { onSelectChat, setIsOpen } = props;
   return (
     <div className="w-full sm:w-[40%] md:w-[45%] lg:w-[35%] 2xl:w-[30%]">
       <div className="flex justify-between items-center py-1 pl-2 pr-1 border-b border-gray-300">
         <Logo color="red" width={32} height={32} text={false} />
-        <div className="flex">
-          <ChevronLeft width={20} height={20} type="single" />
-          <ChevronRight width={20} height={20} type="single" />
-        </div>
+        <MinusOutlined
+          onClick={() => setIsOpen(false)}
+          className="text-blue-500 hover:text-blue-900 transition duration-300 cursor-pointer pr-1 sm:hidden"
+          style={{ fontSize: 20 }}
+        />
       </div>
 
       <div className="flex">
