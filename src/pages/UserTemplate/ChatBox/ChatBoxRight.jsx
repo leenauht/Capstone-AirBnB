@@ -1,6 +1,7 @@
 import { Avatar, Input, Tooltip } from "antd";
 import {
   AntDesignOutlined,
+  LeftOutlined,
   MinusOutlined,
   SearchOutlined,
   SendOutlined,
@@ -20,7 +21,7 @@ export const EVENT_NAME = {
 };
 
 export default function ChatBoxRight(props) {
-  const { isOpen, setIsOpen } = props;
+  const { isOpen, setIsOpen, backToLeft, openChatBox, setOpenChatBox } = props;
   const { userInfo } = useSelector((state) => state.userInfoReducer);
   const [msgInput, setMsgInput] = useState("");
   const [listMsg, setListMsg] = useState([]);
@@ -96,9 +97,16 @@ export default function ChatBoxRight(props) {
   }, []);
 
   return (
-    <div className="w-[65%] flex flex-col">
-      <div className="flex justify-between items-center py-1 pr-2 pl-1">
-        <Input prefix={<SearchOutlined />} className="w-1/2" />
+    <div className="w-full h-full flex flex-col sm:w-[60%] md:w-[55%] lg:w-[65%] 2xl:w-[70%]">
+      <div className="flex justify-between items-center py-1 px-2 flex-wrap gap-2">
+        <LeftOutlined
+          onClick={backToLeft}
+          className="hover:text-blue-600 transition duration-300 cursor-pointer sm:hidden"
+        />
+        <Input
+          prefix={<SearchOutlined />}
+          className="flex-1 min-w-[150px] sm:w-1/2"
+        />
 
         <div className="flex items-center gap-2">
           <Avatar
@@ -108,18 +116,19 @@ export default function ChatBoxRight(props) {
             {userInfo?.name ? userInfo?.name?.[0] : undefined}
           </Avatar>
           <MinusOutlined
-            onClick={() => setIsOpen(false)}
-            style={{ fontSize: "20px", width: "20px", height: "20px" }}
-            className="text-blue-500 hover:text-blue-900 transition duration-300"
+            onClick={() => setOpenChatBox(false)}
+            className="text-blue-500 hover:text-blue-900 transition duration-300 cursor-pointer"
+            style={{ fontSize: 20 }}
           />
         </div>
       </div>
+
       <div className="shadow-box-shadow-3 rounded-md bg-white flex flex-col flex-1 overflow-hidden">
         <div className="flex justify-between py-2 px-5 bg-bg-opacity-7">
           <div className="">{EVENT_NAME.CHAT_MESSAGE}</div>
         </div>
         <ul
-          className="flex-1 overflow-y-auto flex flex-col border-y"
+          className="flex-1 overflow-y-auto flex flex-col border-y max-h-[60vh]"
           ref={listRef}
         >
           <div className="">
@@ -167,9 +176,10 @@ export default function ChatBoxRight(props) {
                           })}
                         >
                           <span
-                            className={`bg-white w-fit overflow-word-break text-base leading-5 py-1 px-2 rounded-md shadow-box-shadow-3 ${
-                              isCurrentUser ? "bg-blue-300" : ""
-                            }`}
+                            className={cl(
+                              "bg-white text-base leading-5 py-1 px-2 rounded-md shadow-box-shadow-3 w-fit break-words",
+                              { "bg-blue-300": isCurrentUser }
+                            )}
                           >
                             {item.message}
                           </span>
@@ -247,7 +257,7 @@ export default function ChatBoxRight(props) {
             className="!bg-cyan-50"
             suffix={
               <SendOutlined
-                className="hover:text-blue-600"
+                className="hover:text-blue-600 cursor-pointer"
                 onClick={handleSendMessage}
               />
             }
