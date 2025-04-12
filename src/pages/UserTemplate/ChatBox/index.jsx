@@ -48,7 +48,7 @@ export default function ChatBox() {
 
       <img
         onClick={() => setIsOpen(true)}
-        className="w-20 h-20 sm:w-24 sm:h-24 fixed bottom-6 right-4 cursor-pointer transition-transform hover:scale-105"
+        className="w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28 fixed bottom-6 right-4 cursor-pointer transition-transform hover:scale-105"
         src="./chat-bot-icon.gif"
       />
     </>
