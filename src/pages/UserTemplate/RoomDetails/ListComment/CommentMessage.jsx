@@ -7,17 +7,12 @@ const IMG_DEFAULT =
   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRbuj8x4vZVQjh-Vow11mzwbMuzu4BT3VPy0eMXWSCxIIyoJF0_FtYW7aSwyeDtfx-1oIA&usqp=CAU";
 
 export default function CommentMessage({ comment }) {
-  const { noiDung, saoBinhLuan, ngayBinhLuan, tenNguoiBinhLuan } = comment;
-  const { userInfo } = useSelector((state) => state.userInfoReducer);
-
-  const validImage =
-    userInfo?.avatar !== "" && userInfo?.avatar !== undefined
-      ? userInfo?.avatar
-      : IMG_DEFAULT;
+  const { noiDung, saoBinhLuan, ngayBinhLuan, tenNguoiBinhLuan, avatar } =
+    comment;
 
   return (
     <>
-      <Avatar imgAvatar={validImage} width={56} height={56}>
+      <Avatar imgAvatar={avatar || IMG_DEFAULT} width={56} height={56}>
         <div>{tenNguoiBinhLuan}</div>
       </Avatar>
       <div className="pt-2 space-y-3">
