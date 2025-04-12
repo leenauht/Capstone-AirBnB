@@ -46,7 +46,7 @@ export default function Header(props) {
           }}
           className="flex items-center space-x-3 rtl:space-x-reverse"
         >
-          <Logo color="red" width={102} height={32} />
+          <Logo color="red" width={102} height={32} text={true} />
         </NavLink>
         <div className="hidden w-full md:block md:w-auto" id="navbar-default">
           <ul className="font-medium text-white text-lg flex flex-col items-center p-4 md:p-0 mt-4 rounded-lg md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0">
