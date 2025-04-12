@@ -3,10 +3,13 @@ import Logo from "../../../../Icons/Logo";
 import Profile from "../../UserProfile";
 import Home from "../../../../Icons/Home";
 import useValidationStore from "../useValidationStore.jsx";
+import { useDispatch } from "react-redux";
+import { resetBooking } from "../../RoomDetails/sliceRoomDetail.js";
 
 export default function Header(props) {
   const navList = [{ to: "/", name: "Trang Chủ" }];
   const triggerReset = useValidationStore((state) => state.triggerReset);
+  const dispatch = useDispatch();
 
   const renderNavList = () => {
     return navList.map((item) => {
@@ -17,6 +20,7 @@ export default function Header(props) {
             onClick={() => {
               window.scrollTo(0, 0);
               triggerReset();
+              dispatch(resetBooking());
             }}
             className="text-black hover:text-blue-500 transition duration-300"
           >
@@ -38,6 +42,7 @@ export default function Header(props) {
           onClick={() => {
             window.scrollTo(0, 0);
             triggerReset();
+            dispatch(resetBooking());
           }}
           className="flex items-center space-x-3 rtl:space-x-reverse"
         >

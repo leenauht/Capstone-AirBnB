@@ -10,7 +10,6 @@ import { resetUserInfo } from "../../../store/sliceUserInfo";
 import { toastSuccess } from "../../../utils";
 import Cookies from "js-cookie";
 import { IMG_DEFAULT } from "../RoomDetails/ListComment/CommentInput";
-import { resetHistory } from "./BookingHistory/sliceBookingHistory";
 
 export default function Profile() {
   const { userInfo } = useSelector((state) => state.userInfoReducer);

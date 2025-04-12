@@ -2,7 +2,8 @@ import { Card } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Heart from "../../../Icons/Heart";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { resetBooking } from "../RoomDetails/sliceRoomDetail";
 
 export default function Room({ location, room }) {
   const { userInfo } = useSelector((state) => state.userInfoReducer);
@@ -10,6 +11,7 @@ export default function Room({ location, room }) {
     "https://a0.muscache.com/im/pictures/miso/Hosting-1296043685685721430/original/4d135661-995c-4a54-a0bc-d714c3089934.jpeg?im_w=720";
   const [isLike, setIsLike] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const cacheName = `${userInfo?.id || "anonymus"}-roomLike`;
 
   const onLike = (status) => {
@@ -42,6 +44,7 @@ export default function Room({ location, room }) {
       hoverable
       onClick={() => {
         navigate(`/detail?roomId=${room.id}&locationId=${room.maViTri}`);
+        dispatch(resetBooking());
       }}
       cover={
         <div className="rounded-t-lg overflow-hidden relative">

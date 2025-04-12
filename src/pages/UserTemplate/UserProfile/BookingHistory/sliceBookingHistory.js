@@ -25,11 +25,7 @@ const initialState = {
 const sliceBookingHistory = createSlice({
   name: "roomListSlice",
   initialState,
-  reducers: {
-    resetHistory: (state) => {
-      state.data = [];
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(fetchBookingHistory.pending, (state) => {
@@ -49,10 +45,5 @@ const sliceBookingHistory = createSlice({
 });
 export const bookingHistoryReducer = sliceBookingHistory.reducer;
 
-export const {
-  setDateRange,
-  setRoom,
-  setCountUser,
-  resetBooking,
-  resetHistory,
-} = sliceBookingHistory.actions;
+export const { setDateRange, setRoom, setCountUser, resetBooking } =
+  sliceBookingHistory.actions;
