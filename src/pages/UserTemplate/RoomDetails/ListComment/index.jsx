@@ -48,10 +48,13 @@ export default function ListComment(props) {
   };
 
   const onSubmit = async (message, star) => {
+    console.log(userInfo);
+
     const date = new Date().toISOString();
     if (!message) return;
     const newComment = {
       ...userComment,
+      maNguoiBinhLuan: userInfo?.id,
       ngayBinhLuan: date,
       noiDung: `${message}`,
       saoBinhLuan: star,
