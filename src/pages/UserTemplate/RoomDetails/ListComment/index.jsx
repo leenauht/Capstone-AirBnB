@@ -49,7 +49,6 @@ export default function ListComment(props) {
 
   const onSubmit = async (message, star) => {
     const date = new Date().toISOString();
-
     if (!message) return;
     const newComment = {
       ...userComment,
@@ -62,6 +61,7 @@ export default function ListComment(props) {
       const result = await api.post("/binh-luan", newComment);
       toastSuccess("Bình luận thành công!");
       setComments((prev) => [newComment, ...prev]);
+      fetchDataCommentRoomId();
       return result.content;
     } catch (error) {
       toastError(error.response.data.content);

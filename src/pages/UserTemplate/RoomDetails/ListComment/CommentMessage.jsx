@@ -1,4 +1,3 @@
-import { useSelector } from "react-redux";
 import Rating from "../Rating";
 import Avatar from "./../../_component/Avatar";
 import RelativeTime from "./RelativeTime";
