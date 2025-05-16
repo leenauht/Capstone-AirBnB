@@ -144,49 +144,56 @@ export default function ChatBoxRight(props) {
                 const isCurrentUser =
                   item.userId === userInfo?.id || item.userId === getDeviceId();
                 return (
-                  <li
-                    key={item.id}
-                    className={cl("flex items-end px-5 py-2 gap-3", {
-                      ["flex-row-reverse"]: isCurrentUser,
-                    })}
-                  >
-                    <div className="flex flex-col gap-1 items-center">
-                      <Avatar
-                        src={item.avatar}
-                        icon={!item.isUser ? <UserOutlined /> : undefined}
-                      >
-                        {item?.name ? item?.name?.[0] : undefined}
-                      </Avatar>
-                      <div className="whitespace-nowrap w-fit h-fit text-xs p-1 rounded-full">
-                        {item.name || "Ẩn danh"}
-                      </div>
+                  <li>
+                    <div className="flex justify-center w-full text-gray-500">
+                      <span className="w-fit h-fit text-[11px] pb-1">
+                        {formattedDate}
+                      </span>
                     </div>
-
-                    <div className="flex-1 flex flex-col gap-1">
-                      <div
-                        className={`flex flex-col ${
-                          isCurrentUser ? "items-end" : ""
-                        }`}
-                      >
-                        <div className="flex justify-center w-full text-gray-500">
-                          <span className="w-fit h-fit text-[11px] pb-1">
-                            {formattedDate}
-                          </span>
-                        </div>
-                        <div
-                          className={cl("w-3/5 flex", {
-                            ["justify-end"]: isCurrentUser,
-                            ["justify-start"]: !isCurrentUser,
-                          })}
+                    <div
+                      key={item.id}
+                      className={cl("flex items-end px-5 gap-3", {
+                        ["flex-row-reverse"]: isCurrentUser,
+                      })}
+                    >
+                      <div className="flex flex-col gap-1 items-center">
+                        <Avatar
+                          src={item.avatar}
+                          icon={!item.isUser ? <UserOutlined /> : undefined}
                         >
-                          <span
-                            className={cl(
-                              "bg-white text-base leading-5 py-1 px-2 rounded-md shadow-box-shadow-3 w-fit break-words",
-                              { "bg-blue-300": isCurrentUser }
-                            )}
+                          {item?.name ? item?.name?.[0] : undefined}
+                        </Avatar>
+                        <div className="whitespace-nowrap w-fit h-fit text-xs p-1 rounded-full">
+                          {item.name || "Ẩn danh"}
+                        </div>
+                      </div>
+
+                      <div className="flex-1 flex flex-col gap-1">
+                        <div
+                          className={`flex flex-col ${
+                            isCurrentUser ? "items-end" : ""
+                          }`}
+                        >
+                          {/* <div className="flex justify-center w-full text-gray-500">
+                            <span className="w-fit h-fit text-[11px] pb-1">
+                              {formattedDate}
+                            </span>
+                          </div> */}
+                          <div
+                            className={cl("w-3/5 flex", {
+                              ["justify-end"]: isCurrentUser,
+                              ["justify-start"]: !isCurrentUser,
+                            })}
                           >
-                            {item.message}
-                          </span>
+                            <span
+                              className={cl(
+                                "bg-white text-base leading-5 py-1 px-2 rounded-md shadow-box-shadow-3 w-fit break-words",
+                                { "bg-blue-300": isCurrentUser }
+                              )}
+                            >
+                              {item.message}
+                            </span>
+                          </div>
                         </div>
                       </div>
                     </div>
