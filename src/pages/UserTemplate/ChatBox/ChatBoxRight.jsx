@@ -109,12 +109,17 @@ export default function ChatBoxRight(props) {
         />
 
         <div className="flex items-center gap-2">
-          <Avatar
-            src={userInfo?.avatar}
-            icon={!userInfo ? <UserOutlined /> : undefined}
-          >
-            {userInfo?.name ? userInfo?.name?.[0] : undefined}
-          </Avatar>
+          {userInfo ? (
+            userInfo.avatar ? (
+              <Avatar src={userInfo?.avatar}></Avatar>
+            ) : (
+              <Avatar>
+                {userInfo?.name ? userInfo?.name?.[0] : undefined}
+              </Avatar>
+            )
+          ) : (
+            <Avatar icon={<UserOutlined />}></Avatar>
+          )}
           <MinusOutlined
             onClick={() => setIsOpen(false)}
             className="text-blue-500 hover:text-blue-900 transition duration-300 cursor-pointer"
@@ -127,7 +132,7 @@ export default function ChatBoxRight(props) {
           <div className="">{EVENT_NAME.CHAT_MESSAGE}</div>
         </div>
         <ul
-          className="flex-1 overflow-y-auto flex flex-col border-y max-h-[60vh]"
+          className="flex-1 overflow-y-auto flex flex-col border-t max-h-[60vh]"
           ref={listRef}
         >
           <div className="">
@@ -189,67 +194,65 @@ export default function ChatBoxRight(props) {
                 );
               })}
           </div>
-          {!!listTypingFiltered.length && (
-            <div className="flex gap-1 items-center flex-row pl-6 pb-1">
-              <Avatar.Group
-                size="large"
-                max={{
-                  count: 2,
-                  style: {
-                    color: "#f56a00",
-                    backgroundColor: "#fde3cf",
-                    cursor: "pointer",
-                  },
-                  popover: { trigger: "click" },
-                }}
+        </ul>
+        {!!listTypingFiltered.length && (
+          <div className="flex gap-1 items-center border-b flex-row pl-6 pb-1">
+            <Avatar.Group
+              size="large"
+              max={{
+                count: 2,
+                style: {
+                  color: "#f56a00",
+                  backgroundColor: "#fde3cf",
+                  cursor: "pointer",
+                },
+                popover: { trigger: "click" },
+              }}
+            >
+              <Avatar
+                src={listTypingFiltered[0].avatar || undefined}
+                icon={
+                  !listTypingFiltered[0].isUser ? <UserOutlined /> : undefined
+                }
               >
+                {listTypingFiltered[0]?.name
+                  ? listTypingFiltered[0]?.name?.[0]
+                  : undefined}
+              </Avatar>
+              {listTypingFiltered[1] && (
                 <Avatar
-                  src={listTypingFiltered[0].avatar || undefined}
+                  src={listTypingFiltered[1].avatar}
                   icon={
-                    !listTypingFiltered[0].isUser ? <UserOutlined /> : undefined
+                    !listTypingFiltered[1].isUser ? <UserOutlined /> : undefined
                   }
                 >
-                  {listTypingFiltered[0]?.name
-                    ? listTypingFiltered[0]?.name?.[0]
+                  {listTypingFiltered[1]?.name
+                    ? listTypingFiltered[1]?.name?.[1]
                     : undefined}
                 </Avatar>
-                {listTypingFiltered[1] && (
-                  <Avatar
-                    src={listTypingFiltered[1].avatar}
-                    icon={
-                      !listTypingFiltered[1].isUser ? (
-                        <UserOutlined />
-                      ) : undefined
-                    }
-                  >
-                    {listTypingFiltered[1]?.name
-                      ? listTypingFiltered[1]?.name?.[1]
-                      : undefined}
-                  </Avatar>
-                )}
+              )}
 
-                {listTypingFiltered[2] && (
-                  <>
-                    <Tooltip title="Ant User" placement="top">
-                      <Avatar
-                        style={{ backgroundColor: "#87d068" }}
-                        icon={<UserOutlined />}
-                      />
-                    </Tooltip>
+              {listTypingFiltered[2] && (
+                <>
+                  <Tooltip title="Ant User" placement="top">
                     <Avatar
-                      style={{ backgroundColor: "#1677ff" }}
-                      icon={<AntDesignOutlined />}
+                      style={{ backgroundColor: "#87d068" }}
+                      icon={<UserOutlined />}
                     />
-                  </>
-                )}
-              </Avatar.Group>
+                  </Tooltip>
+                  <Avatar
+                    style={{ backgroundColor: "#1677ff" }}
+                    icon={<AntDesignOutlined />}
+                  />
+                </>
+              )}
+            </Avatar.Group>
 
-              <div className="whitespace-nowrap w-fit h-fit text-xs p-1 rounded-full">
-                {listTypingFiltered[0].name || "Ẩn danh"} <ChatBubble />
-              </div>
+            <div className="whitespace-nowrap w-fit h-fit text-xs p-1 rounded-full">
+              {listTypingFiltered[0].name || "Ẩn danh"} <ChatBubble />
             </div>
-          )}
-        </ul>
+          </div>
+        )}
 
         <div className="p-5 bg-bg-opacity-7">
           <Input
