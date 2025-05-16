@@ -36,7 +36,12 @@ export default function FilterRoom() {
 
   const handleOnclickSubtract = (id) => {
     const newData = dataRoom.map((item) =>
-      item.id === id ? { ...item, numberOfGuest: item.numberOfGuest - 1 } : item
+      item.id === id && item.numberOfGuest > 0
+        ? {
+            ...item,
+            numberOfGuest: item.numberOfGuest - 1,
+          }
+        : item
     );
     return setDataRoom(newData);
   };
