@@ -41,6 +41,7 @@ export default function Room({ location, room }) {
 
   return (
     <Card
+      className="max-h-[400px]"
       hoverable
       onClick={() => {
         navigate(`/detail?roomId=${room.id}&locationId=${room.maViTri}`);

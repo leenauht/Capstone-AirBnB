@@ -8,12 +8,15 @@ import Room from "../RoomList/Room";
 import { useSearchParams } from "react-router-dom";
 import Header from "../_component/Header";
 import Loading from "../_component/Loading";
+import { Empty } from "antd";
 
 export default function RoomLocation() {
   const { dataSearch } = useSelector((state) => state.locationReducer);
   const { data: dataRoom, loading } = useSelector(
     (state) => state.roomListReducer
   );
+  console.log(dataSearch);
+
   const dispatch = useDispatch();
   const [searchParams] = useSearchParams();
   const keyParam = searchParams.get("key");
@@ -58,14 +61,17 @@ export default function RoomLocation() {
     <div>
       <div className="flex gap-5 flex-col-reverse w-[90%] mx-auto pt-28 xl:flex-row relative pb-10 min-h-screen">
         <div className="w-[90%] mx-auto grid grid-cols-1 md:w-full md:grid-cols-2 md:gap-5 lg:grid-cols-3">
-          {dataSearch ? (
+          {dataSearch.length > 0 ? (
             roomFilter?.map((item) => {
               return (
                 <Room key={item.id} room={item} location={item.location} />
               );
             })
           ) : (
-            <div>Không tìm thấy phòng nào</div>
+            <Empty
+              description="Không tìm thấy phòng nào!"
+              className="lg:col-span-3 md:col-span-2 pt-20"
+            />
           )}
         </div>
 
