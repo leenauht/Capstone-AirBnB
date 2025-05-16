@@ -145,8 +145,8 @@ export default function ChatBoxRight(props) {
                   item.userId === userInfo?.id || item.userId === getDeviceId();
                 return (
                   <li>
-                    <div className="flex justify-center w-full text-gray-500">
-                      <span className="w-fit h-fit text-[11px] pb-1">
+                    <div className="flex justify-center items-center w-full text-gray-500">
+                      <span className="w-fit h-fit text-[11px]">
                         {formattedDate}
                       </span>
                     </div>
